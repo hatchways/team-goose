@@ -6,7 +6,11 @@ class Card {
   }
 
   select() {
-    this.selected = true;
+    if (this.selected) {
+        return false;
+    } else {
+        this.selected = true;
+    }
   }
 }
 
