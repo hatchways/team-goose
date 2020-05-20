@@ -49,7 +49,7 @@ function CreateGame() {
                     <Grid container direction="column">
                       <Grid item>
                         <Typography variant="h6" gutterBottom>
-                          Create Game:
+                          New Game:
                         </Typography>
                       </Grid>
                       <Grid item>
