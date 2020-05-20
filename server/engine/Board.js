@@ -43,9 +43,3 @@ class Board {
     }
   }
 }
-
-const newBoard = new Board();
-newBoard.generateNewRound();
-console.log(newBoard.deckLength);
-console.log(newBoard.mapCard);
-console.log(newBoard.cards);
