@@ -1,0 +1,12 @@
+.header {
+  margin-bottom: 15px;
+}
+
+.panel {
+  padding: 25px 40px;
+  min-width: 350px;
+}
+
+.panel .grid-input {
+  margin-right: 8px;
+}
