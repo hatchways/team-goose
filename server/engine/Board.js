@@ -1,30 +1,37 @@
 const Words = require("./Words");
 const Card = require("./Card");
-const MapCard = require("./MapCard");
+const getMapCard = require("./getMapCard");
+const shuffle = require("./shuffle");
 
 class Board {
   constructor() {
     //new deck of words
     this.deck = [...Words];
-    this.shuffle(this.deck);
+    shuffle(this.deck);
     this.deckLength = this.deck.length;
-    this.mapCard = new MapCard();
+    this.mapCard = [];
     //drawed cards
     this.cards = [];
+
+    this.redAgentNum = 0;
+    this.blueAgentNum = 0;
+
+    this.decideAgentNum();
+    this.generateNewRound();
   }
 
   generateNewRound() {
     let selectedWords = [];
-    if (this.deckLength > 25) {
+    const numRemainCards = 25;
+    if (this.deckLength > numRemainCards) {
       selectedWords = this.deck.splice(0, 25);
       this.updateDeckLength();
     } else {
       this.deck = [...Words];
-      this.shuffle(this.deck);
+      shuffle(this.deck);
     }
-    this.shuffle(this.mapCard);
     this.cards = selectedWords.map(
-      (word, index) => new Card(word, this.mapCard.roles[index])
+      (word, index) => new Card(word, this.mapCard[index])
     );
   }
 
@@ -36,10 +43,29 @@ class Board {
     return this.cards;
   }
 
-  shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+  decideAgentNum() {
+    const decision = Math.round(Math.random());
+    if (decision === 0) {
+      this.blueAgentNum = 9;
+      this.redAgentNum = 8;
+    } else {
+      this.blueAgentNum = 8;
+      this.redAgentNum = 9;
     }
+    this.mapCard = getMapCard(decision);
   }
 }
+
+
+const newBoard = new Board();
+console.log(newBoard.deckLength, "deck");
+console.log(newBoard.mapCard);
+console.log(newBoard.cards);
+console.log(newBoard.redAgentNum);
+console.log(newBoard.blueAgentNum);
+newBoard.generateNewRound();
+console.log(newBoard.deckLength, "deck");
+console.log(newBoard.mapCard);
+console.log(newBoard.cards);
+console.log(newBoard.redAgentNum);
+console.log(newBoard.blueAgentNum);
