@@ -1,0 +1,3 @@
+{
+    "jwtSecret" : "This is secret token, you can put what ever you wish too "
+}
