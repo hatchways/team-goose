@@ -60,7 +60,9 @@ function TeamSelect() {
                 <ListItemText secondary="Field Agent">Jaclyn</ListItemText>
               </ListItem>
               <ListItem>
-                <ListItemText secondary="Field Agent">(Empty)</ListItemText>
+                <ListItemText secondary="Field Agent">
+                  (Empty slot)
+                </ListItemText>
                 <ListItemSecondaryAction>
                   <IconButton edge="end" aria-label="Add">
                     <AddCircle />
@@ -68,7 +70,9 @@ function TeamSelect() {
                 </ListItemSecondaryAction>
               </ListItem>
               <ListItem>
-                <ListItemText secondary="Field Agent">(Empty)</ListItemText>
+                <ListItemText secondary="Field Agent">
+                  (Empty slot)
+                </ListItemText>
                 <ListItemSecondaryAction>
                   <IconButton edge="end" aria-label="Add">
                     <AddCircle />
