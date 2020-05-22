@@ -69,6 +69,7 @@ function GameLobby() {
                 disabled={!canStartGame}
                 variant="contained"
                 color="primary"
+                size="large"
               >
                 Start Game
               </Button>
@@ -90,6 +91,7 @@ function GameLobby() {
                     }}
                     variant="outlined"
                     color="default"
+                    size="small"
                   >
                     Copy
                   </Button>
