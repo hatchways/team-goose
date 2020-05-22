@@ -1,0 +1,9 @@
+.header .title {
+  padding: 15px;
+}
+
+.header .underscore {
+  height: 3px;
+  width: 75px;
+  background-color: limegreen;
+}
