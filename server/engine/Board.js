@@ -22,14 +22,15 @@ class Board {
 
   generateNewRound() {
     let selectedWords = [];
-    const numRemainCards = 25;
-    if (this.deckLength > numRemainCards) {
-      selectedWords = this.deck.splice(0, 25);
-      this.updateDeckLength();
-    } else {
+    const remainCardsNum = 25;
+
+    if (this.deckLength < remainCardsNum) {
       this.deck = [...Words];
       shuffle(this.deck);
     }
+    selectedWords = this.deck.splice(0, 25);
+    this.updateDeckLength();
+
     this.cards = selectedWords.map(
       (word, index) => new Card(word, this.mapCard[index])
     );
@@ -41,6 +42,16 @@ class Board {
 
   getCards() {
     return this.cards;
+  }
+
+  setCard(selectedCard) {
+    //assume it pass the card
+    this.cards.forEach(card => {
+      if (card === selectedCard) {
+        card.select();
+        return card.role;
+      }
+    })
   }
 
   decideAgentNum() {
@@ -56,16 +67,16 @@ class Board {
   }
 }
 
-
-const newBoard = new Board();
-console.log(newBoard.deckLength, "deck");
-console.log(newBoard.mapCard);
-console.log(newBoard.cards);
-console.log(newBoard.redAgentNum);
-console.log(newBoard.blueAgentNum);
-newBoard.generateNewRound();
-console.log(newBoard.deckLength, "deck");
-console.log(newBoard.mapCard);
-console.log(newBoard.cards);
-console.log(newBoard.redAgentNum);
-console.log(newBoard.blueAgentNum);
+module.exports = Board;
+// const newBoard = new Board();
+// console.log(newBoard.deckLength, "deck");
+// console.log(newBoard.mapCard);
+// console.log(newBoard.cards);
+// console.log(newBoard.redAgentNum);
+// console.log(newBoard.blueAgentNum);
+// newBoard.generateNewRound();
+// console.log(newBoard.deckLength, "deck");
+// console.log(newBoard.mapCard);
+// console.log(newBoard.cards);
+// console.log(newBoard.redAgentNum);
+// console.log(newBoard.blueAgentNum);
