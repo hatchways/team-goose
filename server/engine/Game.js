@@ -136,9 +136,7 @@ class Game {
 
   nextGameTurn(info) {
     const winner = this.checkIfWinning(info.guess);
-    console.log(info)
     if (winner) {
-      console.log(winner, "if");
       this.setGameTurn(GameTurns.End);
     }
     switch (this.gameTurn) {
@@ -171,7 +169,7 @@ class Game {
         }
         break;
       case GameTurns.End:
-          console.log("I'm in the end")
+        console.log("I'm in the end");
         break;
     }
   }
@@ -181,7 +179,6 @@ class Game {
       this.getGameTurn() === GameTurns.BLUE_AGENT_TURN ||
       this.getGameTurn() === GameTurns.RED_AGENT_TURN
     ) {
-        console.log("in")
       if (
         info.role === WordRoles.BLACK &&
         this.getGameTurn() === GameTurns.BLUE_AGENT_TURN
@@ -208,53 +205,26 @@ class Game {
     return false;
   }
 
+  stopGuess() {
+    switch (this.gameTurn) {
+      case GameTurns.BLUE_AGENT_TURN:
+        this.setNumGuessLeft = 0;
+        this.setGameTurn(GameTurns.RED_SPY_TURN);
+        break;
+      case GameTurns.RED_AGENT_TURN:
+        this.setNumGuessLeft = 0;
+        this.setGameTurn(GameTurns.BLUE_SPY_TURN);
+        break;
+    }
+  }
   resetGame() {
-      this.bluePoints = 0;
-      this.redPoints = 0;
-      this.numGuessLeft = 0;
-      this.gameBoard.generateNewRound();
-      this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
-        Math.round(Math.random())
-      ];
-      this.winner=null;
+    this.bluePoints = 0;
+    this.redPoints = 0;
+    this.numGuessLeft = 0;
+    this.gameBoard.generateNewRound();
+    this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
+      Math.round(Math.random())
+    ];
+    this.winner = null;
   }
 }
-
-
-const newGame = new Game("123");
-newGame.setRoles([{"user1":"user1", role:"Blue agent"}, {"user2":"user2", role:"Blue spymaster"}]);
-// console.log(newGame.getBlueTeam());
-//spymaster
-console.log("============Spymaster===========");
-newGame.nextGameTurn({clue:"afkj", numGuess:4});
-// console.log(newGame.getGameState());
-//agents
-console.log("=========Agents========")
-newGame.nextGameTurn({guess:newGame.gameBoard.cards[0]});
-console.log(newGame.gameBoard.cards[0]);
-console.log(newGame.getGameState());
-newGame.nextGameTurn({guess:newGame.gameBoard.cards[1]});
-console.log(newGame.gameBoard.cards[1]);
-console.log(newGame.getGameState());
-newGame.nextGameTurn({guess:newGame.gameBoard.cards[2]});
-console.log(newGame.gameBoard.cards[2]);
-console.log(newGame.getGameState());
-newGame.nextGameTurn({guess:newGame.gameBoard.cards[3]});
-console.log(newGame.gameBoard.cards[3]);
-console.log(newGame.getGameState());
-//spymaster
-console.log("========Spymaster=======");
-newGame.nextGameTurn({clue:"asga", numGuess:2});
-console.log(newGame.getGameState());
-//agents
-console.log("=======Agents=======")
-newGame.nextGameTurn({guess:newGame.gameBoard.cards[4]});
-console.log(newGame.gameBoard.cards[4]);
-console.log(newGame.getGameState());
-newGame.nextGameTurn({guess:newGame.gameBoard.cards[5]});
-console.log(newGame.gameBoard.cards[5]);
-console.log(newGame.getGameState());
-
-console.log(newGame.getWinner());
-newGame.resetGame()
-console.log(newGame.getGameState());

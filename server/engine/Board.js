@@ -53,12 +53,12 @@ class Board {
 
   setCard(selectedCard) {
     //assume it pass the card
-    this.cards.forEach(card => {
+    this.cards.forEach((card) => {
       if (card === selectedCard) {
         card.select();
         return card.role;
       }
-    })
+    });
   }
 
   decideAgentNum() {
@@ -75,15 +75,3 @@ class Board {
 }
 
 module.exports = Board;
-// const newBoard = new Board();
-// console.log(newBoard.deckLength, "deck");
-// console.log(newBoard.mapCard);
-// console.log(newBoard.cards);
-// console.log(newBoard.redAgentNum);
-// console.log(newBoard.blueAgentNum);
-// newBoard.generateNewRound();
-// console.log(newBoard.deckLength, "deck");
-// console.log(newBoard.mapCard);
-// console.log(newBoard.cards);
-// console.log(newBoard.redAgentNum);
-// console.log(newBoard.blueAgentNum);
