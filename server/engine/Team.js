@@ -1,5 +1,6 @@
 class Team {
-  constructor() {
+  constructor(color) {
+    this.teamColor = color;
     this.players = [];
     this.operatives = [];
     this.spymaster = null;
@@ -21,13 +22,17 @@ class Team {
     return this.players;
   }
 
-  setSpymaster(player) {
-    this.spymaster = player;
-  }
-
   getSpymaster() {
     return this.spymaster;
   }
+
+  setSpymaster(player) {
+    this.spymaster = player;
+  }
 }
 
-module.exports = Team;
+const TeamColor = {
+  RED: "RED",
+  BLUE: "BLUE",
+};
+module.exports = { Team, TeamColor };

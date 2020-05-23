@@ -40,8 +40,15 @@ class Board {
     this.deckLength = this.deck.length;
   }
 
+  //getters
   getCards() {
     return this.cards;
+  }
+  getRedAgentNum() {
+    return this.redAgentNum;
+  }
+  getBlueAgentNum() {
+    return this.blueAgentNum;
   }
 
   setCard(selectedCard) {
