@@ -3,6 +3,7 @@ import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import { copyToClipboard } from "../../utils/utils";
 
 import Header from "../common/Header";
 import TeamSelect from "./TeamSelect";
@@ -11,7 +12,7 @@ import "./GameLobby.css";
 
 function GameLobby() {
   const currentUser = { sessionID: 1, firstName: "Tony" }; // dummy data of current user. sessionID will be generated from web socket in backend
-  const [gameID] = useState("ABCD"); // dummy game ID
+  const [matchID] = useState("ABCD"); // dummy match ID
   const [canStartGame, setCanStartGame] = useState(false);
 
   const isTeamReady = (team) => {
@@ -21,16 +22,6 @@ function GameLobby() {
     const fieldAgents = team.slice(FIELD_AGENT_INDEX);
 
     return spymaser.player && fieldAgents.some((agent) => agent.player);
-  };
-
-  const copyGameIDToClipboard = () => {
-    // source: https://stackoverflow.com/questions/33855641/copy-output-of-a-javascript-variable-to-the-clipboard
-    let dummy = document.createElement("textarea");
-    document.body.appendChild(dummy);
-    dummy.value = gameID;
-    dummy.select();
-    document.execCommand("copy");
-    document.body.removeChild(dummy);
   };
 
   const onTeamSelect = (redTeam, blueTeam) => {
@@ -82,12 +73,12 @@ function GameLobby() {
                 alignItems="center"
               >
                 <Grid className="label" item>
-                  <Typography>Share Game ID:</Typography>
+                  <Typography>Share Match ID:</Typography>
                 </Grid>
                 <Grid item>
                   <Button
                     onClick={() => {
-                      copyGameIDToClipboard();
+                      copyToClipboard(matchID);
                     }}
                     variant="outlined"
                     color="default"
