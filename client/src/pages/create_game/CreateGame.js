@@ -29,7 +29,7 @@ function CreateGame() {
                     <Grid item>
                       <Grid container alignItems="center">
                         <Grid item className="grid-input">
-                          <Input placeholder="Enter Game ID" />
+                          <Input placeholder="Enter Match ID" />
                         </Grid>
                         <Grid item>
                           <Button variant="contained" color="primary">

@@ -7,3 +7,11 @@
   width: 75px;
   background-color: limegreen;
 }
+
+.grid-content {
+  padding: 25px;
+}
+
+.label {
+  padding-right: 8px;
+}
