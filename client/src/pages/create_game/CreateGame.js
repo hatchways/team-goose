@@ -55,7 +55,7 @@ function CreateGame() {
                               onChange(event);
                             }}
                             value={matchID}
-                            placeholder="Enter Game ID"
+                            placeholder="Enter Match ID"
                           />
                         </Grid>
                         <Grid item>

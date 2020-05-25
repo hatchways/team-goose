@@ -6,6 +6,7 @@ import { theme } from "./themes/theme";
 import LandingPage from "./pages/Landing";
 import CreateGame from "./pages/create_game/CreateGame";
 import GameIO from "./socket_io/GameIO";
+import GameLobby from "./pages/game_lobby/GameLobby";
 
 import "./App.css";
 
@@ -24,6 +25,7 @@ function App() {
         <BrowserRouter>
           <Route exact path="/" component={LandingPage} />
           <Route path="/create_game" component={CreateGame} />
+          <Route path="/game_lobby" component={GameLobby} />
         </BrowserRouter>
       </MuiThemeProvider>
     </AppContext.Provider>
