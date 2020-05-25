@@ -1,0 +1,8 @@
+const PlayerRoles = {
+  RED_FIELD_AGENT: "RED FIELD AGENT",
+  BLUE_FIELD_AGENT: "BLUE FIELD AGENT",
+  RED_SPY_MASTER: "RED SPY MASTER",
+  BLUE_SPY_MASTER: "BLUE SPY MASTER",
+};
+
+module.exports = PlayerRoles;
