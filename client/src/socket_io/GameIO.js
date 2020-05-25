@@ -14,10 +14,15 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case ACTION_TYPE.START:
-      state.io = socketIO(NAMESPACE);
+      if (!state.io) {
+        state.io = socketIO(NAMESPACE);
+      }
       return state;
     case ACTION_TYPE.SHUTDOWN:
-      state.io.disconnect();
+      if (state.io) {
+        state.io.disconnect();
+        state.io = null;
+      }
       return state;
     default:
       return state;

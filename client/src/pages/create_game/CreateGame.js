@@ -23,8 +23,11 @@ function CreateGame() {
     const action = {
       type: GameIO.ACTION_TYPE.START,
     };
-    gameIO.dispatch(action);
-    // transition to Game Lobby with a session ID
+    if (matchID.length > 0) {
+      // check if matchID is valid
+      gameIO.dispatch(action); // then turn on socket for the game
+      // transition to Game Lobby with a session ID from opened socket
+    }
   };
 
   return (
@@ -60,6 +63,7 @@ function CreateGame() {
                             onClick={() => {
                               joinGame();
                             }}
+                            disabled={matchID.length <= 0}
                             variant="contained"
                             color="primary"
                           >
