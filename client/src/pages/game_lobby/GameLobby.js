@@ -10,18 +10,19 @@ import TeamSelect from "./team_select/TeamSelect";
 import "../common/common.css";
 import "./GameLobby.css";
 
+const SPYMASTER_INDEX = 0;
+const FIELD_AGENT_INDEX = 1;
+
 function GameLobby() {
   const currentUser = { sessionID: 1, firstName: "Tony" }; // dummy data of current user. sessionID will be generated from web socket in backend
   const [matchID] = useState("ABCD"); // dummy match ID
   const [canStartGame, setCanStartGame] = useState(false);
 
   const isTeamReady = (team) => {
-    const SPYERMASTER_INDEX = 0;
-    const FIELD_AGENT_INDEX = 1;
-    const spymaser = team[SPYERMASTER_INDEX];
+    const spyMaster = team[SPYMASTER_INDEX];
     const fieldAgents = team.slice(FIELD_AGENT_INDEX);
 
-    return spymaser.player && fieldAgents.some((agent) => agent.player);
+    return spyMaster.player && fieldAgents.some((agent) => agent.player);
   };
 
   const onTeamSelect = (redTeam, blueTeam) => {

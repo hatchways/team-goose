@@ -3,11 +3,11 @@ import AddCircle from "@material-ui/icons/AddCircle";
 import IconButton from "@material-ui/core/IconButton";
 import RemoveCircle from "@material-ui/icons/RemoveCircle";
 
-export const JoinRoleAction = (props) => {
+export const JoinRoleAction = ({ joinRole, teamCode, index }) => {
   return (
     <IconButton
       onClick={() => {
-        props.joinRole(props.teamCode, props.index);
+        joinRole(teamCode, index);
       }}
       edge="end"
     >
@@ -16,11 +16,11 @@ export const JoinRoleAction = (props) => {
   );
 };
 
-export const LeaveRoleAction = (props) => {
+export const LeaveRoleAction = ({ leaveRole, teamCode, index }) => {
   return (
     <IconButton
       onClick={() => {
-        props.leaveRole(props.teamCode, props.index);
+        leaveRole(teamCode, index);
       }}
       edge="end"
     >
