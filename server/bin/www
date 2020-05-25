@@ -9,6 +9,7 @@ require("dotenv").config();
 
 var app = require("../app");
 var http = require("http");
+const socketIo = require("socket.io");
 
 /**
  * Get port from environment and store in Express.
@@ -22,6 +23,12 @@ app.set("port", port);
  */
 
 var server = http.createServer(app);
+
+/**
+ * Create Socket.io instance.
+ */
+
+const io = socketIo(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -87,3 +94,17 @@ function onListening() {
 
   console.log("Listening on " + bind);
 }
+
+/**
+ * Socket.io setup
+ */
+
+const gameIO = io.of("/game"); // socket for handling game actions
+const chatIO = io.of("/chat"); // socket for chat
+
+gameIO.on("connection", (socket) => {
+  console.log(`New client connected: ${socket.id}`);
+  socket.on("disconnect", () => {
+    console.log(`A client disconnected: ${socket.id}`);
+  });
+});

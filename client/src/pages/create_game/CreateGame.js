@@ -1,14 +1,32 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
 import Typography from "@material-ui/core/Typography";
 
+import { AppContext } from "../../App";
+import GameIO from "../../socket_io/GameIO";
 import Header from "../common/Header";
 import "./CreateGame.css";
 
 function CreateGame() {
+  const [matchID, setMatchID] = useState("");
+  const { gameIO } = useContext(AppContext);
+
+  const onChange = (event) => {
+    const currentInput = event.target.value;
+    setMatchID(currentInput);
+  };
+
+  const joinGame = () => {
+    const action = {
+      type: GameIO.ACTION_TYPE.START,
+    };
+    gameIO.dispatch(action);
+    // transition to Game Lobby with a session ID
+  };
+
   return (
     <Container>
       <Grid container direction="column" justify="center" alignItems="center">
@@ -29,10 +47,22 @@ function CreateGame() {
                     <Grid item>
                       <Grid container alignItems="center">
                         <Grid item className="grid-input">
-                          <Input placeholder="Enter Game ID" />
+                          <Input
+                            onChange={(event) => {
+                              onChange(event);
+                            }}
+                            value={matchID}
+                            placeholder="Enter Game ID"
+                          />
                         </Grid>
                         <Grid item>
-                          <Button variant="contained" color="primary">
+                          <Button
+                            onClick={() => {
+                              joinGame();
+                            }}
+                            variant="contained"
+                            color="primary"
+                          >
                             Join
                           </Button>
                         </Grid>
