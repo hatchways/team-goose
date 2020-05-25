@@ -1,4 +1,4 @@
-class Operative {
+class FieldAgent{
   constructor(user, team) {
     this.user = user;
     this.team = team;
@@ -9,4 +9,4 @@ class Operative {
   }
 }
 
-module.exports = Operative;
+module.exports = FieldAgent;

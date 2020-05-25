@@ -1,14 +1,14 @@
 const Board = require("./Board");
 const { Team, TeamColor } = require("./Team");
-const Operative = require("./Operative");
+const FieldAgent = require("./FieldAgent");
 const SpyMaster = require("./SpyMaster");
 const GameTurns = require("./GameTurns");
 const PlayerRoles = require("./PlayerRoles");
 const WordRoles = require("./WordRoles");
 
 class Game {
-  constructor(machId) {
-    this.machId = machId;
+  constructor(matchId) {
+    this.matchId = matchId;
 
     this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
       Math.round(Math.random())
@@ -108,23 +108,23 @@ class Game {
   setRoles(players) {
     players.forEach((player) => {
       switch (player.role) {
-        case PlayerRoles.RED_OP:
-          const newRedOperative = new Operative(player, TeamColor.RED);
-          this.redTeam.addPlayer(newRedOperative);
-          this.redTeam.addOperative(newRedOperative);
+        case PlayerRoles.RED_FIELD_AGENT:
+          const newRedFieldAgent = new FieldAgent(player, TeamColor.RED);
+          this.redTeam.addPlayer(newRedFieldAgent);
+          this.redTeam.addFieldAgent(newRedFieldAgent);
           break;
-        case PlayerRoles.BLUE_OP:
-          const newBlueOperative = new Operative(player, TeamColor.BLUE);
-          this.redTeam.addPlayer(newBLueOperative);
-          this.redTeam.addOperative(newBlueOperative);
+        case PlayerRoles.BLUE_FIELD_AGENT:
+          const newBlueFieldAgent = new FieldAgent(player, TeamColor.BLUE);
+          this.redTeam.addPlayer(newBlueFieldAgent);
+          this.redTeam.addFieldAgent(newBlueFieldAgent);
           break;
-        case PlayerRoles.RED_SPY:
+        case PlayerRoles.RED_SPY_MASTER:
           const newRedSpyMaster = new SpyMaster(player, TeamColor.RED);
           this.redSpyMaster = newRedSpyMaster;
           this.redTeam.addPlayer(newRedSpyMaster);
           this.redTeam.setSpymaster(newRedSpyMaster);
           break;
-        case PlayerRoles.BLUE_SPY:
+        case PlayerRoles.BLUE_SPY_MASTER:
           const newBlueSpyMaster = new SpyMaster(player, TeamColor.BLUE);
           this.blueSpyMaster = newBlueSpyMaster;
           this.blueTeam.addPlayer(newBlueSpyMaster);
@@ -228,3 +228,4 @@ class Game {
     this.winner = null;
   }
 }
+

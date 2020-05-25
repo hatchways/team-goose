@@ -2,7 +2,7 @@ class Team {
   constructor(color) {
     this.teamColor = color;
     this.players = [];
-    this.operatives = [];
+    this.fieldAgents = [];
     this.spymaster = null;
   }
 
@@ -10,12 +10,12 @@ class Team {
     this.players.push(player);
   }
 
-  addOperative(operative) {
-    this.operatives.push(operative);
+  addFieldAgent(fieldAgent) {
+    this.fieldAgents.push(fieldAgent);
   }
 
-  getOperatives() {
-    return this.operatives;
+  getFieldAgent() {
+    return this.fieldAgents;
   }
 
   getPlayers() {

@@ -1,8 +1,8 @@
 const PlayerRoles = {
-  RED_OP: "Red operative",
-  BLUE_OP: "Blue operative",
-  RED_SPY: "Red spymaster",
-  BLUE_SPY: "Blue spymaster",
+  RED_FIELD_AGENT: "RED FIELD AGENT",
+  BLUE_FIELD_AGENT: "BLUE FIELD AGENT",
+  RED_SPY_MASTER: "RED SPY MASTER",
+  BLUE_SPY_MASTER: "BLUE SPY MASTER",
 };
 
 module.exports = PlayerRoles;
