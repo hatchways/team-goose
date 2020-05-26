@@ -1,0 +1,6 @@
+#navbar {
+  position: relative;
+  z-index: 1;
+  padding: 15px;
+  box-shadow: 0 0 7px 1px #eeeeee;
+}
