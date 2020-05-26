@@ -8,8 +8,6 @@ const user = require("./routes/api/user");
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
 
-const { mongoose } = require("./db/mongoose");
-
 const { json, urlencoded } = express;
 
 var app = express();

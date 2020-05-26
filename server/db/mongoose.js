@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const url = process.env.MONGOLAB_URI;
 try {
     mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true});
@@ -9,3 +9,4 @@ catch (err) {
 }
 
 module.exports = { mongoose };
+
