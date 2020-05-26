@@ -9,16 +9,14 @@ import "./Game.css";
 function Game() {
   return (
     <Container>
-      <div className="game">
-        <Grid container justify="space-evenly" alignItems="center">
-          <Grid item xs>
-            <Chat />
-          </Grid>
-          <Grid item xs={9}>
-            <GameBoard />
-          </Grid>
+      <Grid container justify="space-evenly" alignItems="center">
+        <Grid item xs>
+          <Chat />
         </Grid>
-      </div>
+        <Grid item xs={9}>
+          <GameBoard />
+        </Grid>
+      </Grid>
     </Container>
   );
 }
