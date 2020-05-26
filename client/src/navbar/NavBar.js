@@ -22,7 +22,9 @@ function NavBar() {
         <Grid item>
           <Grid container justify="center" alignItems="center" spacing={7}>
             <Grid item>
-              <Button variant="contained">New Game</Button>
+              <Button variant="contained" color="primary" size="large">
+                New Game
+              </Button>
             </Grid>
             <Grid item>
               <Grid container justify="center" alignItems="center" spacing={2}>

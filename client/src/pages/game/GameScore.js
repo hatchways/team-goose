@@ -29,11 +29,15 @@ function GameScore() {
 
   return (
     <Grid container justify="center" alignItems="flex-start" spacing={4}>
-      <Grid item>{generateScore(redScore, "Red Team")}</Grid>
+      <Grid item className="red-team-color">
+        {generateScore(redScore, "Red Team")}
+      </Grid>
       <Grid item>
         <Typography variant="h3">-</Typography>
       </Grid>
-      <Grid item>{generateScore(blueScore, "Blue Team")}</Grid>
+      <Grid item className="blue-team-color">
+        {generateScore(blueScore, "Blue Team")}
+      </Grid>
     </Grid>
   );
 }

@@ -1,3 +1,11 @@
 .game {
   height: 100vh;
 }
+
+.red-team-color {
+  color: #f86155;
+}
+
+.blue-team-color {
+  color: #4fadf3;
+}
