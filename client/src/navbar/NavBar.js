@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
+import GameScore from "../pages/game/GameScore";
 import "./NavBar.css";
 
 function NavBar() {
@@ -16,7 +17,7 @@ function NavBar() {
           <Typography variant="h4">{title}</Typography>
         </Grid>
         <Grid item>
-          <Typography variant="h4">Scores</Typography>
+          <GameScore />
         </Grid>
         <Grid item>
           <Grid container justify="center" alignItems="center" spacing={7}>
