@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -9,6 +9,8 @@ import Header from "../common/Header";
 import "./CreateGame.css";
 
 function CreateGame() {
+
+  const [matchId, setMatchId] = useState("");
 
   const handleNewGame = () => {
     fetch("/match", {
@@ -22,8 +24,11 @@ function CreateGame() {
     })
   }
 
+  const handleInput = (evt) => {
+    setMatchId(evt.target.value);
+  }
   const handleJoinGame = () => {
-    fetch("/match/387489327/join-match",
+    fetch(`/match/${matchId}/join-match`,
     {
       method: "POST",
       headers: {
@@ -52,7 +57,7 @@ function CreateGame() {
                     <Grid item>
                       <Grid container alignItems="center">
                         <Grid item className="grid-input">
-                          <Input placeholder="Enter Match ID" />
+                          <Input placeholder="Enter Match ID" value={matchId} onChange={handleInput}/>
                         </Grid>
                         <Grid item>
                           <Button variant="contained" color="primary" onClick={handleJoinGame}>

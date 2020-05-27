@@ -1,14 +1,14 @@
 const Game = require("../engine/Game");
+const uuid = require("uuid");
 
 class MatchManager {
     constructor() {
         this.matches = new Map();
     }
-
+    
     createMatch(hostId) {
         const game = new Game(hostId);
-        // console.log("new game", game);
-        const matchId = "387489327"; //temp
+        const matchId = uuid.v4();
         this.matches.set(matchId, game);
         console.log(this.matches);
         return {matchId : matchId};
