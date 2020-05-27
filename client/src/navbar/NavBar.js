@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
 import GameScore from "../pages/game/GameScore";
+import NavTitle from "./NavTitle";
 import "./NavBar.css";
 
 function NavBar() {
@@ -14,7 +15,7 @@ function NavBar() {
     <div id="navbar" className="MuiPaper-elevation4">
       <Grid container justify="space-around" alignItems="center">
         <Grid item>
-          <Typography variant="h4">{title}</Typography>
+          <NavTitle title={title} />
         </Grid>
         <Grid item>
           <GameScore />
