@@ -9,6 +9,29 @@ import Header from "../common/Header";
 import "./CreateGame.css";
 
 function CreateGame() {
+
+  const handleNewGame = () => {
+    fetch("/match", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ hostId: "host_01" }),
+    }).then(res => {
+      console.log(res.json())
+    })
+  }
+
+  const handleJoinGame = () => {
+    fetch("/match/387489327/join-match",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      }}).then(res => {
+      console.log(res.json());
+    })
+  }
   return (
     <Container>
       <Grid container direction="column" justify="center" alignItems="center">
@@ -32,7 +55,7 @@ function CreateGame() {
                           <Input placeholder="Enter Match ID" />
                         </Grid>
                         <Grid item>
-                          <Button variant="contained" color="primary">
+                          <Button variant="contained" color="primary" onClick={handleJoinGame}>
                             Join
                           </Button>
                         </Grid>
@@ -52,7 +75,7 @@ function CreateGame() {
                       </Typography>
                     </Grid>
                     <Grid item>
-                      <Button variant="contained">Create</Button>
+                      <Button variant="contained" onClick={handleNewGame}>Create</Button>
                     </Grid>
                   </Grid>
                 </Grid>
