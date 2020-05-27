@@ -12,12 +12,12 @@ router.post("/match", (req, res) => {
         console.error(err.message);
         res.status(500).send('Server error');
     }
-});
+  });
 
-router.post("/:matchId/join-match", (req, res) => 
+router.post("/match/:id/join-match", (req, res) => 
 {
-    const matchId = req.params.matchId;
-    console.log(req.params, "req params")
+    const matchId = req.params.id;
+    console.log(matchId, "req params")
     try {
         const message = MatchManager.joinMatch(matchId);
         res.json(message);
