@@ -1,31 +1,30 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const { check, validationResult } = require('express-validator/check');
 
-const GameEngin = require('../engine/Game');
+const MatchManager = require('../game_manager/MatchManager');
 
-router.post("/match",
-	[
-		check('hostID', "No host id provided").not().isEmpty(),
-		check('isPublic', "isPublic required").not().isEmpty(),
-		check('isPublic', "Invalid isPublic").isIn(["true", "false"])
-	],
-	function (req, res, next) {
-		console.log("hello");
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ errors: errors.array() });
-		}
+router.post("/match", (req, res) => {
+    const hostId = req.body;
+    try {
+        const matchId = MatchManager.createMatch(hostId);
+        res.json(matchId);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
 
-		const { hostID, isPublic } = req.body;
+router.post("/:matchId/join-match", (req, res) => 
+{
+    const matchId = req.params.matchId;
+    console.log(req.params, "req params")
+    try {
+        const message = MatchManager.joinMatch(matchId);
+        res.json(message);
+    } catch (err) {
+        console.err(err.message);
+        res.status(500).send("Server error");
+    }
+})
 
-		try {
-			let gameID = MatchManager.createMatch(hostID, isPublic);
-			res.json(gameID);
-		} catch (err) {
-			console.error(err.message);
-			res.status(500).send('Server error');
-		}
-	});
+module.exports = router;
