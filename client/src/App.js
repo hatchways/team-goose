@@ -7,6 +7,8 @@ import LandingPage from "./pages/Landing";
 import CreateGame from "./pages/create_game/CreateGame";
 import GameIO from "./socket_io/GameIO";
 import GameLobby from "./pages/game_lobby/GameLobby";
+import Game from "./pages/game/Game";
+import BaseLayout from "./layouts/base/Base";
 
 import "./App.css";
 
@@ -22,11 +24,14 @@ function App() {
   return (
     <AppContext.Provider value={value}>
       <MuiThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Route exact path="/" component={LandingPage} />
-          <Route path="/create_game" component={CreateGame} />
-          <Route path="/game_lobby" component={GameLobby} />
-        </BrowserRouter>
+        <BaseLayout>
+          <BrowserRouter>
+            <Route exact path="/" component={LandingPage} />
+            <Route path="/create_game" component={CreateGame} />
+            <Route path="/game_lobby" component={GameLobby} />
+            <Route path="/game" component={Game} />
+          </BrowserRouter>
+        </BaseLayout>
       </MuiThemeProvider>
     </AppContext.Provider>
   );
