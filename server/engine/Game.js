@@ -7,8 +7,8 @@ const PlayerRoles = require("./PlayerRoles");
 const WordRoles = require("./WordRoles");
 
 class Game {
-  constructor(matchId) {
-    this.matchId = matchId;
+  constructor(hostId) {
+    this.hostId = hostId;
 
     this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
       Math.round(Math.random())
@@ -38,8 +38,8 @@ class Game {
   }
 
   //getters
-  getMatchId() {
-    return this.machId;
+  getHostId() {
+    return this.hostId;
   }
   getGameTurn() {
     return this.gameTurn;
