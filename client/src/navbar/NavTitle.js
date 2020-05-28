@@ -9,7 +9,7 @@ function NavTitle({ title }) {
     for (let index = 0; index < titleLength; index++) {
       const letter = title.charAt(index);
       const element = (
-        <Grid item>
+        <Grid item key={index}>
           <Typography variant="h5" className="letter">
             {letter}
           </Typography>
