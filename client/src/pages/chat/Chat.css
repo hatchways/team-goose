@@ -1,0 +1,24 @@
+#chat {
+  background-color: white;
+  height: 88vh;
+  padding-left: 35px;
+}
+
+.chat-log {
+  padding-top: 35px;
+  margin-bottom: 20px;
+  height: 77vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.dialog {
+  padding: 8px 12px;
+  border-radius: 10px 10px 0 10px;
+  background-color: #e8eff7;
+}
+
+.dialog.sender {
+  margin-right: 25px;
+  color: white;
+}
