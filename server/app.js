@@ -10,6 +10,7 @@ const pingRouter = require("./routes/ping");
 
 const { json, urlencoded } = express;
 
+const { mongoose } = require("./db/mongoose");
 var app = express();
 
 app.use(logger("dev"));
