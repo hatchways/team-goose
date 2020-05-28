@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import { Formik } from "formik";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -8,13 +9,12 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
-//import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import axios from "axios";
-import TokenContext from "../contexts/TokenContext";
+import { useAuth } from "../contexts/auth";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -36,9 +36,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function Login(props) {
   const classes = useStyles();
-  const tokenContext = useContext(TokenContext);
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const { setAuthTokens } = useAuth();
+
+  if (isLoggedIn) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Container component="main" maxWidth="xs" className={classes.container}>
@@ -56,9 +61,10 @@ export default function SignIn() {
             axios
               .post("api/user/login", values)
               .then((response) => {
-                console.log(response);
-                let { token } = response.data;
-                tokenContext.setToken(token);
+                if (response.status === 200) {
+                  setAuthTokens(response.data);
+                  setLoggedIn(true);
+                }
               })
               .catch((err) => {
                 console.log(err);
@@ -103,6 +109,7 @@ export default function SignIn() {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                disabled={!values.email || !values.password}
               >
                 Sign In
               </Button>
