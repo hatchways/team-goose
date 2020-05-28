@@ -5,3 +5,33 @@
 .blue-team-color {
   color: #4fadf3;
 }
+
+.gameboard {
+  padding: 40px;
+}
+
+.gameboard .card {
+  background-color: white;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.gameboard .card.bystander {
+  color: #bebebe;
+}
+
+.gameboard .card.assassin {
+  color: black;
+}
+
+.gameboard .card.selected {
+  color: white;
+}
+
+.gameboard .card.selected.red {
+  background-color: #f86155;
+}
+
+.gameboard .card.selected.blue {
+  background-color: #4fadf3;
+}
