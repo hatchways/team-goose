@@ -7,6 +7,7 @@ const logger = require("morgan");
 const user = require("./routes/api/user");
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
+const match = require("./routes/api/match")
 
 const { json, urlencoded } = express;
 
@@ -22,6 +23,7 @@ app.use(express.static(join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/api/user", user);
+app.use("/api/match", match);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
