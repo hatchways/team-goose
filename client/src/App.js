@@ -3,7 +3,6 @@ import { MuiThemeProvider } from "@material-ui/core";
 import { BrowserRouter, Route } from "react-router-dom";
 
 import { theme } from "./themes/theme";
-import LandingPage from "./pages/Landing";
 import SignUp from "./components/SignUp";
 import Login from "./components/Login";
 import CreateGame from "./pages/create_game/CreateGame";
@@ -29,28 +28,24 @@ function App() {
   const value = { gameIO: { state: gameIOState, dispatch: gameIODispatch } };
 
   const setTokens = (data) => {
-    const token = data.data.token;
-    localStorage.setItem("tokens", JSON.stringify(token));
-    setAuthTokens(token);
+    localStorage.setItem("tokens", JSON.stringify(data));
+    setAuthTokens(data);
   };
 
   return (
     <AppContext.Provider value={value}>
       <MuiThemeProvider theme={theme}>
-        <BaseLayout>
-          <AuthContext.Provider
-            value={{ authTokens, setAuthTokens: setTokens }}
-          >
+        <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+          <BaseLayout>
             <BrowserRouter>
-              <Route exact path="/" component={LandingPage} />
               <Route path="/signup" component={SignUp} />
               <Route path="/login" component={Login} />
-              <PrivateRoute path="/create_game" component={CreateGame} />
+              <PrivateRoute exact path="/" component={CreateGame} />
               <PrivateRoute path="/game_lobby" component={GameLobby} />
               <PrivateRoute path="/game" component={Game} />
             </BrowserRouter>
-          </AuthContext.Provider>
-        </BaseLayout>
+          </BaseLayout>
+        </AuthContext.Provider>
       </MuiThemeProvider>
     </AppContext.Provider>
   );

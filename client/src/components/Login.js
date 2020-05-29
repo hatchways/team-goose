@@ -62,7 +62,8 @@ export default function Login(props) {
               .post("api/user/login", values)
               .then((response) => {
                 if (response.status === 200) {
-                  setAuthTokens(response.data);
+                  const token = response.data.data.token;
+                  setAuthTokens(token);
                   setLoggedIn(true);
                 }
               })
