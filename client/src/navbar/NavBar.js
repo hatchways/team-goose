@@ -9,6 +9,7 @@ import ProfileMenu from "./ProfileMenu";
 import GameScore from "../pages/game/GameScore";
 import NavTitle from "./NavTitle";
 import "./NavBar.css";
+import avatar from "../static/assets/default-avatar.png";
 
 function NavBar() {
   const title = "CLUEWORDS";
@@ -40,7 +41,7 @@ function NavBar() {
                     spacing={2}
                   >
                     <Grid item>
-                      <Avatar>TG</Avatar>
+                      <Avatar src={avatar} />
                     </Grid>
                     <Grid item>
                       <Grid container justify="center" alignItems="center">
