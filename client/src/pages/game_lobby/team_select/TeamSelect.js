@@ -12,15 +12,15 @@ import "./TeamSelect.css";
 
 const DEFAULT_RED_TEAM_STATE = [
   { role: "Spymaster", player: { sessionID: 2, firstName: "Bonnie" } },
-  { role: "Field Agent", player: { sessionID: 3, firstName: "Renyi" } },
+  { role: "Field Agent", player: null },
   { role: "Field Agent", player: null },
   { role: "Field Agent", player: null },
 ];
 const DEFAULT_BLUE_TEAM_STATE = [
   { role: "Spymaster", player: { sessionID: 4, firstName: "Manpreet" } },
+  { role: "Field Agent", player: { sessionID: 3, firstName: "Renyi" } },
   { role: "Field Agent", player: null },
-  { role: "Field Agent", player: null },
-  { role: "Field Agent", player: null },
+  { role: "Field Agent", player: { sessionID: 5, firstName: "Sina" } },
 ];
 
 const UNOCCUPIED_SPOT_NAME = "--";
