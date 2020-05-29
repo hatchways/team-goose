@@ -13,7 +13,7 @@ import "./GameLobby.css";
 const SPYMASTER_INDEX = 0;
 const FIELD_AGENT_INDEX = 1;
 
-function GameLobby() {
+function GameLobby(props) {
   const currentUser = { sessionID: 1, firstName: "Tony" }; // dummy data of current user. sessionID will be generated from web socket in backend
   const [matchID] = useState("ABCD"); // dummy match ID
   const [canStartGame, setCanStartGame] = useState(false);
@@ -36,6 +36,7 @@ function GameLobby() {
     if (canStartGame) {
       // send list of players of each team to server and transition to game board
       console.log("Game is starting...");
+      props.history.push("/game");
     }
   };
 

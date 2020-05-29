@@ -28,10 +28,10 @@
   color: white;
 }
 
-.gameboard .card.selected.red {
+.gameboard .card.selected.red-color {
   background-color: #f86155;
 }
 
-.gameboard .card.selected.blue {
+.gameboard .card.selected.blue-color {
   background-color: #4fadf3;
 }

@@ -6,17 +6,22 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Typography from "@material-ui/core/Typography";
 
-import {
-  TEAM_CODE,
-  ACTION_TYPE,
-  DEFAULT_TEAM_STATE,
-  reducer as teamReducer,
-} from "./TeamPresets";
+import { TEAM_CODE, ACTION_TYPE, reducer as teamReducer } from "./TeamPresets";
 import { JoinRoleAction, LeaveRoleAction } from "./TeamSelectActions";
 import "./TeamSelect.css";
 
-const DEFAULT_RED_TEAM_STATE = JSON.parse(JSON.stringify(DEFAULT_TEAM_STATE));
-const DEFAULT_BLUE_TEAM_STATE = JSON.parse(JSON.stringify(DEFAULT_TEAM_STATE));
+const DEFAULT_RED_TEAM_STATE = [
+  { role: "Spymaster", player: { sessionID: 2, firstName: "Bonnie" } },
+  { role: "Field Agent", player: { sessionID: 3, firstName: "Renyi" } },
+  { role: "Field Agent", player: null },
+  { role: "Field Agent", player: null },
+];
+const DEFAULT_BLUE_TEAM_STATE = [
+  { role: "Spymaster", player: { sessionID: 4, firstName: "Manpreet" } },
+  { role: "Field Agent", player: null },
+  { role: "Field Agent", player: null },
+  { role: "Field Agent", player: null },
+];
 
 const UNOCCUPIED_SPOT_NAME = "--";
 

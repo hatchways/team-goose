@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Typography } from "@material-ui/core";
 
@@ -10,18 +10,25 @@ const useStyles = makeStyles({
   },
 });
 
-function Card() {
+function Card({ word }) {
   const classes = useStyles();
+  const [style, setStyle] = useState("");
+
+  const onClick = () => {
+    const selectedStyle = "selected red-color";
+    setStyle(selectedStyle);
+  };
 
   return (
     <Button
-      className="card"
+      className={`card ${style}`}
       variant="outlined"
       disableRipple
       fullWidth
       classes={{ label: classes.button }}
+      onClick={onClick}
     >
-      <Typography variant="h6">Card</Typography>
+      <Typography variant="h6">{word}</Typography>
     </Button>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Container, Grid, TextField, Box } from "@material-ui/core";
+import { Button, Grid, TextField, Box } from "@material-ui/core";
 
 import Dialog from "./Dialog";
 import "./Chat.css";

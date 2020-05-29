@@ -10,7 +10,7 @@ import GameIO from "../../socket_io/GameIO";
 import Header from "../common/Header";
 import "./CreateGame.css";
 
-function CreateGame() {
+function CreateGame(props) {
   const [matchID, setMatchID] = useState("");
   const { gameIO } = useContext(AppContext);
 
@@ -28,6 +28,7 @@ function CreateGame() {
       gameIO.dispatch(action); // then turn on socket for the game
       // transition to Game Lobby with a session ID from opened socket
     }
+    props.history.push("/game_lobby");
   };
 
   return (

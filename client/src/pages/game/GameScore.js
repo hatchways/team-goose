@@ -5,8 +5,8 @@ import Typography from "@material-ui/core/Typography";
 import "./Game.css";
 
 function GameScore() {
-  const [redScore, setRedScore] = useState(0);
-  const [blueScore, setBlueScore] = useState(0);
+  const [redScore] = useState(0);
+  const [blueScore] = useState(0);
 
   const generateScore = (score, teamName) => {
     return (
