@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import { Formik } from "formik";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -37,6 +38,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
+  const [isSignedUp, setIsSignedUp] = useState(false);
+
+  if (isSignedUp) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <Container component="main" maxWidth="xs" className={classes.container}>
@@ -55,7 +61,9 @@ export default function SignUp() {
               axios
                 .post("/api/user/signup", values)
                 .then(function (response) {
-                  console.log(response);
+                  if (response.status === 200) {
+                    setIsSignedUp(true);
+                  }
                 })
                 .catch(function (err) {
                   console.log(err);
@@ -114,6 +122,7 @@ export default function SignUp() {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                disabled={!values.name || !values.email || !values.password}
               >
                 Sign Up
               </Button>
