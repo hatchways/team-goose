@@ -1,24 +1,39 @@
 #chat {
   background-color: white;
   height: 88vh;
-  padding-left: 35px;
 }
 
-.chat-log {
-  padding-top: 35px;
-  margin-bottom: 20px;
-  height: 77vh;
+#chat-log {
+  padding: 35px 5%;
+  margin-bottom: 15px;
+  height: 73vh;
   overflow-y: scroll;
   overflow-x: hidden;
 }
 
+.chat-input-container {
+  padding-left: 25px;
+}
+
 .dialog {
   padding: 8px 12px;
-  border-radius: 10px 10px 0 10px;
+  border-radius: 0 12px 12px 12px;
   background-color: #e8eff7;
 }
 
-.dialog.sender {
-  margin-right: 25px;
+.dialog.message-out {
   color: white;
+  border-radius: 12px 12px 0 12px;
+}
+
+.dialog.message-out p {
+  font-weight: 500;
+}
+
+.message p {
+  font-weight: 800;
+}
+
+.message .sender {
+  margin-bottom: 4px;
 }
