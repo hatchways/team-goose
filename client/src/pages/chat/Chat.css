@@ -7,8 +7,11 @@
   padding: 35px 5%;
   margin-bottom: 15px;
   height: 73vh;
+  overflow: hidden;
+}
+
+#chat-log:hover {
   overflow-y: scroll;
-  overflow-x: hidden;
 }
 
 .chat-input-container {
