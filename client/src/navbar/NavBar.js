@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
 import { useAuth } from "../contexts/auth";
-import ProfileMenu from "./ProfileMenu";
+import NavMenu from "./NavMenu";
 import GameScore from "../pages/game/GameScore";
 import NavTitle from "./NavTitle";
 import "./NavBar.css";
@@ -40,7 +40,7 @@ function NavBar() {
                     spacing={2}
                   >
                     <Grid item>
-                      <Avatar>TG</Avatar>
+                      <Avatar />
                     </Grid>
                     <Grid item>
                       <Grid container justify="center" alignItems="center">
@@ -48,7 +48,7 @@ function NavBar() {
                           <Typography variant="body1">My Profile</Typography>
                         </Grid>
                         <Grid item>
-                          <ProfileMenu />
+                          <NavMenu />
                         </Grid>
                       </Grid>
                     </Grid>
