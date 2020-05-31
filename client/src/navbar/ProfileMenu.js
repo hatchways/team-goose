@@ -5,10 +5,12 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
 import { useAuth } from "../contexts/auth";
+import { useUser } from "../contexts/user";
 
 function ProfileMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { setAuthTokens } = useAuth();
+  const { setUserData } = useUser();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -20,6 +22,7 @@ function ProfileMenu() {
 
   const logout = () => {
     setAuthTokens("");
+    setUserData(null);
   };
 
   return (

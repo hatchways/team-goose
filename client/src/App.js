@@ -13,6 +13,7 @@ import BaseLayout from "./layouts/base/Base";
 import PrivateRoute from "./PrivateRoute";
 
 import { AuthContext } from "./contexts/auth";
+import { UserContext } from "./contexts/user";
 import "./App.css";
 
 export const AppContext = React.createContext({});
@@ -20,6 +21,9 @@ export const AppContext = React.createContext({});
 function App() {
   const existingTokens = JSON.parse(localStorage.getItem("tokens"));
   const [authTokens, setAuthTokens] = useState(existingTokens);
+
+  const existingUser = JSON.parse(localStorage.getItem("user"));
+  const [user, setUserData] = useState(existingUser);
 
   const [gameIOState, gameIODispatch] = useReducer(
     GameIO.reducer,
@@ -32,19 +36,26 @@ function App() {
     setAuthTokens(data);
   };
 
+  const setUser = (data) => {
+    localStorage.setItem("user", JSON.stringify(data));
+    setUserData(data);
+  };
+
   return (
     <AppContext.Provider value={value}>
       <MuiThemeProvider theme={theme}>
         <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
-          <BaseLayout>
-            <BrowserRouter>
-              <Route path="/signup" component={SignUp} />
-              <Route path="/login" component={Login} />
-              <PrivateRoute exact path="/" component={CreateGame} />
-              <PrivateRoute path="/game_lobby" component={GameLobby} />
-              <PrivateRoute path="/game" component={Game} />
-            </BrowserRouter>
-          </BaseLayout>
+          <UserContext.Provider value={{ user, setUserData: setUser }}>
+            <BaseLayout>
+              <BrowserRouter>
+                <Route path="/signup" component={SignUp} />
+                <Route path="/login" component={Login} />
+                <PrivateRoute exact path="/" component={CreateGame} />
+                <PrivateRoute path="/game_lobby" component={GameLobby} />
+                <PrivateRoute path="/game" component={Game} />
+              </BrowserRouter>
+            </BaseLayout>
+          </UserContext.Provider>
         </AuthContext.Provider>
       </MuiThemeProvider>
     </AppContext.Provider>

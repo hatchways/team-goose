@@ -15,6 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import axios from "axios";
 import { useAuth } from "../contexts/auth";
+import { useUser } from "../contexts/user";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,6 +41,7 @@ export default function Login(props) {
   const classes = useStyles();
   const [isLoggedIn, setLoggedIn] = useState(false);
   const { setAuthTokens } = useAuth();
+  const { setUserData } = useUser();
 
   if (isLoggedIn) {
     return <Redirect to="/" />;
@@ -62,8 +64,10 @@ export default function Login(props) {
               .post("api/user/login", values)
               .then((response) => {
                 if (response.status === 200) {
+                  const user = response.data.data;
                   const token = response.data.data.token;
                   setAuthTokens(token);
+                  setUserData(user);
                   setLoggedIn(true);
                 }
               })
