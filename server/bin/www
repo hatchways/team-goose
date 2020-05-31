@@ -108,3 +108,19 @@ gameIO.on("connection", (socket) => {
     console.log(`A client disconnected: ${socket.id}`);
   });
 });
+
+chatIO.on("connection", (socket) => {
+  console.log(`New client connected to chat: ${socket.id}`);
+
+  socket.on("join", (room) => {
+    socket.join(room);
+  });
+
+  socket.on("send message", (message) => {
+    chatIO.to(message.room).emit("recieved message", message);
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`A client disconnected from chat: ${socket.id}`);
+  });
+});

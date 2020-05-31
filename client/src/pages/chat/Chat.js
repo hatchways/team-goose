@@ -1,21 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { animateScroll } from "react-scroll";
 import { Button, Grid, TextField, Box } from "@material-ui/core";
 
+import { AppContext } from "../../App";
+import ChatIO, { useRecievedMessage } from "../../socket_io/ChatIO";
 import Dialog from "./Dialog";
 import "./Chat.css";
 
 const CHAT_LOG_ELEMENT_ID = "chat-log";
+const ROOM = "matchId_redTeam";
 
 function Chat() {
+  const { chatIO } = useContext(AppContext);
   const [inputText, setInputText] = useState("");
   const [log, setLog] = useState([]);
+  const recentMessage = useRecievedMessage(chatIO.state.io);
 
   useEffect(() => {
-    // listen to messages being broadcasted from backend's socket
-    // message: {from: "Bonnie", text: "Let's pick dog!"};
-    // setLog([...log, message]);
-  }, []);
+    const action = {
+      type: ChatIO.ACTION_TYPE.START,
+      payload: {
+        room: ROOM,
+      },
+    };
+    chatIO.dispatch(action);
+  }, [chatIO]);
+
+  useEffect(() => {
+    // listen to messages being emitted from backend's socket
+    if (recentMessage) {
+      const newLog = [...log, recentMessage];
+      setLog(newLog);
+    }
+  }, [recentMessage]);
 
   useEffect(() => {
     scrollToBottom();
@@ -28,9 +45,12 @@ function Chat() {
 
   const sendMessage = (event, inputText) => {
     event.preventDefault();
-    const message = { from: "Tony", text: inputText };
-    const newLog = [...log, message];
-    setLog(newLog);
+    const message = { from: "Tony", text: inputText, room: ROOM };
+    const action = {
+      type: ChatIO.ACTION_TYPE.SEND_MESSAGE,
+      payload: message,
+    };
+    chatIO.dispatch(action);
     setInputText("");
   };
 

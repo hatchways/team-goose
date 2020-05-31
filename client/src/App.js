@@ -11,6 +11,7 @@ import GameIO from "./socket_io/GameIO";
 import GameLobby from "./pages/game_lobby/GameLobby";
 import Game from "./pages/game/Game";
 import BaseLayout from "./layouts/base/Base";
+import ChatIO from "./socket_io/ChatIO";
 
 import "./App.css";
 
@@ -21,17 +22,24 @@ function App() {
     GameIO.reducer,
     GameIO.initialState
   );
-  const value = { gameIO: { state: gameIOState, dispatch: gameIODispatch } };
-  const token = localStorage.getItem('token');
-  
+  const [chatIOState, chatIODispatch] = useReducer(
+    ChatIO.reducer,
+    ChatIO.initialState
+  );
+  const value = {
+    gameIO: { state: gameIOState, dispatch: gameIODispatch },
+    chatIO: { state: chatIOState, dispatch: chatIODispatch },
+  };
+  const token = localStorage.getItem("token");
+
   return (
     <AppContext.Provider value={value}>
       <MuiThemeProvider theme={theme}>
         <BaseLayout>
           <BrowserRouter>
             <Route exact path="/" component={LandingPage} />
-            <Route path="/signup" component={SignUp}/>
-            <Route path="/login" component={Login}/>
+            <Route path="/signup" component={SignUp} />
+            <Route path="/login" component={Login} />
             <Route path="/create_game" component={CreateGame} />
             <Route path="/game_lobby" component={GameLobby} />
             <Route path="/game" component={Game} />
