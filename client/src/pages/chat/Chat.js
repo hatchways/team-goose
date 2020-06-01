@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import { animateScroll } from "react-scroll";
-import { Button, Grid, TextField, Box } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
 import { AppContext } from "../../App";
 import ChatIO, { useRecievedMessage } from "../../socket_io/ChatIO";
 import Dialog from "./Dialog";
+import { FieldAgentDialogInput } from "./DialogInput";
 import "./Chat.css";
 
 const CHAT_LOG_ELEMENT_ID = "chat-log";
-const ROOM = "matchId_redTeam";
+const ROOM = "matchId_redTeam"; // TODO: create a chatUtils.js for generating a room name, given a matchId and team identifier
 
 function Chat() {
   const { chatIO } = useContext(AppContext);
@@ -48,12 +49,11 @@ function Chat() {
     setInputText(value);
   };
 
-  const sendMessage = (event, inputText) => {
+  const sendMessage = (event, message) => {
     event.preventDefault();
-    const message = { from: "Tony", text: inputText, room: ROOM }; // TODO: replace 'from' with name from user data and add user id
     const action = {
       type: ChatIO.ACTION_TYPE.SEND_MESSAGE,
-      payload: message,
+      payload: { ...message, room: ROOM },
     };
     chatIO.dispatch(action);
     setInputText("");
@@ -76,42 +76,11 @@ function Chat() {
       <Box component="div" id={`${CHAT_LOG_ELEMENT_ID}`}>
         {log.length > 0 ? generateChatLog() : null}
       </Box>
-      <form
-        onSubmit={(event) => {
-          sendMessage(event, inputText);
-        }}
-      >
-        <Grid
-          container
-          alignItems="center"
-          spacing={1}
-          className="chat-input-container"
-        >
-          <Grid item xs>
-            <TextField
-              type="text"
-              value={inputText}
-              placeholder="Type a message"
-              onChange={(event) => {
-                onInputTextChange(event);
-              }}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <Button
-              type="submit"
-              variant="text"
-              disabled={inputText.length <= 0}
-              disableRipple
-              disableFocusRipple
-              disableElevation
-            >
-              Send
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
+      <FieldAgentDialogInput
+        onChange={onInputTextChange}
+        onSubmit={sendMessage}
+        value={inputText}
+      />
     </div>
   );
 }
