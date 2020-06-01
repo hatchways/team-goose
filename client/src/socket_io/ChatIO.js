@@ -4,35 +4,30 @@ import socketIO from "socket.io-client";
 const NAMESPACE = "/chat";
 
 const ACTION_TYPE = {
-  START: "START",
-  SHUTDOWN: "SHUTDOWN",
+  CONNECT: "CONNECT",
+  DISCONNECT: "DISCONNECT",
   SEND_MESSAGE: "SEND_MESSAGE",
 };
 
 const initialState = {
-  io: null,
+  io: socketIO(NAMESPACE),
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case ACTION_TYPE.START:
-      if (!state.io) {
-        state.io = socketIO(NAMESPACE);
-        state.io.on("connect", () => {
-          state.io.emit("join", action.payload.room);
-        });
+    case ACTION_TYPE.CONNECT:
+      if (state.io.disconnected) {
+        state.io.connect();
       }
+      state.io.on("connect", () => {
+        state.io.emit("join room", action.payload.room);
+      });
       return state;
-    case ACTION_TYPE.SHUTDOWN:
-      if (state.io) {
-        state.io.disconnect();
-        if (state.io.disconnected) {
-          state.io = null;
-        }
-      }
+    case ACTION_TYPE.DISCONNECT:
+      state.io.disconnect();
       return state;
     case ACTION_TYPE.SEND_MESSAGE:
-      if (state.io) {
+      if (state.io.connected) {
         state.io.emit("send message", action.payload);
       }
       return state;
@@ -42,7 +37,7 @@ const reducer = (state, action) => {
 };
 
 export function useRecievedMessage(chatIO) {
-  const event = "recieved message";
+  const EVENT = "recieved message";
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
@@ -51,9 +46,9 @@ export function useRecievedMessage(chatIO) {
         setMessage(message);
       }
 
-      chatIO.on(event, handleNewMessage);
+      chatIO.on(EVENT, handleNewMessage);
       return () => {
-        chatIO.off(event, handleNewMessage);
+        chatIO.off(EVENT, handleNewMessage);
       };
     }
   });

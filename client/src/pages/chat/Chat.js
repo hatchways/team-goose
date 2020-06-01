@@ -18,12 +18,17 @@ function Chat() {
 
   useEffect(() => {
     const action = {
-      type: ChatIO.ACTION_TYPE.START,
+      type: ChatIO.ACTION_TYPE.CONNECT,
       payload: {
         room: ROOM,
       },
     };
     chatIO.dispatch(action);
+
+    return () => {
+      action.type = ChatIO.ACTION_TYPE.DISCONNECT;
+      chatIO.dispatch(action);
+    };
   }, [chatIO]);
 
   useEffect(() => {

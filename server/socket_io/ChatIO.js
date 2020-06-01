@@ -13,13 +13,9 @@ class ChatIO {
     this.chatIO.on("connection", (socket) => {
       console.log(`New client connected to chat: ${socket.id}`);
 
-      socket.on("join", (room) => {
+      socket.on("join room", (room) => {
         socket.join(room);
-        // current list of socket ids in this room
-        this.chatIO.in(room).clients((error, clients) => {
-          if (error) throw error;
-          console.log(clients);
-        });
+        this.printClients(room);
       });
 
       socket.on("send message", (message) => {
@@ -32,9 +28,19 @@ class ChatIO {
     });
   }
 
+  printClients(room) {
+    // current list of socket ids in this room
+    this.chatIO.in(room).clients((error, clients) => {
+      if (error) throw error;
+      console.log(clients);
+    });
+  }
+
   sendMessage(room, from = "", text = "") {
     const message = { room, from, text };
-    this.chatIO.to(message.room).emit("recieved message", message);
+    if (room) {
+      this.chatIO.to(message.room).emit("recieved message", message);
+    }
   }
 
   static init(io) {
