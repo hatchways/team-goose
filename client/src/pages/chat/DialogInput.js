@@ -3,7 +3,7 @@ import { Button, Grid, TextField } from "@material-ui/core";
 
 export function FieldAgentDialogInput({ onChange, onSubmit, value }) {
   const onSubmitWrapper = (event) => {
-    const message = { from: "Tony", text: value }; // TODO: replace 'from' with name from user data and add user id
+    const message = { from: "", text: value }; // TODO: replace 'from' with name from user data and add user id
     onSubmit(event, message);
   };
 

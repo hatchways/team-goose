@@ -1,59 +1,68 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Box, Grid, Typography } from "@material-ui/core";
 
+import { MESSAGE_TYPE } from "./Chat";
 import "../common/common.css";
 
-const DIRECTIONS = {
+const DIRECTION = {
   LEFT: "row",
   RIGHT: "row-reverse",
 };
 
-const SENDER_DIALOG_STYLE = {
-  text: "message-out",
-  background: "bg-red", // TODO: will need to assign background color depending on player's team color
+const JUSTIFY = {
+  FLEX_START: "flex-start",
+  CENTER: "center",
 };
 
-const SYSTEM_DIALOG_STYLE = "system-message";
+const SENDER_DIALOG_STYLE = {
+  TEXT: "message-out",
+  BACKGROUND: "bg-red", // TODO: will need to assign background color depending on player's team color
+};
 
-function Dialog({ from, text }) {
-  const isSender = false;
-  const [styles, setStyles] = useState("");
-  const [direction, setDirection] = useState(DIRECTIONS.LEFT);
-  const spacing = useRef(3);
+const SYSTEM_DIALOG_STYLE = {
+  INFO: "system-message",
+  ACTION: "system-message action",
+};
+
+function Dialog({ from, text, type }) {
+  const isSender = useRef(false);
+  const [style, setStyle] = useState("");
+  const [direction, setDirection] = useState(DIRECTION.LEFT);
+  const [spacing, setSpacing] = useState(3);
+  const [justify, setJustify] = useState(JUSTIFY.FLEX_START);
 
   useEffect(() => {
-    let newStyles = "";
-    let newDirection = "";
-
-    if (isSender) {
-      newStyles = `${SENDER_DIALOG_STYLE.text} ${SENDER_DIALOG_STYLE.background}`;
-      newDirection = DIRECTIONS.RIGHT;
-    } else {
-      newDirection = DIRECTIONS.LEFT;
-      if (!from) {
-        newStyles = SYSTEM_DIALOG_STYLE;
-        spacing.current = 0;
+    if (type === MESSAGE_TYPE.PLAYER) {
+      if (isSender.current) {
+        setStyle(
+          `${SENDER_DIALOG_STYLE.TEXT} ${SENDER_DIALOG_STYLE.BACKGROUND}`
+        );
+        setDirection(DIRECTION.RIGHT);
       }
+    } else if (type === MESSAGE_TYPE.SYSTEM_INFO) {
+      setStyle(SYSTEM_DIALOG_STYLE.INFO);
+      setSpacing(0);
+    } else if (type === MESSAGE_TYPE.SYSTEM_ACTION) {
+      setStyle(SYSTEM_DIALOG_STYLE.ACTION);
+      setSpacing(0);
+      setJustify(JUSTIFY.CENTER);
     }
-
-    setDirection(newDirection);
-    setStyles(newStyles);
-  }, [isSender, from]);
+  }, [type]);
 
   return (
     <Grid
       container
       direction={`${direction}`}
-      justify="flex-start"
-      spacing={spacing.current}
+      justify={justify}
+      spacing={spacing}
     >
       <Grid item className="message">
-        {from ? (
+        {from || type === MESSAGE_TYPE.PLAYER ? (
           <Box component="div" className="sender">
             <Typography variant="body2">{`${from}:`}</Typography>
           </Box>
         ) : null}
-        <Box component="div" className={`dialog ${styles}`}>
+        <Box component="div" className={`dialog ${style}`}>
           <Typography variant="body1">{text}</Typography>
         </Box>
       </Grid>

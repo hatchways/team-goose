@@ -34,6 +34,11 @@
   color: #a6b0bb;
 }
 
+.dialog.system-message.action p {
+  color: black;
+  font-weight: bold;
+}
+
 .dialog.message-out {
   color: white;
   border-radius: 12px 12px 0 12px;

@@ -1,5 +1,11 @@
 const NAMESPACE = "/chat";
 
+const MESSAGE_TYPE = {
+  PLAYER: "player",
+  SYSTEM_INFO: "info",
+  SYSTEM_ACTION: "action",
+};
+
 let connection = null;
 
 class ChatIO {
@@ -19,7 +25,12 @@ class ChatIO {
       });
 
       socket.on("send message", (message) => {
-        this.sendMessage(message.room, message.from, message.text);
+        this.sendMessage(
+          message.room,
+          message.from,
+          message.text,
+          message.type
+        );
       });
 
       socket.on("disconnect", () => {
@@ -36,8 +47,8 @@ class ChatIO {
     });
   }
 
-  sendMessage(room, from = "", text = "") {
-    const message = { room, from, text };
+  sendMessage(room, from = "", text = "", type = MESSAGE_TYPE.SYSTEM_INFO) {
+    const message = { room, from, text, type };
     if (room) {
       this.chatIO.to(message.room).emit("recieved message", message);
     }

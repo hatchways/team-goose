@@ -8,6 +8,11 @@ import Dialog from "./Dialog";
 import { FieldAgentDialogInput } from "./DialogInput";
 import "./Chat.css";
 
+export const MESSAGE_TYPE = {
+  PLAYER: "player",
+  SYSTEM_INFO: "info",
+  SYSTEM_ACTION: "action",
+};
 const CHAT_LOG_ELEMENT_ID = "chat-log";
 const ROOM = "matchId_redTeam"; // TODO: create a chatUtils.js for generating a room name, given a matchId and team identifier
 
@@ -53,7 +58,7 @@ function Chat() {
     event.preventDefault();
     const action = {
       type: ChatIO.ACTION_TYPE.SEND_MESSAGE,
-      payload: { ...message, room: ROOM },
+      payload: { ...message, room: ROOM, type: MESSAGE_TYPE.PLAYER },
     };
     chatIO.dispatch(action);
     setInputText("");
@@ -67,7 +72,14 @@ function Chat() {
 
   const generateChatLog = () => {
     return log.map((message, index) => {
-      return <Dialog key={index} from={message.from} text={message.text} />;
+      return (
+        <Dialog
+          key={index}
+          from={message.from}
+          text={message.text}
+          type={message.type}
+        />
+      );
     });
   };
 
