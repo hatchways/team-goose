@@ -100,7 +100,7 @@ function onListening() {
  */
 
 const gameIO = io.of("/game"); // socket for handling game actions
-const chatIO = io.of("/chat"); // socket for chat
+const chatIO = require("../socket_io/ChatIO"); // socket for chat
 
 gameIO.on("connection", (socket) => {
   console.log(`New client connected: ${socket.id}`);
@@ -109,18 +109,4 @@ gameIO.on("connection", (socket) => {
   });
 });
 
-chatIO.on("connection", (socket) => {
-  console.log(`New client connected to chat: ${socket.id}`);
-
-  socket.on("join", (room) => {
-    socket.join(room);
-  });
-
-  socket.on("send message", (message) => {
-    chatIO.to(message.room).emit("recieved message", message);
-  });
-
-  socket.on("disconnect", () => {
-    console.log(`A client disconnected from chat: ${socket.id}`);
-  });
-});
+chatIO.connect(io);
