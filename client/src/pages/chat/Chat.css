@@ -24,6 +24,16 @@
   background-color: #e8eff7;
 }
 
+.dialog.system-message {
+  background-color: transparent;
+}
+
+.dialog.system-message p {
+  font-weight: 700;
+  font-style: italic;
+  color: #a6b0bb;
+}
+
 .dialog.message-out {
   color: white;
   border-radius: 12px 12px 0 12px;

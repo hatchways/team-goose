@@ -50,7 +50,7 @@ function Chat() {
 
   const sendMessage = (event, inputText) => {
     event.preventDefault();
-    const message = { from: "Tony", text: inputText, room: ROOM };
+    const message = { from: "Tony", text: inputText, room: ROOM }; // TODO: replace 'from' with name from user data and add user id
     const action = {
       type: ChatIO.ACTION_TYPE.SEND_MESSAGE,
       payload: message,
