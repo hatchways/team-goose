@@ -38,7 +38,6 @@ function Chat() {
   }, [chatIO]);
 
   useEffect(() => {
-    // listen to messages being emitted from backend's socket
     if (recentMessage) {
       const newLog = [...log, recentMessage];
       setLog(newLog);

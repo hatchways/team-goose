@@ -21,7 +21,6 @@ class ChatIO {
 
       socket.on("join room", (room) => {
         socket.join(room);
-        this.printClients(room);
       });
 
       socket.on("send message", (message) => {
@@ -39,15 +38,15 @@ class ChatIO {
     });
   }
 
+  // debugging purposes: prints current list of socket ids of a room
   printClients(room) {
-    // current list of socket ids in this room
     this.chatIO.in(room).clients((error, clients) => {
       if (error) throw error;
       console.log(clients);
     });
   }
 
-  sendMessage(room, from = "", text = "", type = MESSAGE_TYPE.SYSTEM_INFO) {
+  sendMessage(room, from = null, text = "", type = MESSAGE_TYPE.SYSTEM_INFO) {
     const message = { room, from, text, type };
     if (room) {
       this.chatIO.to(message.room).emit("recieved message", message);

@@ -1,9 +1,13 @@
 import React from "react";
 import { Button, Grid, TextField } from "@material-ui/core";
 
+import { useUser } from "../../contexts/user";
+
 export function FieldAgentDialogInput({ onChange, onSubmit, value }) {
+  const { user } = useUser();
+
   const onSubmitWrapper = (event) => {
-    const message = { from: "", text: value }; // TODO: replace 'from' with name from user data and add user id
+    const message = { from: user, text: value }; // TODO: replace 'from' with name from user data and add user id
     onSubmit(event, message);
   };
 
