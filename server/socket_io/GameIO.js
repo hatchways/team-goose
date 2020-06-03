@@ -13,7 +13,7 @@ class GameIO {
     this.gameIO.on("connection", (socket) => {
       console.log(`New client connected from the game: ${socket.id}`);
 
-      // room should be a matchId
+      // room should be a matchId (string)
       socket.on("join room", (room) => {
         socket.join(room);
       });
