@@ -1,0 +1,57 @@
+#chat {
+  background-color: white;
+  height: 88vh;
+}
+
+#chat-log {
+  padding: 35px 5%;
+  margin-bottom: 15px;
+  height: 73vh;
+  overflow: hidden;
+}
+
+#chat-log:hover {
+  overflow-y: scroll;
+}
+
+.chat-input-container {
+  padding-left: 25px;
+}
+
+.dialog {
+  padding: 8px 12px;
+  border-radius: 0 12px 12px 12px;
+  background-color: #e8eff7;
+}
+
+.dialog.system-message {
+  background-color: transparent;
+}
+
+.dialog.system-message p {
+  font-weight: 700;
+  font-style: italic;
+  color: #a6b0bb;
+}
+
+.dialog.system-message.action p {
+  color: black;
+  font-weight: bold;
+}
+
+.dialog.message-out {
+  color: white;
+  border-radius: 12px 12px 0 12px;
+}
+
+.dialog.message-out p {
+  font-weight: 500;
+}
+
+.message p {
+  font-weight: 800;
+}
+
+.message .sender {
+  margin-bottom: 4px;
+}

@@ -11,23 +11,33 @@ import Header from "../common/Header";
 import "./CreateGame.css";
 
 function CreateGame() {
-  const [matchID, setMatchID] = useState("");
+  const [matchId, setMatchId] = useState("");
   const { gameIO } = useContext(AppContext);
 
-  const onChange = (event) => {
-    const currentInput = event.target.value;
-    setMatchID(currentInput);
+  const handleNewGame = () => {
+    fetch("/api/match", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ hostId: "host_01" }),
+    }).then((res) => {
+      console.log(res.json());
+    });
   };
 
-  const joinGame = () => {
-    const action = {
-      type: GameIO.ACTION_TYPE.START,
-    };
-    if (matchID.length > 0) {
-      // check if matchID is valid
-      gameIO.dispatch(action); // then turn on socket for the game
-      // transition to Game Lobby with a session ID from opened socket
-    }
+  const onChange = (evt) => {
+    setMatchId(evt.target.value);
+  };
+  const handleJoinGame = () => {
+    fetch(`/api/match/${matchId}/join-match`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      console.log(res.json());
+    });
   };
 
   return (
@@ -54,16 +64,14 @@ function CreateGame() {
                             onChange={(event) => {
                               onChange(event);
                             }}
-                            value={matchID}
+                            value={matchId}
                             placeholder="Enter Match ID"
                           />
                         </Grid>
                         <Grid item>
                           <Button
-                            onClick={() => {
-                              joinGame();
-                            }}
-                            disabled={matchID.length <= 0}
+                            onClick={handleJoinGame}
+                            disabled={matchId.length <= 0}
                             variant="contained"
                             color="primary"
                           >
@@ -86,7 +94,9 @@ function CreateGame() {
                       </Typography>
                     </Grid>
                     <Grid item>
-                      <Button variant="contained">Create</Button>
+                      <Button variant="contained" onClick={handleNewGame}>
+                        Create
+                      </Button>
                     </Grid>
                   </Grid>
                 </Grid>
