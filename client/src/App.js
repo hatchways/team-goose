@@ -10,6 +10,7 @@ import GameIO from "./socket_io/GameIO";
 import GameLobby from "./pages/game_lobby/GameLobby";
 import Game from "./pages/game/Game";
 import BaseLayout from "./layouts/base/Base";
+import ChatIO from "./socket_io/ChatIO";
 import PrivateRoute from "./PrivateRoute";
 
 import { AuthContext } from "./contexts/auth";
@@ -29,7 +30,14 @@ function App() {
     GameIO.reducer,
     GameIO.initialState
   );
-  const value = { gameIO: { state: gameIOState, dispatch: gameIODispatch } };
+  const [chatIOState, chatIODispatch] = useReducer(
+    ChatIO.reducer,
+    ChatIO.initialState
+  );
+  const value = {
+    gameIO: { state: gameIOState, dispatch: gameIODispatch },
+    chatIO: { state: chatIOState, dispatch: chatIODispatch },
+  };
 
   const setTokens = (data) => {
     localStorage.setItem("tokens", JSON.stringify(data));

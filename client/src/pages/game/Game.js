@@ -13,7 +13,7 @@ function Game() {
         <Grid item xs>
           <Chat />
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={8}>
           <GameBoard />
         </Grid>
       </Grid>
