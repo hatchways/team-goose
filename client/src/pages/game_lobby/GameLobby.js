@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -14,10 +14,19 @@ import "./GameLobby.css";
 const SPYMASTER_INDEX = 0;
 const FIELD_AGENT_INDEX = 1;
 
-function GameLobby() {
+function GameLobby(props) {
   const { user } = useUser(); // will be used as player's data (i.e. id and name)
-  const [matchID] = useState("ABCD"); // dummy match ID
+  const [matchID, setMatchId] = useState(null);
   const [canStartGame, setCanStartGame] = useState(false);
+
+  useEffect(() => {
+    const matchId = props.location.state ? props.location.state.matchId : null;
+    if (matchId) {
+      setMatchId(matchId);
+    } else {
+      props.history.push({ pathname: "/" });
+    }
+  }, []);
 
   const isTeamReady = (team) => {
     const spyMaster = team[SPYMASTER_INDEX];

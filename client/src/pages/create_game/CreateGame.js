@@ -10,7 +10,7 @@ import GameIO from "../../socket_io/GameIO";
 import Header from "../common/Header";
 import "./CreateGame.css";
 
-function CreateGame() {
+function CreateGame(props) {
   const [matchId, setMatchId] = useState("");
   const { gameIO } = useContext(AppContext);
 
@@ -21,9 +21,17 @@ function CreateGame() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ hostId: "host_01" }),
-    }).then((res) => {
-      console.log(res.json());
-    });
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        props.history.push({
+          pathname: "/game_lobby",
+          state: { matchId: data.matchId },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const onChange = (evt) => {
@@ -36,9 +44,14 @@ function CreateGame() {
       headers: {
         "Content-Type": "application/json",
       },
-    }).then((res) => {
-      console.log(res.json());
-    });
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
