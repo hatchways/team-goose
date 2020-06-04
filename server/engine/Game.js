@@ -203,8 +203,3 @@ class Game {
 }
 
 module.exports = Game;
-
-
-const newGame = new Game("host_id");
-newGame.setRedTeam([{user:"user1", role:"player"}]);
-console.log(newGame.getRedTeam());
