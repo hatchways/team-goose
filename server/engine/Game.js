@@ -1,9 +1,5 @@
 const Board = require("./Board");
-const { Team, TeamColor } = require("./Team");
-const FieldAgent = require("./FieldAgent");
-const SpyMaster = require("./SpyMaster");
 const GameTurns = require("./GameTurns");
-const PlayerRoles = require("./PlayerRoles");
 const WordRoles = require("./WordRoles");
 
 class Game {
@@ -14,8 +10,8 @@ class Game {
       Math.round(Math.random())
     ];
 
-    this.redTeam = new Team(TeamColor.RED);
-    this.blueTeam = new Team(TeamColor.BLUE);
+    this.redTeam = [];
+    this.blueTeam = [];
     this.redPoints = 0;
     this.bluePoints = 0;
     this.numGuessLeft = 0;
@@ -70,7 +66,7 @@ class Game {
       gameTurn: this.gameTurn,
       redPoints: this.redPoints,
       bluePoints: this.bluePoints,
-      //   gameBoard: this.gameBoard,
+      gameBoard: this.gameBoard,
       numGuessLeft: this.numGuessLeft,
     };
   }
@@ -105,31 +101,12 @@ class Game {
     }
   }
 
-  setRole(player) {
-    switch (player.role) {
-      case PlayerRoles.RED_FIELD_AGENT:
-        const newRedFieldAgent = new FieldAgent(player, TeamColor.RED);
-        this.redTeam.addPlayer(newRedFieldAgent);
-        this.redTeam.addFieldAgent(newRedFieldAgent);
-        break;
-      case PlayerRoles.BLUE_FIELD_AGENT:
-        const newBlueFieldAgent = new FieldAgent(player, TeamColor.BLUE);
-        this.redTeam.addPlayer(newBlueFieldAgent);
-        this.redTeam.addFieldAgent(newBlueFieldAgent);
-        break;
-      case PlayerRoles.RED_SPY_MASTER:
-        const newRedSpyMaster = new SpyMaster(player, TeamColor.RED);
-        this.redSpyMaster = newRedSpyMaster;
-        this.redTeam.addPlayer(newRedSpyMaster);
-        this.redTeam.setSpymaster(newRedSpyMaster);
-        break;
-      case PlayerRoles.BLUE_SPY_MASTER:
-        const newBlueSpyMaster = new SpyMaster(player, TeamColor.BLUE);
-        this.blueSpyMaster = newBlueSpyMaster;
-        this.blueTeam.addPlayer(newBlueSpyMaster);
-        this.blueTeam.setSpymaster(newBlueSpyMaster);
-        break;
-    }
+  setRedTeam(team) {
+    this.redTeam = team;
+  }
+
+  setBlueTeam(team) {
+    this.blueTeam = team;
   }
 
   nextGameTurn(info) {
@@ -140,12 +117,10 @@ class Game {
     switch (this.gameTurn) {
       case GameTurns.RED_SPY_TURN:
         this.setNumGuessLeft(info.numGuess);
-        // this.redTeam.spymaster.setClue(info);
         this.setGameTurn(GameTurns.RED_AGENT_TURN);
         break;
       case GameTurns.BLUE_SPY_TURN:
         this.setNumGuessLeft(info.numGuess);
-        // this.blueTeam.spymaster.setClue(info);
         this.setGameTurn(GameTurns.BLUE_AGENT_TURN);
         break;
       case GameTurns.RED_AGENT_TURN:
@@ -228,3 +203,8 @@ class Game {
 }
 
 module.exports = Game;
+
+
+const newGame = new Game("host_id");
+newGame.setRedTeam([{user:"user1", role:"player"}]);
+console.log(newGame.getRedTeam());
