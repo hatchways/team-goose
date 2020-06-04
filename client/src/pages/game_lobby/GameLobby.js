@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
 import { copyToClipboard } from "../../utils/utils";
+import { useUser } from "../../contexts/user";
 import Header from "../common/Header";
 import TeamSelect from "./team_select/TeamSelect";
 import "../common/common.css";
@@ -14,7 +15,7 @@ const SPYMASTER_INDEX = 0;
 const FIELD_AGENT_INDEX = 1;
 
 function GameLobby() {
-  const currentUser = { sessionID: 1, firstName: "Tony" }; // dummy data of current user. sessionID will be generated from web socket in backend
+  const { user } = useUser(); // will be used as player's data (i.e. id and name)
   const [matchID] = useState("ABCD"); // dummy match ID
   const [canStartGame, setCanStartGame] = useState(false);
 
@@ -41,7 +42,13 @@ function GameLobby() {
 
   return (
     <Container>
-      <Grid container direction="column" justify="center" alignItems="center">
+      <Grid
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+        spacing={2}
+      >
         <Grid item className="header">
           <Header title="New Game" />
         </Grid>
@@ -51,9 +58,10 @@ function GameLobby() {
             direction="column"
             justify="center"
             alignItems="center"
+            spacing={2}
           >
             <Grid item>
-              <TeamSelect currentUser={currentUser} onChange={onTeamSelect} />
+              <TeamSelect currentUser={user} onChange={onTeamSelect} />
             </Grid>
             <Grid item>
               <Button
@@ -67,12 +75,7 @@ function GameLobby() {
               </Button>
             </Grid>
             <Grid item>
-              <Grid
-                className="grid-content"
-                container
-                justify="center"
-                alignItems="center"
-              >
+              <Grid container justify="center" alignItems="center">
                 <Grid className="label" item>
                   <Typography>Share Match ID:</Typography>
                 </Grid>

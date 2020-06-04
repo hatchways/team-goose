@@ -29,6 +29,7 @@ function CreateGame() {
   const onChange = (evt) => {
     setMatchId(evt.target.value);
   };
+
   const handleJoinGame = () => {
     fetch(`/api/match/${matchId}/join-match`, {
       method: "POST",
@@ -42,13 +43,19 @@ function CreateGame() {
 
   return (
     <Container>
-      <Grid container direction="column" justify="center" alignItems="center">
+      <Grid
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+        spacing={3}
+      >
         <Grid item className="header">
           <Header title="Welcome" />
         </Grid>
         <Grid item>
-          <Grid container justify="center" alignItems="center">
-            <Grid item className="panel">
+          <Grid container justify="center" alignItems="center" spacing={10}>
+            <Grid item xs={7}>
               <Grid container direction="column">
                 <Grid item>
                   <Grid container direction="column">
@@ -58,8 +65,8 @@ function CreateGame() {
                       </Typography>
                     </Grid>
                     <Grid item>
-                      <Grid container alignItems="center">
-                        <Grid item className="grid-input">
+                      <Grid container alignItems="center" spacing={1}>
+                        <Grid item xs={8}>
                           <Input
                             onChange={(event) => {
                               onChange(event);
@@ -68,7 +75,7 @@ function CreateGame() {
                             placeholder="Enter Match ID"
                           />
                         </Grid>
-                        <Grid item>
+                        <Grid item xs={4}>
                           <Button
                             onClick={handleJoinGame}
                             disabled={matchId.length <= 0}
@@ -84,7 +91,7 @@ function CreateGame() {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item className="panel">
+            <Grid item xs={5}>
               <Grid container direction="column">
                 <Grid item>
                   <Grid container direction="column">
