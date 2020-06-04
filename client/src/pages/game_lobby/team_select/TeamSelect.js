@@ -14,6 +14,7 @@ import {
 } from "./TeamPresets";
 import { JoinRoleAction, LeaveRoleAction } from "./TeamSelectActions";
 import "./TeamSelect.css";
+import "../../common/common.css";
 
 const DEFAULT_RED_TEAM_STATE = JSON.parse(JSON.stringify(DEFAULT_TEAM_STATE));
 const DEFAULT_BLUE_TEAM_STATE = JSON.parse(JSON.stringify(DEFAULT_TEAM_STATE));
@@ -73,9 +74,7 @@ function TeamSelect(props) {
             index={index}
           />
         ) : null
-      ) : // show "Leave Role" action only if current user's session ID matches their own
-      props.currentUser.sessionID === spot.player.sessionID &&
-        isRoleAssigned ? (
+      ) : props.currentUser.id === spot.player.id && isRoleAssigned ? (
         <LeaveRoleAction
           leaveRole={leaveRole}
           teamCode={teamCode}
@@ -89,7 +88,7 @@ function TeamSelect(props) {
       return (
         <ListItem key={uniquekey}>
           <ListItemText secondary={spot.role}>
-            {spot.player ? spot.player.firstName : UNOCCUPIED_SPOT_NAME}
+            {spot.player ? spot.player.name : UNOCCUPIED_SPOT_NAME}
           </ListItemText>
           <ListItemSecondaryAction>
             {generateActions(spot, index)}
@@ -100,11 +99,11 @@ function TeamSelect(props) {
   };
 
   return (
-    <Grid container justify="center" alignItems="center">
-      <Grid item className="team">
+    <Grid container justify="center" alignItems="center" spacing={10}>
+      <Grid item xs={6}>
         <Grid container direction="column" justify="center" alignItems="center">
           <Grid item>
-            <Typography id="red-team" variant="h6" gutterBottom>
+            <Typography className="red" variant="h6" gutterBottom>
               Red Team
             </Typography>
           </Grid>
@@ -113,10 +112,10 @@ function TeamSelect(props) {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item className="team">
+      <Grid item xs={6}>
         <Grid container direction="column" justify="center" alignItems="center">
           <Grid item>
-            <Typography id="blue-team" variant="h6" gutterBottom>
+            <Typography className="blue" variant="h6" gutterBottom>
               Blue Team
             </Typography>
           </Grid>

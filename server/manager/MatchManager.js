@@ -10,7 +10,11 @@ class MatchManager {
     const game = new Game(hostId);
     const matchId = uuid.v4();
     this.matches.set(matchId, game);
-    return { matchId: matchId, redTeam: game.getRedTeam(), blueTeam: game.getBlueTeam() };
+    return {
+      matchId: matchId,
+      redTeam: game.getRedTeam(),
+      blueTeam: game.getBlueTeam(),
+    };
   }
 
   getMatch(matchId) {
@@ -23,9 +27,14 @@ class MatchManager {
   joinMatch(matchId) {
     const game = this.getMatch(matchId);
     if (!game) {
-      return { message: "Match does not exist" };
+      return { status: 400, message: "Match does not exist" };
     } else {
-      return { message: "Join Successfully", redTeam: game.getRedTeam(), blueTeam: game.getBlueTeam() };
+      return {
+        status: 200,
+        message: "Join Successfully",
+        redTeam: game.getRedTeam(),
+        blueTeam: game.getBlueTeam(),
+      };
     }
   }
 }
