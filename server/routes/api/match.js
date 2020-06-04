@@ -17,7 +17,7 @@ router.post("/:id/join-match", (req, res) => {
   const matchId = req.params.id;
   try {
     const message = MatchManager.joinMatch(matchId);
-    res.json(message);
+    res.status(message.status).json(message);
   } catch (err) {
     console.err(err.message);
     res.status(500).send("Server error");
