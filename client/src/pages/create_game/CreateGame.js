@@ -13,6 +13,7 @@ import "./CreateGame.css";
 function CreateGame(props) {
   const [matchId, setMatchId] = useState("");
   const { gameIO } = useContext(AppContext);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleNewGame = () => {
     fetch("/api/match", {
@@ -36,6 +37,7 @@ function CreateGame(props) {
 
   const onChange = (evt) => {
     setMatchId(evt.target.value);
+    setErrorMessage(null);
   };
 
   const handleJoinGame = () => {
@@ -47,7 +49,15 @@ function CreateGame(props) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        if (data.status === 200) {
+          props.history.push({
+            pathname: "/game_lobby",
+            state: { matchId: matchId },
+          });
+        } else {
+          setErrorMessage(data.message);
+          setMatchId("");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -78,25 +88,36 @@ function CreateGame(props) {
                       </Typography>
                     </Grid>
                     <Grid item>
-                      <Grid container alignItems="center" spacing={1}>
-                        <Grid item xs={8}>
-                          <Input
-                            onChange={(event) => {
-                              onChange(event);
-                            }}
-                            value={matchId}
-                            placeholder="Enter Match ID"
-                          />
+                      <Grid container direction="column">
+                        <Grid item>
+                          <Grid container alignItems="center" spacing={1}>
+                            <Grid item xs={8}>
+                              <Input
+                                onChange={(event) => {
+                                  onChange(event);
+                                }}
+                                value={matchId}
+                                placeholder="Enter Match ID"
+                              />
+                            </Grid>
+                            <Grid item xs={4}>
+                              <Button
+                                onClick={handleJoinGame}
+                                disabled={matchId.length <= 0}
+                                variant="contained"
+                                color="primary"
+                              >
+                                Join
+                              </Button>
+                            </Grid>
+                          </Grid>
                         </Grid>
-                        <Grid item xs={4}>
-                          <Button
-                            onClick={handleJoinGame}
-                            disabled={matchId.length <= 0}
-                            variant="contained"
-                            color="primary"
-                          >
-                            Join
-                          </Button>
+                        <Grid item>
+                          {errorMessage ? (
+                            <Typography variant="subtitle2" color="error">
+                              {errorMessage}
+                            </Typography>
+                          ) : null}
                         </Grid>
                       </Grid>
                     </Grid>
