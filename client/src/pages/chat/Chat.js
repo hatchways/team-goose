@@ -6,13 +6,9 @@ import { AppContext } from "../../App";
 import ChatIO, { useRecievedMessage } from "../../socket_io/ChatIO";
 import Dialog from "./Dialog";
 import { FieldAgentDialogInput } from "./DialogInput";
+import { MESSAGE_TYPE } from "./DialogType";
 import "./Chat.css";
 
-export const MESSAGE_TYPE = {
-  PLAYER: "player",
-  SYSTEM_INFO: "info",
-  SYSTEM_ACTION: "action",
-};
 const CHAT_LOG_ELEMENT_ID = "chat-log";
 const ROOM = "matchId_redTeam"; // TODO: create a chatUtils.js for generating a room name, given a matchId and team identifier
 
