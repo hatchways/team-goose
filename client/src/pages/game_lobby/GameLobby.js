@@ -26,6 +26,7 @@ function GameLobby(props) {
     } else {
       props.history.push({ pathname: "/" });
     }
+    // eslint-disable-next-line
   }, []);
 
   const isTeamReady = (team) => {

@@ -60,7 +60,7 @@ function Game(props) {
               <GamePrompt gameState={gameState} />
             </Grid>
             <Grid item>
-              <GameBoard />
+              <GameBoard gameState={gameState} player={player} />
             </Grid>
           </Grid>
         </Grid>

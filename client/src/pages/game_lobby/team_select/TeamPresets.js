@@ -3,11 +3,23 @@ export const TEAM_CODE = {
   BLUE: "Blue",
 };
 
-export const DEFAULT_TEAM_STATE = [
-  { role: "Spymaster", player: null },
-  { role: "Field Agent", player: null },
-  { role: "Field Agent", player: null },
-  { role: "Field Agent", player: null },
+export const TEAM_ROLE = {
+  SPYMASTER: "Spymaster",
+  FIELD_AGENT: "Field Agent",
+};
+
+export const DEFAULT_RED_TEAM_STATE = [
+  { team: TEAM_CODE.RED, role: TEAM_ROLE.SPYMASTER, player: null },
+  { team: TEAM_CODE.RED, role: TEAM_ROLE.FIELD_AGENT, player: null },
+  { team: TEAM_CODE.RED, role: TEAM_ROLE.FIELD_AGENT, player: null },
+  { team: TEAM_CODE.RED, role: TEAM_ROLE.FIELD_AGENT, player: null },
+];
+
+export const DEFAULT_BLUE_TEAM_STATE = [
+  { team: TEAM_CODE.BLUE, role: TEAM_ROLE.SPYMASTER, player: null },
+  { team: TEAM_CODE.BLUE, role: TEAM_ROLE.FIELD_AGENT, player: null },
+  { team: TEAM_CODE.BLUE, role: TEAM_ROLE.FIELD_AGENT, player: null },
+  { team: TEAM_CODE.BLUE, role: TEAM_ROLE.FIELD_AGENT, player: null },
 ];
 
 export const ACTION_TYPE = {

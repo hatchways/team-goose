@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { GridList, GridListTile, Container } from "@material-ui/core";
 
 import Card from "./Card";
@@ -28,6 +28,20 @@ function GameBoard() {
       </GridList>
     </Container>
   );
+}
+
+function useBoardStatus({ gameState, player }) {
+  const [canPerformActions, setCanPerformActions] = useState(false);
+
+  useEffect(() => {
+    if (gameState) {
+      if (player.team === gameState.gameTurn.team) {
+        setCanPerformActions(true);
+      }
+    }
+  }, [gameState, player.team]);
+
+  return canPerformActions;
 }
 
 export default GameBoard;
