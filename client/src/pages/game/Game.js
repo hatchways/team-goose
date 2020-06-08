@@ -13,14 +13,7 @@ function Game(props) {
   const { gameIO } = useContext(AppContext);
   const [matchId, setMatchId] = useState("");
   const [player, setPlayer] = useState(null);
-  // const gameState = useGameState(gameIO.state);
-  const gameState = {
-    // dummy data
-    gameTurn: {
-      team: "Red",
-      role: "Spymaster",
-    },
-  };
+  const gameState = useGameState(gameIO.state);
 
   useEffect(() => {
     // set game data from game lobby data
