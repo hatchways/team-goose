@@ -4,8 +4,8 @@ import socketIO from "socket.io-client";
 const NAMESPACE = "/game";
 
 const ACTION_TYPE = {
-  CONNECT: "START",
-  DISCONNECT: "SHUTDOWN",
+  CONNECT: "CONNECT",
+  DISCONNECT: "DISCONNECT",
 };
 
 const initialState = {

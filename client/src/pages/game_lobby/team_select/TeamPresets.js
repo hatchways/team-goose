@@ -1,6 +1,6 @@
 export const TEAM_CODE = {
-  RED: "RED",
-  BLUE: "BLUE",
+  RED: "Red",
+  BLUE: "Blue",
 };
 
 export const DEFAULT_TEAM_STATE = [

@@ -1,13 +1,47 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
+import { AppContext } from "../../App";
+import { useGameState } from "../../socket_io/GameIO";
 import GamePrompt from "./GamePrompt";
 import GameBoard from "./GameBoard";
 import Chat from "../chat/Chat";
 import "./Game.css";
 
-function Game() {
+function Game(props) {
+  const { gameIO } = useContext(AppContext);
+  const [matchId, setMatchId] = useState("");
+  const [player, setPlayer] = useState(null);
+  // const gameState = useGameState(gameIO.state);
+  const gameState = {
+    // dummy data
+    gameTurn: {
+      team: "Red",
+      role: "Spymaster",
+    },
+  };
+
+  useEffect(() => {
+    // set game data from game lobby data
+    const matchId = props.location.state
+      ? props.location.state.matchId
+      : "ASDF"; // dummy data
+    const user = props.location.state
+      ? props.location.state.user
+      : { id: "1234", name: "Tony" }; // dummy data
+    const role = props.location.state ? props.location.state.role : "Spymaster"; // dummy data
+    const player = { user, role };
+
+    if (matchId && user) {
+      setMatchId(matchId);
+      setPlayer(player);
+    } else {
+      props.history.push({ pathname: "/" });
+    }
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <Container>
       <Grid container justify="space-evenly">
@@ -23,7 +57,7 @@ function Game() {
             spacing={4}
           >
             <Grid item className="game-prompt">
-              <GamePrompt />
+              <GamePrompt gameState={gameState} />
             </Grid>
             <Grid item>
               <GameBoard />

@@ -1,13 +1,9 @@
-import React, { useContext } from "react";
-import { Container, Grid, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import { Box, Container, Grid, Typography } from "@material-ui/core";
 import TimerIcon from "@material-ui/icons/Timer";
 
-import { AppContext } from "../../App";
-import { useGameState } from "../../socket_io/GameIO";
-
-function GamePrompt() {
-  const { gameIO } = useContext(AppContext);
-  const gameState = useGameState(gameIO);
+function GamePrompt({ gameState }) {
+  const [timer, setTimer] = useState(45);
 
   return (
     <Container>
@@ -18,12 +14,21 @@ function GamePrompt() {
               <TimerIcon fontSize="large" />
             </Grid>
             <Grid item>
-              <Typography variant="h5">20s left</Typography>
+              <Typography variant="h5">{timer}s left</Typography>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={8}>
-          <Typography variant="h5">It's Red Spymaster's turn!</Typography>
+          <Typography variant="h5">
+            It's
+            <Box
+              component="span"
+              className={gameState.gameTurn.team.toLowerCase()}
+            >
+              {` ${gameState.gameTurn.team} ${gameState.gameTurn.role}`}
+            </Box>
+            's turn!
+          </Typography>
         </Grid>
       </Grid>
     </Container>
