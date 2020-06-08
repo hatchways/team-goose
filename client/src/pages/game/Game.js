@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
@@ -42,6 +43,11 @@ function Game(props) {
     // eslint-disable-next-line
   }, []);
 
+  const endTurn = () => {
+    gameIO.state.io.emit("end turn");
+    console.log("end turn");
+  };
+
   return (
     <Container>
       <Grid container justify="space-evenly">
@@ -61,6 +67,11 @@ function Game(props) {
             </Grid>
             <Grid item>
               <GameBoard gameState={gameState} player={player} />
+            </Grid>
+            <Grid item>
+              <Button variant="contained" color="secondary" onClick={endTurn}>
+                End Turn
+              </Button>
             </Grid>
           </Grid>
         </Grid>
