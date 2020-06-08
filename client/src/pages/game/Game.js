@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
@@ -13,7 +14,14 @@ function Game(props) {
   const { gameIO } = useContext(AppContext);
   const [matchId, setMatchId] = useState("");
   const [player, setPlayer] = useState(null);
-  const gameState = useGameState(gameIO.state);
+  // const gameState = useGameState(gameIO.state);
+  const gameState = {
+    // dummy data
+    gameTurn: {
+      team: "Red",
+      role: "Spymaster",
+    },
+  };
 
   useEffect(() => {
     // set game data from game lobby data
@@ -35,6 +43,11 @@ function Game(props) {
     // eslint-disable-next-line
   }, []);
 
+  const endTurn = () => {
+    gameIO.state.io.emit("end turn");
+    console.log("end turn");
+  };
+
   return (
     <Container>
       <Grid container justify="space-evenly">
@@ -54,6 +67,11 @@ function Game(props) {
             </Grid>
             <Grid item>
               <GameBoard />
+            </Grid>
+            <Grid item>
+              <Button variant="contained" color="secondary" onClick={endTurn}>
+                End Turn
+              </Button>
             </Grid>
           </Grid>
         </Grid>
