@@ -10,9 +10,10 @@ import GameIO from "../../socket_io/GameIO";
 import Header from "../common/Header";
 import "./CreateGame.css";
 
-function CreateGame() {
+function CreateGame(props) {
   const [matchId, setMatchId] = useState("");
   const { gameIO } = useContext(AppContext);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleNewGame = () => {
     fetch("/api/match", {
@@ -21,34 +22,63 @@ function CreateGame() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ hostId: "host_01" }),
-    }).then((res) => {
-      console.log(res.json());
-    });
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        props.history.push({
+          pathname: "/game_lobby",
+          state: { matchId: data.matchId },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const onChange = (evt) => {
     setMatchId(evt.target.value);
+    setErrorMessage(null);
   };
+
   const handleJoinGame = () => {
     fetch(`/api/match/${matchId}/join-match`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-    }).then((res) => {
-      console.log(res.json());
-    });
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === 200) {
+          props.history.push({
+            pathname: "/game_lobby",
+            state: { matchId: matchId },
+          });
+        } else {
+          setErrorMessage(data.message);
+          setMatchId("");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
     <Container>
-      <Grid container direction="column" justify="center" alignItems="center">
+      <Grid
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+        spacing={3}
+      >
         <Grid item className="header">
           <Header title="Welcome" />
         </Grid>
         <Grid item>
-          <Grid container justify="center" alignItems="center">
-            <Grid item className="panel">
+          <Grid container justify="center" alignItems="center" spacing={10}>
+            <Grid item xs={7}>
               <Grid container direction="column">
                 <Grid item>
                   <Grid container direction="column">
@@ -58,25 +88,36 @@ function CreateGame() {
                       </Typography>
                     </Grid>
                     <Grid item>
-                      <Grid container alignItems="center">
-                        <Grid item className="grid-input">
-                          <Input
-                            onChange={(event) => {
-                              onChange(event);
-                            }}
-                            value={matchId}
-                            placeholder="Enter Match ID"
-                          />
+                      <Grid container direction="column">
+                        <Grid item>
+                          <Grid container alignItems="center" spacing={1}>
+                            <Grid item xs={8}>
+                              <Input
+                                onChange={(event) => {
+                                  onChange(event);
+                                }}
+                                value={matchId}
+                                placeholder="Enter Match ID"
+                              />
+                            </Grid>
+                            <Grid item xs={4}>
+                              <Button
+                                onClick={handleJoinGame}
+                                disabled={matchId.length <= 0}
+                                variant="contained"
+                                color="primary"
+                              >
+                                Join
+                              </Button>
+                            </Grid>
+                          </Grid>
                         </Grid>
                         <Grid item>
-                          <Button
-                            onClick={handleJoinGame}
-                            disabled={matchId.length <= 0}
-                            variant="contained"
-                            color="primary"
-                          >
-                            Join
-                          </Button>
+                          {errorMessage ? (
+                            <Typography variant="subtitle2" color="error">
+                              {errorMessage}
+                            </Typography>
+                          ) : null}
                         </Grid>
                       </Grid>
                     </Grid>
@@ -84,7 +125,7 @@ function CreateGame() {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item className="panel">
+            <Grid item xs={5}>
               <Grid container direction="column">
                 <Grid item>
                   <Grid container direction="column">
