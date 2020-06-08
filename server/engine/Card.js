@@ -3,14 +3,15 @@ class Card {
     this.word = word;
     this.role = role;
     this.selected = false;
+    this.voted = [];
   }
 
   select() {
-    if (this.selected) {
-        return false;
-    } else {
-        this.selected = true;
-    }
+    this.selected = true;
+  }
+
+  addVote(user) {
+    this.voted.push(user);
   }
 }
 
