@@ -10,11 +10,12 @@ class MatchManager {
     const game = new Game(hostId);
     const matchId = uuid.v4();
     this.matches.set(matchId, game);
-    return {
-      matchId: matchId,
-      redTeam: game.getRedTeam(),
-      blueTeam: game.getBlueTeam(),
-    };
+    return matchId;
+    // return {
+    //   matchId: matchId,
+    //   redTeam: game.getRedTeam(),
+    //   blueTeam: game.getBlueTeam(),
+    // };
   }
 
   getMatch(matchId) {
@@ -36,6 +37,10 @@ class MatchManager {
         blueTeam: game.getBlueTeam(),
       };
     }
+  }
+
+  setGameReady() {
+    console.log("in game start");
   }
 }
 

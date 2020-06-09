@@ -7,7 +7,7 @@
 }
 
 .gameboard {
-  padding: 40px;
+  padding: 0;
 }
 
 .gameboard .card {
@@ -34,4 +34,12 @@
 
 .gameboard .card.selected.blue {
   background-color: #4fadf3;
+}
+
+.game-panel {
+  padding: 25px 0;
+}
+
+.game-prompt {
+  width: 100%;
 }

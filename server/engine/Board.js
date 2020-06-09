@@ -44,6 +44,9 @@ class Board {
   getCards() {
     return this.cards;
   }
+  getACard(index) {
+    return this.getCards()[index];
+  }
   getRedAgentNum() {
     return this.redAgentNum;
   }
@@ -51,14 +54,12 @@ class Board {
     return this.blueAgentNum;
   }
 
-  setCard(selectedCard) {
-    //assume it pass the card
-    this.cards.forEach((card) => {
-      if (card === selectedCard) {
-        card.select();
-        return card.role;
-      }
-    });
+  setCard(index) {
+    this.getACard(index).select();
+  }
+  voteOnCard(index, user) {
+    const votedCard = this.getACard(index);
+    votedCard.addVote(user);
   }
 
   decideAgentNum() {

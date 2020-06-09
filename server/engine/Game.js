@@ -2,6 +2,11 @@ const Board = require("./Board");
 const GameTurns = require("./GameTurns");
 const WordRoles = require("./WordRoles");
 
+const TeamColor = {
+  RED:"RED",
+  BLUE:"BLUE"
+};
+
 class Game {
   constructor(hostId) {
     this.hostId = hostId;
@@ -10,12 +15,17 @@ class Game {
       Math.round(Math.random())
     ];
 
-    this.redTeam = [];
-    this.blueTeam = [];
+    this.redTeam = [{ role: "Spymaster", player: {id:"id_1", name:"name1"} },
+    { role: "Field Agent", player: {id:"id_2", name:"name2"} }];
+    this.blueTeam = [{ role: "Spymaster", player: {id:"id_3", name:"name3"} },
+    { role: "Field Agent", player: {id:"id_4", name:"name4"} }];
     this.redPoints = 0;
     this.bluePoints = 0;
     this.numGuessLeft = 0;
+    this.maxNumOfGuess = 0;
     this.winner = null;
+
+    this.votedCards = new Map();
 
     this.gameBoard = new Board();
   }
@@ -57,6 +67,9 @@ class Game {
   }
   getWinner() {
     return this.winner;
+  }
+  getVotedCards() {
+    return this.votedCards;
   }
   getBoard() {
     return this.gameBoard;
@@ -107,6 +120,32 @@ class Game {
 
   setBlueTeam(team) {
     this.blueTeam = team;
+  }
+
+  setVotedCards(word) {
+    let votedCards = this.getVotedCards();
+    if (!votedCards.has(word)) {
+      votedCards.set(word, {vote:1});
+    } else {
+      votedCards.get(word).vote++;
+    }
+  }
+
+  vote(data) {
+    switch(data.team) {
+      case TeamColor.RED:
+        if (this.getGameTurn() === this.GameTurns.RED_AGENT_TURN) {
+          this.getBoard().voteOnCard(data.index, data.user);
+          this.setVotedCards(data.word);
+        }
+        break;
+      case TeamColor.BLUE:
+        if (this.getGameTurn() === this.GameTurns.BLUE_AGENT_TURN) {
+          this.getBoard().voteOnCard(data.index, data.user);
+          this.setVotedCards(data.word);
+        }
+        break;
+    }
   }
 
   nextGameTurn(info) {

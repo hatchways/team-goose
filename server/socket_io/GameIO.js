@@ -1,6 +1,8 @@
 const NAMESPACE = "/game";
+const MatchManager = require("../manager/MatchManager");
 
 let connection = null;
+let countdown = 30;
 
 class GameIO {
   constructor() {
@@ -14,12 +16,44 @@ class GameIO {
       console.log(`New client connected from the game: ${socket.id}`);
 
       // room should be a matchId (string)
-      socket.on("join room", (room) => {
-        socket.join(room);
+      socket.on("join room", (matchId) => {
+        socket.join(matchId);
+        const message = MatchManager.joinMatch(matchId);
+        socket.emit("join room", message);
       });
 
       socket.on("disconnect", () => {
         console.log(`A client disconnected from the game: ${socket.id}`);
+      });
+
+      socket.on("create game", (hostId) => {
+        const matchId = MatchManager.createMatch(hostId);
+        console.log(matchId);
+        socket.emit("resolve create game", matchId);
+      });
+
+      socket.on("game start", (matchId) => {
+        const match = MatchManager.getMatch(matchId);
+        socket.emit("start turn", match.getGameState());
+      });
+
+      // setInterval(() => {
+      //   countdown--;
+      //   this.gameIO.to(matchId).emit("timer", { countdown: countdown });
+      // }, 1000);
+
+      socket.on("end turn", (matchId) => {
+        const match = MatchManager.getMatch(matchId);
+        match.setGameTurn();
+        // match.nextGameTurn();
+        this.gameIO.to(matchId).emit("game state change", match.getGameState());
+        countdown = 30;
+      });
+
+      socket.on("word select", (matchId, data) => {
+        const match = MatchManager.getMatch(matchId);
+        match.vote(data);
+        this.gameIO.to(matchId).emit("word select", match.getBoard().getCards());
       });
     });
   }
