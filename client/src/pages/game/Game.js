@@ -32,7 +32,6 @@ function Game(props) {
     if (matchId && user) {
       setMatchId(matchId);
       setPlayer(player);
-      setGameState(gameState);
     } else {
       props.history.push({ pathname: "/" });
     }
