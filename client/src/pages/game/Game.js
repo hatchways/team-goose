@@ -8,30 +8,23 @@ import { useGameState } from "../../socket_io/GameIO";
 import GamePrompt from "./GamePrompt";
 import GameBoard from "./GameBoard";
 import Chat from "../chat/Chat";
+
+import GameIO from "../../socket_io/GameIO";
 import "./Game.css";
 
 function Game(props) {
   const { gameIO } = useContext(AppContext);
-  const [matchId, setMatchId] = useState("");
-  const [player, setPlayer] = useState(null);
-  // const gameState = useGameState(gameIO.state);
-  const gameState = {
-    // dummy data
-    gameTurn: {
-      team: "Red",
-      role: "Spymaster",
-    },
-  };
+  const [matchId, setMatchId] = useState(
+    props.location.state ? props.location.state.matchId : ""
+  );
+  const [player, setPlayer] = useState({
+    user: props.location.state ? props.location.state.user : null,
+    team: "Red",
+    role: "Spymaster",
+  });
 
   useEffect(() => {
     // set game data from game lobby data
-    const matchId = props.location.state
-      ? props.location.state.matchId
-      : "ASDF"; // dummy data
-    const player = props.location.state
-      ? props.location.state.player
-      : { user: { id: "1234", name: "Tony" }, team: "Red", role: "Spymaster" }; // dummy data
-
     if (matchId && player) {
       setMatchId(matchId);
       setPlayer(player);
@@ -61,10 +54,13 @@ function Game(props) {
             spacing={4}
           >
             <Grid item className="game-prompt">
-              <GamePrompt gameState={gameState} />
+              <GamePrompt gameState={props.location.state.gameState} />
             </Grid>
             <Grid item>
-              <GameBoard gameState={gameState} player={player} />
+              <GameBoard
+                gameState={props.location.state.gameState}
+                player={player}
+              />
             </Grid>
             <Grid item>
               <Button variant="contained" color="secondary" onClick={endTurn}>

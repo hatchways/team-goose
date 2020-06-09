@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -8,6 +8,9 @@ import { copyToClipboard } from "../../utils/utils";
 import { useUser } from "../../contexts/user";
 import Header from "../common/Header";
 import TeamSelect from "./team_select/TeamSelect";
+
+import { AppContext } from "../../App";
+
 import "../common/common.css";
 import "./GameLobby.css";
 
@@ -16,9 +19,10 @@ const FIELD_AGENT_INDEX = 1;
 
 function GameLobby(props) {
   const { user } = useUser(); // will be used as player's data (i.e. id and name)
-  const [matchID, setMatchId] = useState(null);
+  const [matchId, setMatchId] = useState(null);
   const [canStartGame, setCanStartGame] = useState(false);
 
+  const { gameIO } = useContext(AppContext);
   useEffect(() => {
     const matchId = props.location.state ? props.location.state.matchId : null;
     if (matchId) {
@@ -46,6 +50,13 @@ function GameLobby(props) {
   const startGame = () => {
     if (canStartGame) {
       // send list of players of each team to server and transition to game board
+      gameIO.state.io.emit("game start", matchId);
+      gameIO.state.io.on("start turn", (gameState) => {
+        props.history.push({
+          pathname: "/game",
+          state: { gameState: gameState, matchId: matchId, user: user },
+        });
+      });
       console.log("Game is starting...");
     }
   };
@@ -92,7 +103,7 @@ function GameLobby(props) {
                 <Grid item>
                   <Button
                     onClick={() => {
-                      copyToClipboard(matchID);
+                      copyToClipboard(matchId);
                     }}
                     variant="outlined"
                     color="default"

@@ -6,7 +6,6 @@ import Input from "@material-ui/core/Input";
 import Typography from "@material-ui/core/Typography";
 
 import { AppContext } from "../../App";
-import GameIO from "../../socket_io/GameIO";
 import Header from "../common/Header";
 import "./CreateGame.css";
 
@@ -16,23 +15,31 @@ function CreateGame(props) {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const handleNewGame = () => {
-    fetch("/api/match", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ hostId: "host_01" }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        props.history.push({
-          pathname: "/game_lobby",
-          state: { matchId: data.matchId },
-        });
-      })
-      .catch((err) => {
-        console.log(err);
+    // fetch("/api/match", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ hostId: "host_01" }),
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     props.history.push({
+    //       pathname: "/game_lobby",
+    //       state: { matchId: data.matchId },
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    gameIO.state.io.emit("create game", "hostId");
+    gameIO.state.io.on("resolve create game", (matchId) => {
+      props.history.push({
+        pathname: "/game_lobby",
+        state: { matchId: matchId },
       });
+    })
+    
   };
 
   const onChange = (evt) => {
