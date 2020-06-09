@@ -21,10 +21,10 @@ function Game(props) {
     // set game data from game lobby data
     const matchId = props.location.state
       ? props.location.state.matchId
-      : "ASDF"; // dummy data
+      : null; 
     const user = props.location.state
       ? props.location.state.user
-      : { id: "1234", name: "Tony" }; // dummy data
+      : null; 
     const role = props.location.state ? props.location.state.role : "Spymaster"; // dummy data
     const player = { user, role };
     

@@ -47,20 +47,17 @@ function GameLobby(props) {
   };
 
   const startGame = () => {
-    gameIO.state.io.emit("game start", matchId);
-    gameIO.state.io.on("start turn", (gameState) => {
-      // console.log(gameState);
-      props.history.push({
-        pathname: "/game",
-        state: { gameState: gameState, matchId: matchId, user: user },
+    if (canStartGame) {
+      // send list of players of each team to server and transition to game board
+      gameIO.state.io.emit("game start", matchId);
+      gameIO.state.io.on("start turn", (gameState) => {
+        props.history.push({
+          pathname: "/game",
+          state: { gameState: gameState, matchId: matchId, user: user },
+        });
       });
-    })
-    console.log("Game is starting...");
-    // if (canStartGame) {
-    //   // send list of players of each team to server and transition to game board
-    //   gameIO.state.io.emit("game start", matchId);
-    //   console.log("Game is starting...");
-    // }
+      console.log("Game is starting...");
+    }
   };
 
   return (
@@ -89,7 +86,7 @@ function GameLobby(props) {
             <Grid item>
               <Button
                 onClick={() => startGame()}
-                // disabled={!canStartGame}
+                disabled={!canStartGame}
                 variant="contained"
                 color="primary"
                 size="large"

@@ -4,8 +4,8 @@ export const TEAM_CODE = {
 };
 
 export const DEFAULT_TEAM_STATE = [
-  { role: "Spymaster", player: null },
-  { role: "Field Agent", player: null },
+  { role: "Spymaster", player: {id:"id_1", name:"name1"} },
+  { role: "Field Agent", player: {id:"id_2", name:"name2"} },
   { role: "Field Agent", player: null },
   { role: "Field Agent", player: null },
 ];

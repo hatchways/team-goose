@@ -29,7 +29,7 @@ class GameIO {
       socket.on("create game", (hostId) => {
         const matchId = MatchManager.createMatch(hostId);
         console.log(matchId);
-        socket.emit("create game", matchId);
+        socket.emit("resolve create game", matchId);
       });
 
       socket.on("game start", (matchId) => {
