@@ -44,8 +44,9 @@ class GameIO {
 
       socket.on("end turn", (matchId) => {
         const match = MatchManager.getMatch(matchId);
-        match.nextGameTurn();
-        this.gameIO.to(matchId).emit("start turn", match.getGameState());
+        match.setGameTurn();
+        // match.nextGameTurn();
+        this.gameIO.to(matchId).emit("game state change", match.getGameState());
         countdown = 30;
       });
 
