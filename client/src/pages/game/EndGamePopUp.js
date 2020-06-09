@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import "./EndGamePopUp.css";
 
 export default function EndGamePopUp(winner, bluePoints, redPoints) {
+  //dummy data
   winner = "Blue";
   bluePoints = 6;
   redPoints = 6;
@@ -12,7 +13,7 @@ export default function EndGamePopUp(winner, bluePoints, redPoints) {
     <div className="end-game-pop-up">
       <Skull id="skull" />
       <h2>Game over!</h2>
-      <p className="blue">{winner} wins</p>
+      <p className={winner === "Blue" ? "blue" : "red"}>{winner} wins</p>
       <p>
         <span className="blue">{bluePoints}</span> :{" "}
         <span className="red">{redPoints}</span>
