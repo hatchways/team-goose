@@ -15,7 +15,7 @@ function Game(props) {
   const { gameIO } = useContext(AppContext);
   const [matchId, setMatchId] = useState("");
   const [player, setPlayer] = useState(null);
-  const gameState = useGameState(gameIO.state);
+  const [gameState, setGameState] = useState(props.location.state ? props.location.state.gameState : null);
 
   useEffect(() => {
     // set game data from game lobby data
@@ -27,10 +27,11 @@ function Game(props) {
       : { id: "1234", name: "Tony" }; // dummy data
     const role = props.location.state ? props.location.state.role : "Spymaster"; // dummy data
     const player = { user, role };
-
+    
     if (matchId && user) {
       setMatchId(matchId);
       setPlayer(player);
+      setGameState(gameState);
     } else {
       props.history.push({ pathname: "/" });
     }

@@ -30,7 +30,7 @@ const reducer = (state, action) => {
 };
 
 export function useGameState(gameIO) {
-  const EVENT = "game state change";
+  const EVENT = "game start";
   const [gameState, setGameState] = useState(null);
 
   useEffect(() => {

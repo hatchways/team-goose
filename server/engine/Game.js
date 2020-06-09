@@ -15,8 +15,10 @@ class Game {
       Math.round(Math.random())
     ];
 
-    this.redTeam = [];
-    this.blueTeam = [];
+    this.redTeam = [{ role: "Spymaster", player: {id:"id_1", name:"name1"} },
+    { role: "Field Agent", player: {id:"id_2", name:"name2"} }];
+    this.blueTeam = [{ role: "Spymaster", player: {id:"id_3", name:"name3"} },
+    { role: "Field Agent", player: {id:"id_4", name:"name4"} }];
     this.redPoints = 0;
     this.bluePoints = 0;
     this.numGuessLeft = 0;
