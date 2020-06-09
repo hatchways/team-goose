@@ -3,7 +3,7 @@ import { ReactComponent as Skull } from "../../img/skull.svg";
 import Button from "@material-ui/core/Button";
 import "./EndGamePopUp.css";
 
-export default function EndGamePopUp(winner, bluePoints, redPoints) {
+export default function EndGamePopUp({ winner, bluePoints, redPoints }) {
   //dummy data
   winner = "Blue";
   bluePoints = 6;
