@@ -28,18 +28,19 @@ class GameIO {
 
       socket.on("create game", (hostId) => {
         const matchId = MatchManager.createMatch(hostId);
+        console.log(matchId);
         socket.emit("create game", matchId);
       });
 
       socket.on("game start", (matchId) => {
         const match = MatchManager.getMatch(matchId);
-        this.gameIO.to(matchId).emit("start turn", match.getGameState());
+        socket.emit("start turn", match.getGameState());
       });
 
-      setInterval(() => {
-        countdown--;
-        this.gameIO.to(matchId).emit("timer", { countdown: countdown });
-      }, 1000);
+      // setInterval(() => {
+      //   countdown--;
+      //   this.gameIO.to(matchId).emit("timer", { countdown: countdown });
+      // }, 1000);
 
       socket.on("end turn", (matchId) => {
         const match = MatchManager.getMatch(matchId);
@@ -79,13 +80,6 @@ class GameIO {
   // game engine sends its game state back to the client in reaction to a user's recent action (word gets selected, end their turn, etc.)
   sendGameState(gameState) {
     this.gameIO.to(message.room).emit("game state change", gameState);
-  }
-
-  setTimer() {
-    setInterval(() => {
-      countdown--;
-      this.gameIO.to(matchId).emit("timer", { countdown: countdown });
-    }, 1000);
   }
 
   static init(io) {
