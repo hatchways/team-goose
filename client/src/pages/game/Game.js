@@ -28,13 +28,11 @@ function Game(props) {
     const matchId = props.location.state
       ? props.location.state.matchId
       : "ASDF"; // dummy data
-    const user = props.location.state
-      ? props.location.state.user
-      : { id: "1234", name: "Tony" }; // dummy data
-    const role = props.location.state ? props.location.state.role : "Spymaster"; // dummy data
-    const player = { user, role };
+    const player = props.location.state
+      ? props.location.state.player
+      : { user: { id: "1234", name: "Tony" }, team: "Red", role: "Spymaster" }; // dummy data
 
-    if (matchId && user) {
+    if (matchId && player) {
       setMatchId(matchId);
       setPlayer(player);
     } else {
