@@ -4,12 +4,9 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
 import { AppContext } from "../../App";
-import { useGameState } from "../../socket_io/GameIO";
 import GamePrompt from "./GamePrompt";
 import GameBoard from "./GameBoard";
 import Chat from "../chat/Chat";
-
-import GameIO from "../../socket_io/GameIO";
 import "./Game.css";
 
 function Game(props) {
@@ -17,6 +14,7 @@ function Game(props) {
   const [matchId, setMatchId] = useState(
     props.location.state ? props.location.state.matchId : ""
   );
+  // TODO: get player data from resolve game start event after roles are assigned
   const [player, setPlayer] = useState({
     user: props.location.state ? props.location.state.user : null,
     team: "Red",

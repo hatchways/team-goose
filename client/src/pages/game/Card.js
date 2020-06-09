@@ -21,7 +21,7 @@ function Card({ onClick, isActive }) {
     } else {
       setStyle("");
     }
-  });
+  }, [isActive]);
 
   return (
     <Button

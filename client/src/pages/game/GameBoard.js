@@ -51,7 +51,7 @@ function useBoardStatus(gameState, player) {
         setCanPerformActions(true);
       }
     }
-  });
+  }, [gameState, player.team, player.role]);
 
   return canPerformActions;
 }
