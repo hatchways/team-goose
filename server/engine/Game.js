@@ -153,7 +153,7 @@ class Game {
         } else if (this.getGameTurn() === GameTurns.BLUE_AGENT_TURN) {
           this.addRedPoint();
           votedCards[num].select();
-          this.setGameTurn(GameTurns.RED_SPY_TURN);
+          this.setGameTurn(GameTurns.RED_AGENT_TURN); //should be GameTurns.RED_SPY_TURN
           this.delRestVotes(votedCards, num);
           break;
         }
@@ -165,7 +165,7 @@ class Game {
         } else if (this.getGameTurn() === GameTurns.RED_AGENT_TURN) {
           this.addBluePoint();
           votedCards[num].select();
-          this.setGameTurn(GameTurns.BLUE_SPY_TURN);
+          this.setGameTurn(GameTurns.BLUE_AGENT_TURN); // should be GameTurns.BLUE_SPY_TURN
           this.delRestVotes(votedCards, num);
           break;
         }
