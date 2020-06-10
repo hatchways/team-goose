@@ -21,6 +21,10 @@ class Card {
   getStatus() {
     return this.selected;
   }
+
+  getVoted() {
+    return this.voted;
+  }
  }
 
 module.exports = Card;

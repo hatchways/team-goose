@@ -69,6 +69,9 @@ class Board {
     const votedCard = this.getACard(index);
     votedCard.addVote(user);
   }
+  checkIfVoted(index, user) {
+    return this.getACard(index).getVoted().some((player) => (player.id === user.id));
+  }
 
   decideAgentNum() {
     const decision = Math.round(Math.random());

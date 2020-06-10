@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   },
 });
 
-function Card({ value, onClick, type, isActive }) {
+function Card({ index, value, onClick, type, isActive }) {
   const classes = useStyles();
   const style = useCardType(type, value.role, isActive);
 
@@ -23,7 +23,9 @@ function Card({ value, onClick, type, isActive }) {
       disableFocusRipple
       fullWidth
       classes={{ label: classes.button }}
-      onClick={onClick}
+      onClick={() => {
+        onClick(index);
+      }}
       disabled={value.selected}
     >
       <Typography variant="h6">{value.word}</Typography>

@@ -11,9 +11,10 @@ class Game {
   constructor(hostId) {
     this.hostId = hostId;
 
-    this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
-      Math.round(Math.random())
-    ];
+    // this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
+    //   Math.round(Math.random())
+    // ];
+    this.gameTurn = GameTurns.BLUE_AGENT_TURN;
 
     this.redTeam = [{ role: "Spymaster", player: {id:"id_1", name:"name1"} },
     { role: "Field Agent", player: {id:"id_2", name:"name2"} }];
@@ -79,7 +80,7 @@ class Game {
       gameTurn: this.gameTurn,
       redPoints: this.redPoints,
       bluePoints: this.bluePoints,
-      gameCards: this.gameBoard.getCards(),
+      gameBoard: this.gameBoard,
       numGuessLeft: this.numGuessLeft,
     };
   }
@@ -132,17 +133,17 @@ class Game {
   // }
 
   vote(data) {
-    switch(data.team) {
+    switch(data.player.team) {
       case TeamColor.RED:
         if (this.getGameTurn() == GameTurns.RED_AGENT_TURN) {
-          this.getBoard().voteOnCard(data.index, data.player);
-          // this.updateVotedCards(data.word);
+          if (!this.getBoard().checkIfVoted(data.index, data.player)) {
+            this.getBoard().voteOnCard(data.index, data.player);
+          }
         }
         break;
       case TeamColor.BLUE:
-        if (this.getGameTurn() == GameTurns.BLUE_AGENT_TURN) {
+        if (!this.getBoard().checkIfVoted(data.index, data.player)) {
           this.getBoard().voteOnCard(data.index, data.player);
-          // this.updateVotedCards(data.word);
         }
         break;
     }
@@ -250,10 +251,10 @@ class Game {
 
 module.exports = Game;
 
-const newGame = new Game("user1");
-newGame.nextGameTurn({numGuess: 3});
-console.log(newGame.getGameState().gameTurn, "=====================");
-newGame.vote({team:"Red", index:0, player: "user1", word: "test"});
-newGame.vote({team:"Red", index:0, player: "user2", word: "test2"});
-console.log(newGame.getGameState().gameCards[0]);
-console.log(newGame.getVotedCards());
+// const newGame = new Game("user1");
+// newGame.nextGameTurn({numGuess: 3});
+// console.log(newGame.getGameState().gameTurn, "=====================");
+// newGame.vote({team:"Red", index:0, player: "user1", word: "test"});
+// newGame.vote({team:"Red", index:0, player: "user2", word: "test2"});
+// console.log(newGame.getGameState().gameCards[0]);
+// console.log(newGame.getVotedCards());

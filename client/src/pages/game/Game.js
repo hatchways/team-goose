@@ -17,8 +17,8 @@ function Game(props) {
   // TODO: get player data from resolve game start event after roles are assigned
   const [player, setPlayer] = useState({
     user: props.location.state ? props.location.state.user : null,
-    team: "Red",
-    role: "Spymaster",
+    team: "Blue",
+    role: "Field Agent",
   });
 
   useEffect(() => {
@@ -58,6 +58,7 @@ function Game(props) {
               <GameBoard
                 gameState={props.location.state.gameState}
                 player={player}
+                matchId={matchId}
               />
             </Grid>
             <Grid item>
