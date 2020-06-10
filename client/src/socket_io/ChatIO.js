@@ -19,9 +19,6 @@ const reducer = (state, action) => {
       if (state.io.disconnected) {
         state.io.connect();
       }
-      state.io.on("connect", () => {
-        state.io.emit("join room", action.payload.room);
-      });
       return state;
     case ACTION_TYPE.DISCONNECT:
       state.io.disconnect();

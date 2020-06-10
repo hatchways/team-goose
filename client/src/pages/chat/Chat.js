@@ -10,19 +10,23 @@ import { MESSAGE_TYPE } from "./DialogType";
 import "./Chat.css";
 
 const CHAT_LOG_ELEMENT_ID = "chat-log";
-const ROOM = "matchId_redTeam"; // TODO: create a chatUtils.js for generating a room name, given a matchId and team identifier
 
-function Chat() {
+function Chat({ matchId, player }) {
   const { chatIO } = useContext(AppContext);
+  const [room] = useState(`${matchId}-${player.team}`);
   const [inputText, setInputText] = useState("");
   const [log, setLog] = useState([]);
   const recentMessage = useRecievedMessage(chatIO.state.io);
 
   useEffect(() => {
+    chatIO.state.io.emit("join room", room);
+  }, [chatIO.state.io, matchId, room]);
+
+  useEffect(() => {
     const action = {
       type: ChatIO.ACTION_TYPE.CONNECT,
       payload: {
-        room: ROOM,
+        room: room,
       },
     };
     chatIO.dispatch(action);
@@ -31,13 +35,14 @@ function Chat() {
       action.type = ChatIO.ACTION_TYPE.DISCONNECT;
       chatIO.dispatch(action);
     };
-  }, [chatIO]);
+  }, [chatIO, room]);
 
   useEffect(() => {
     if (recentMessage) {
       const newLog = [...log, recentMessage];
       setLog(newLog);
     }
+    // eslint-disable-next-line
   }, [recentMessage]);
 
   useEffect(() => {
@@ -53,7 +58,7 @@ function Chat() {
     event.preventDefault();
     const action = {
       type: ChatIO.ACTION_TYPE.SEND_MESSAGE,
-      payload: { ...message, room: ROOM, type: MESSAGE_TYPE.PLAYER },
+      payload: { ...message, room, type: MESSAGE_TYPE.PLAYER },
     };
     chatIO.dispatch(action);
     setInputText("");

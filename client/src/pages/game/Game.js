@@ -44,7 +44,7 @@ function Game(props) {
     <Container>
       <Grid container justify="space-evenly">
         <Grid item xs>
-          <Chat />
+          <Chat matchId={matchId} player={player} />
         </Grid>
         <Grid item xs={9} className="game-panel">
           <Grid
