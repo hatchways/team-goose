@@ -50,10 +50,10 @@ class GameIO {
         countdown = 30;
       });
 
-      socket.on("word select", (matchId, data) => {
+      socket.on("card select", (matchId, data) => {
         const match = MatchManager.getMatch(matchId);
         match.vote(data);
-        this.gameIO.to(matchId).emit("word select", match.getBoard().getCards());
+        socket.emit("game state change", match.getGameState());
       });
     });
   }

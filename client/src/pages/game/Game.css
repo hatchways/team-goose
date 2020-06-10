@@ -33,11 +33,11 @@
   cursor: default;
 }
 
-.gameboard .card.selected.red {
+.gameboard .card.selected.bg-red {
   background-color: #f86155;
 }
 
-.gameboard .card.selected.blue {
+.gameboard .card.selected.bg-blue {
   background-color: #4fadf3;
 }
 
