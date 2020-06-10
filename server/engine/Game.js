@@ -3,8 +3,8 @@ const GameTurns = require("./GameTurns");
 const WordRoles = require("./WordRoles");
 
 const TeamColor = {
-  RED:"RED",
-  BLUE:"BLUE"
+  RED:"Red",
+  BLUE:"Blue"
 };
 
 class Game {
@@ -25,7 +25,7 @@ class Game {
     this.maxNumOfGuess = 0;
     this.winner = null;
 
-    this.votedCards = new Map();
+    // this.votedCards = new Map();
 
     this.gameBoard = new Board();
   }
@@ -79,7 +79,7 @@ class Game {
       gameTurn: this.gameTurn,
       redPoints: this.redPoints,
       bluePoints: this.bluePoints,
-      gameBoard: this.gameBoard,
+      gameCards: this.gameBoard.getCards(),
       numGuessLeft: this.numGuessLeft,
     };
   }
@@ -122,30 +122,35 @@ class Game {
     this.blueTeam = team;
   }
 
-  setVotedCards(word) {
-    let votedCards = this.getVotedCards();
-    if (!votedCards.has(word)) {
-      votedCards.set(word, {vote:1});
-    } else {
-      votedCards.get(word).vote++;
-    }
-  }
+  // updateVotedCards(word) {
+  //   let votedCards = this.getVotedCards();
+  //   if (!votedCards.has(word)) {
+  //     votedCards.set(word, {votes:1});
+  //   } else {
+  //     votedCards.get(word).votes++;
+  //   }
+  // }
 
   vote(data) {
     switch(data.team) {
       case TeamColor.RED:
-        if (this.getGameTurn() === this.GameTurns.RED_AGENT_TURN) {
-          this.getBoard().voteOnCard(data.index, data.user);
-          this.setVotedCards(data.word);
+        if (this.getGameTurn() == GameTurns.RED_AGENT_TURN) {
+          this.getBoard().voteOnCard(data.index, data.player);
+          // this.updateVotedCards(data.word);
         }
         break;
       case TeamColor.BLUE:
-        if (this.getGameTurn() === this.GameTurns.BLUE_AGENT_TURN) {
-          this.getBoard().voteOnCard(data.index, data.user);
-          this.setVotedCards(data.word);
+        if (this.getGameTurn() == GameTurns.BLUE_AGENT_TURN) {
+          this.getBoard().voteOnCard(data.index, data.player);
+          // this.updateVotedCards(data.word);
         }
         break;
     }
+  }
+
+  decideCardSelect() {
+    let votedCards = this.getBoard();
+    console.log(votedCards);
   }
 
   nextGameTurn(info) {
@@ -170,6 +175,7 @@ class Game {
         if (this.getNumGuessLeft() === 0) {
           this.setGameTurn(GameTurns.BLUE_SPY_TURN);
         }
+        this.decideCardSelect()
         break;
       case GameTurns.BLUE_AGENT_TURN:
         this.gameBoard.setCard(info.guess);
@@ -179,6 +185,7 @@ class Game {
         if (this.getNumGuessLeft() === 0) {
           this.setGameTurn(GameTurns.RED_SPY_TURN);
         }
+        this.decideCardSelect()
         break;
       case GameTurns.End:
         console.log("I'm in the end");
@@ -242,3 +249,11 @@ class Game {
 }
 
 module.exports = Game;
+
+const newGame = new Game("user1");
+newGame.nextGameTurn({numGuess: 3});
+console.log(newGame.getGameState().gameTurn, "=====================");
+newGame.vote({team:"Red", index:0, player: "user1", word: "test"});
+newGame.vote({team:"Red", index:0, player: "user2", word: "test2"});
+console.log(newGame.getGameState().gameCards[0]);
+console.log(newGame.getVotedCards());
