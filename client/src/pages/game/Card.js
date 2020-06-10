@@ -16,7 +16,7 @@ const useStyles = makeStyles({
 const CARD_ROLE = {
   BYSTANDER: { name: "Innocent Bystander", css: "bystander" },
   RED_AGENT: { name: "Red Agent", css: "red" },
-  BLUE_AGEHT: { name: "Blue Agent", css: "blue" },
+  BLUE_AGENT: { name: "Blue Agent", css: "blue" },
   ASSASSIN: { name: "Assassin", css: "assassin" },
 };
 
@@ -79,8 +79,8 @@ function useCardType(type = TEAM_ROLE.FIELD_AGENT, role, isActive = false) {
         style.push(CARD_ROLE.BYSTANDER.css);
       } else if (role === CARD_ROLE.RED_AGENT.name) {
         style.push(CARD_ROLE.RED_AGENT.css);
-      } else if (role === CARD_ROLE.BLUE_AGEHT.name) {
-        style.push(CARD_ROLE.BLUE_AGEHT.css);
+      } else if (role === CARD_ROLE.BLUE_AGENT.name) {
+        style.push(CARD_ROLE.BLUE_AGENT.css);
       } else if (role === CARD_ROLE.ASSASSIN.name) {
         style.push(CARD_ROLE.ASSASSIN.css);
       }
