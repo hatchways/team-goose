@@ -28,6 +28,11 @@
   color: white;
 }
 
+.gameboard .card.non-active:hover {
+  background-color: white;
+  cursor: default;
+}
+
 .gameboard .card.selected.red {
   background-color: #f86155;
 }

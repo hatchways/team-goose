@@ -10,7 +10,6 @@ import Header from "../common/Header";
 import TeamSelect from "./team_select/TeamSelect";
 
 import { AppContext } from "../../App";
-
 import "../common/common.css";
 import "./GameLobby.css";
 
@@ -18,7 +17,7 @@ const SPYMASTER_INDEX = 0;
 const FIELD_AGENT_INDEX = 1;
 
 function GameLobby(props) {
-  const { user } = useUser(); // will be used as player's data (i.e. id and name)
+  const { user } = useUser();
   const [matchId, setMatchId] = useState(null);
   const [canStartGame, setCanStartGame] = useState(false);
 
@@ -30,6 +29,7 @@ function GameLobby(props) {
     } else {
       props.history.push({ pathname: "/" });
     }
+    // eslint-disable-next-line
   }, []);
 
   const isTeamReady = (team) => {
@@ -53,7 +53,7 @@ function GameLobby(props) {
       gameIO.state.io.on("start turn", (gameState) => {
         props.history.push({
           pathname: "/game",
-          state: { gameState: gameState, matchId: matchId, user: user },
+          state: { gameState, matchId, user: user },
         });
       });
       console.log("Game is starting...");

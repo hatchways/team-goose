@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Container, Grid, Typography } from "@material-ui/core";
 import TimerIcon from "@material-ui/icons/Timer";
 
 function GamePrompt({ gameState }) {
-  const [timer, setTimer] = useState(45);
-
   return (
     <Container>
       <Grid container justify="space-between" alignItems="center">
@@ -14,7 +12,7 @@ function GamePrompt({ gameState }) {
               <TimerIcon fontSize="large" />
             </Grid>
             <Grid item>
-              <Typography variant="h5">{timer}s left</Typography>
+              <Typography variant="h5">30s left</Typography>
             </Grid>
           </Grid>
         </Grid>
