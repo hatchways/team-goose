@@ -9,15 +9,13 @@ import Typography from "@material-ui/core/Typography";
 import {
   TEAM_CODE,
   ACTION_TYPE,
-  DEFAULT_TEAM_STATE,
+  DEFAULT_RED_TEAM_STATE,
+  DEFAULT_BLUE_TEAM_STATE,
   reducer as teamReducer,
 } from "./TeamPresets";
 import { JoinRoleAction, LeaveRoleAction } from "./TeamSelectActions";
 import "./TeamSelect.css";
 import "../../common/common.css";
-
-const DEFAULT_RED_TEAM_STATE = JSON.parse(JSON.stringify(DEFAULT_TEAM_STATE));
-const DEFAULT_BLUE_TEAM_STATE = JSON.parse(JSON.stringify(DEFAULT_TEAM_STATE));
 
 const UNOCCUPIED_SPOT_NAME = "--";
 
