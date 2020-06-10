@@ -13,7 +13,7 @@ function GameBoard({ gameState, player, matchId }) {
     if (canPerformActions) {
       const data = {
         player: player,
-        index: index
+        index: index,
       };
       gameIO.state.io.emit("card select", matchId, data);
       console.log("card selected on board");
@@ -30,7 +30,7 @@ function GameBoard({ gameState, player, matchId }) {
             index={index}
             value={card}
             onClick={selectCard}
-            type={player.role}
+            player={player}
             isActive={canPerformActions}
           />
         </GridListTile>

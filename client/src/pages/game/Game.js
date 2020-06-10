@@ -4,6 +4,8 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
 import { AppContext } from "../../App";
+import { useGameState } from "../../socket_io/GameIO";
+import { TEAM_ROLE } from "../game_lobby/team_select/TeamPresets";
 import GamePrompt from "./GamePrompt";
 import GameBoard from "./GameBoard";
 import Chat from "../chat/Chat";
@@ -11,11 +13,15 @@ import "./Game.css";
 
 function Game(props) {
   const { gameIO } = useContext(AppContext);
-  const [matchId, setMatchId] = useState(
+  const [matchId] = useState(
     props.location.state ? props.location.state.matchId : ""
   );
+  const gameState = useGameState(
+    gameIO.state.io,
+    props.location.state.gameState
+  );
   // TODO: get player data from resolve game start event after roles are assigned
-  const [player, setPlayer] = useState({
+  const [player] = useState({
     user: props.location.state ? props.location.state.user : null,
     team: "Blue",
     role: "Field Agent",
@@ -23,10 +29,7 @@ function Game(props) {
 
   useEffect(() => {
     // set game data from game lobby data
-    if (matchId && player) {
-      setMatchId(matchId);
-      setPlayer(player);
-    } else {
+    if (!matchId || !player) {
       props.history.push({ pathname: "/" });
     }
     // eslint-disable-next-line
@@ -52,19 +55,21 @@ function Game(props) {
             spacing={4}
           >
             <Grid item className="game-prompt">
-              <GamePrompt gameState={props.location.state.gameState} />
+              <GamePrompt gameState={gameState} />
             </Grid>
             <Grid item>
               <GameBoard
-                gameState={props.location.state.gameState}
+                gameState={gameState}
                 player={player}
                 matchId={matchId}
               />
             </Grid>
             <Grid item>
-              <Button variant="contained" color="secondary" onClick={endTurn}>
-                End Turn
-              </Button>
+              {player.role === TEAM_ROLE.FIELD_AGENT ? (
+                <Button variant="contained" color="secondary" onClick={endTurn}>
+                  End Turn
+                </Button>
+              ) : null}
             </Grid>
           </Grid>
         </Grid>
