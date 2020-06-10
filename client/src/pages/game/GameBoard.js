@@ -4,8 +4,6 @@ import { GridList, GridListTile, Container } from "@material-ui/core";
 import Card from "./Card";
 import { TEAM_ROLE } from "../game_lobby/team_select/TeamPresets";
 
-const MAX_BOARD_CARDS = 25;
-
 function GameBoard({ gameState, player }) {
   const canPerformActions = useBoardStatus(gameState, player);
 
@@ -16,18 +14,20 @@ function GameBoard({ gameState, player }) {
   };
 
   const generateCards = () => {
-    let result = [];
+    const cards = gameState.gameBoard.cards;
 
-    for (let index = 0; index < MAX_BOARD_CARDS; index++) {
-      const element = (
+    return cards.map((card, index) => {
+      return (
         <GridListTile key={index}>
-          <Card onClick={selectCard} isActive={canPerformActions} />
+          <Card
+            value={card}
+            onClick={selectCard}
+            type={player.role}
+            isActive={canPerformActions}
+          />
         </GridListTile>
       );
-      result.push(element);
-    }
-
-    return result;
+    });
   };
 
   return (
