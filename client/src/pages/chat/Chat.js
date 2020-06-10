@@ -78,6 +78,7 @@ function Chat({ matchId, player }) {
           from={message.from}
           text={message.text}
           type={message.type}
+          player={player}
         />
       );
     });
