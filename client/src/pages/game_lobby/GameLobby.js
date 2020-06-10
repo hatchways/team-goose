@@ -49,12 +49,10 @@ function GameLobby(props) {
   const startGame = () => {
     if (canStartGame) {
       // send list of players of each team to server and transition to game board
-      gameIO.state.io.emit("game start", matchId);
-      gameIO.state.io.on("start turn", (gameState) => {
-        props.history.push({
-          pathname: "/game",
-          state: { gameState, matchId, user: user },
-        });
+      gameIO.state.io.emit("game start", matchId, []);
+      props.history.push({
+        pathname: "/game",
+        state: { matchId, user: user },
       });
       console.log("Game is starting...");
     }

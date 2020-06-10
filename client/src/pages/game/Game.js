@@ -16,10 +16,7 @@ function Game(props) {
   const [matchId] = useState(
     props.location.state ? props.location.state.matchId : ""
   );
-  const gameState = useGameState(
-    gameIO.state.io,
-    props.location.state.gameState
-  );
+  const gameState = useGameState(gameIO.state.io, matchId);
   // TODO: get player data from resolve game start event after roles are assigned
   const [player] = useState({
     user: props.location.state ? props.location.state.user : null,
@@ -41,40 +38,48 @@ function Game(props) {
   };
 
   return (
-    <Container>
-      <Grid container justify="space-evenly">
-        <Grid item xs>
-          <Chat matchId={matchId} player={player} />
-        </Grid>
-        <Grid item xs={9} className="game-panel">
-          <Grid
-            container
-            direction="column"
-            justify="center"
-            alignItems="center"
-            spacing={4}
-          >
-            <Grid item className="game-prompt">
-              <GamePrompt gameState={gameState} />
+    <>
+      {gameState ? (
+        <Container>
+          <Grid container justify="space-evenly">
+            <Grid item xs>
+              <Chat matchId={matchId} player={player} />
             </Grid>
-            <Grid item>
-              <GameBoard
-                gameState={gameState}
-                player={player}
-                matchId={matchId}
-              />
-            </Grid>
-            <Grid item>
-              {player.role === TEAM_ROLE.FIELD_AGENT ? (
-                <Button variant="contained" color="secondary" onClick={endTurn}>
-                  End Turn
-                </Button>
-              ) : null}
+            <Grid item xs={9} className="game-panel">
+              <Grid
+                container
+                direction="column"
+                justify="center"
+                alignItems="center"
+                spacing={4}
+              >
+                <Grid item className="game-prompt">
+                  <GamePrompt gameState={gameState} />
+                </Grid>
+                <Grid item>
+                  <GameBoard
+                    gameState={gameState}
+                    player={player}
+                    matchId={matchId}
+                  />
+                </Grid>
+                <Grid item>
+                  {player.role === TEAM_ROLE.FIELD_AGENT ? (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={endTurn}
+                    >
+                      End Turn
+                    </Button>
+                  ) : null}
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Grid>
-    </Container>
+        </Container>
+      ) : null}
+    </>
   );
 }
 
