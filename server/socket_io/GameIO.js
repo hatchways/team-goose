@@ -16,10 +16,10 @@ class GameIO {
       console.log(`New client connected from the game: ${socket.id}`);
 
       // room should be a matchId (string)
-      socket.on("join room", (matchId) => {
+      socket.on("join game", (matchId) => {
         socket.join(matchId);
         const message = MatchManager.joinMatch(matchId);
-        socket.emit("join room", message);
+        socket.emit("resolve join game", message);
       });
 
       socket.on("disconnect", () => {
@@ -28,13 +28,19 @@ class GameIO {
 
       socket.on("create game", (hostId) => {
         const matchId = MatchManager.createMatch(hostId);
+        socket.join(matchId);
         console.log(matchId);
         socket.emit("resolve create game", matchId);
       });
 
-      socket.on("game start", (matchId) => {
+      socket.on("game start", (matchId, teams) => {
+        // handle assigning red and blue team players data
+      });
+
+      socket.on("game state onload", (matchId) => {
+        socket.join(matchId);
         const match = MatchManager.getMatch(matchId);
-        socket.emit("start turn", match.getGameState());
+        socket.emit("game state change", match.getGameState());
       });
 
       // setInterval(() => {
@@ -52,34 +58,9 @@ class GameIO {
       socket.on("card select", (matchId, data) => {
         const match = MatchManager.getMatch(matchId);
         match.vote(data);
-        socket.emit("game state change", match.getGameState());
+        this.gameIO.to(matchId).emit("game state change", match.getGameState());
       });
     });
-  }
-
-  // game engine listens in on when game gets started ("Game Start" button gets pressed)
-  registerGameStartEvent(callback) {
-    socket.on("game start", callback);
-  }
-
-  // game engine listens in on team role changes in the lobby
-  registerRoleChangeEvent(callback) {
-    socket.on("role change", callback);
-  }
-
-  // game engine can listen in on player’s word select moves
-  registerWordSelectEvent(callback) {
-    socket.on("word select", callback);
-  }
-
-  //game engine can listen in on a Field Agent’s end turn
-  registerEndTurnEvent(callback) {
-    socket.on("end turn", callback);
-  }
-
-  // game engine sends its game state back to the client in reaction to a user's recent action (word gets selected, end their turn, etc.)
-  sendGameState(gameState) {
-    this.gameIO.to(message.room).emit("game state change", gameState);
   }
 
   static init(io) {
