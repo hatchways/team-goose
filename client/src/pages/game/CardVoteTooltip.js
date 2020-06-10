@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Tooltip, Typography, Zoom } from "@material-ui/core";
+import { Grid, Tooltip, Typography } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
 
 const useStyles = makeStyles(() => ({
