@@ -1,6 +1,7 @@
 const Board = require("./Board");
 const GameTurns = require("./GameTurns");
 const WordRoles = require("./WordRoles");
+const Team = require('./Team');
 
 class Game {
   constructor(hostId) {
@@ -9,9 +10,9 @@ class Game {
     this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
       Math.round(Math.random())
     ];
-
-    this.redTeam = [];
-    this.blueTeam = [];
+    // { role: "" , player: { email, id, name } }
+    this.redTeam = JSON.parse(JSON.stringify(Team.DEFAULT_TEAM_STATE));
+    this.blueTeam = JSON.parse(JSON.stringify(Team.DEFAULT_TEAM_STATE));
     this.redPoints = 0;
     this.bluePoints = 0;
     this.numGuessLeft = 0;
@@ -27,10 +28,22 @@ class Game {
   addBluePoint() {
     this.bluePoints += 1;
   }
+  addPlayerToBlueTeam(player, index) {
+    this.blueTeam[index].player = player;
+  }
+  addPlayerToRedTeam(player, index) {
+    this.redTeam[index].player = player;
+  }
 
   //reducers
   reduceNumGuessLeft() {
     this.numGuessLeft -= 1;
+  }
+  removePlayerFromBlueTeam(index) {
+    this.blueTeam[index].player = null;
+  }
+  removePlayerFromRedTeam(index) {
+    this.redTeam[index].player = null;
   }
 
   //getters

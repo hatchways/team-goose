@@ -24,4 +24,23 @@ router.post("/:id/join-match", (req, res) => {
   }
 });
 
+router.get('/:id/teams', (req, res) => {
+  const matchId = req.params.id;
+  try {
+    const match = MatchManager.getMatch(matchId);
+    if (!match) {
+      res.status(400).json({
+        message: 'No Match found'
+      })
+    }
+    res.json({
+      redTeam: match.getRedTeam(),
+      blueTeam: match.getBlueTeam()
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+})
+
 module.exports = router;

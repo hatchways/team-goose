@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
+import { AppContext } from '../../App';
 import { copyToClipboard } from "../../utils/utils";
 import { useUser } from "../../contexts/user";
+import GameIO from '../../socket_io/GameIO';
 import Header from "../common/Header";
 import TeamSelect from "./team_select/TeamSelect";
 import "../common/common.css";
@@ -16,13 +18,21 @@ const FIELD_AGENT_INDEX = 1;
 
 function GameLobby(props) {
   const { user } = useUser(); // will be used as player's data (i.e. id and name)
+  const { gameIO } = useContext(AppContext);
   const [matchID, setMatchId] = useState(null);
   const [canStartGame, setCanStartGame] = useState(false);
 
   useEffect(() => {
     const matchId = props.location.state ? props.location.state.matchId : null;
     if (matchId) {
+      const action = {
+        type: GameIO.ACTION_TYPE.CONNECT,
+        payload: {
+          room: matchId,
+        },
+      }
       setMatchId(matchId);
+      gameIO.dispatch(action);
     } else {
       props.history.push({ pathname: "/" });
     }
@@ -70,7 +80,7 @@ function GameLobby(props) {
             spacing={2}
           >
             <Grid item>
-              <TeamSelect currentUser={user} onChange={onTeamSelect} />
+              <TeamSelect currentUser={user} onChange={onTeamSelect} matchId={props.location.state.matchId} />
             </Grid>
             <Grid item>
               <Button
