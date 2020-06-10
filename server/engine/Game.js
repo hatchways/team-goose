@@ -13,10 +13,10 @@ class Game {
   constructor(hostId) {
     this.hostId = hostId;
 
-    this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
-      Math.round(Math.random())
-    ];
-    // this.gameTurn = GameTurns.BLUE_AGENT_TURN;
+    // this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
+    //   Math.round(Math.random())
+    // ];
+    this.gameTurn = GameTurns.BLUE_AGENT_TURN;
 
     this.redTeam = [
       { role: "Spymaster", player: { id: "id_1", name: "name1" } },
@@ -176,6 +176,7 @@ class Game {
     }
     this.delRestVotes(votedCards, actualGuessNum-1);
     console.log("============voted cards=============\n", ...votedCards);
+    console.log("============points=============\n", "Blue points", this.getBluePoints(), "Red Points", this.getRedPoints());
   }
 
   delRestVotes(votedCards, index) {
@@ -196,13 +197,13 @@ class Game {
       case GameTurns.RED_AGENT_TURN:
         this.decideCardSelect();
         if (this.getGameTurn() === GameTurns.RED_AGENT_TURN) {
-          this.setGameTurn(GameTurns.BLUE_SPY_TURN);
+          this.setGameTurn(GameTurns.BLUE_AGENT_TURN); //should be blue spy turn
         }
         break;
       case GameTurns.BLUE_AGENT_TURN:
         this.decideCardSelect();
         if (this.getGameTurn() === GameTurns.BLUE_AGENT_TURN) {
-          this.setGameTurn(GameTurns.RED_SPY_TURN);
+          this.setGameTurn(GameTurns.RED_AGENT_TURN); //should be Red spy turn
         }
         break;
       case GameTurns.End:
@@ -275,22 +276,22 @@ class Game {
 
 module.exports = Game;
 
-const newGame = new Game("user1");
-newGame.giveHint(1);
-newGame.nextGameTurn();
-console.log("============game Turn============\n", newGame.getGameState().gameTurn);
-newGame.vote({ index: 0, player: { name: "user1", team: "Red", id: "id_1" } });
-newGame.vote({ index: 1, player: { name: "user2", team: "Red", id: "id_2" } });
-newGame.vote({ index: 1, player: { name: "user1", team: "Red", id: "id_1" } });
-newGame.vote({ index: 2, player: { name: "user2", team: "Red", id: "id_2" } });
-newGame.nextGameTurn();
-console.log(
-  "=============cards===========\n",
-  newGame.getGameState().gameBoard.getCards()[0], "index 0\n",
-  newGame.getGameState().gameBoard.getCards()[1], "index 1\n",
-  newGame.getGameState().gameBoard.getCards()[2], "index 2\n"
-);
-console.log("============points============\n", "red points", newGame.getRedPoints(), "blue points", newGame.getBluePoints());
-console.log("=============game Turn=========\n", newGame.getGameTurn());
-newGame.giveHint(3);
-newGame.nextGameTurn();
+// const newGame = new Game("user1");
+// newGame.giveHint(1);
+// newGame.nextGameTurn();
+// console.log("============game Turn============\n", newGame.getGameState().gameTurn);
+// newGame.vote({ index: 0, player: { name: "user1", team: "Red", id: "id_1" } });
+// newGame.vote({ index: 1, player: { name: "user2", team: "Red", id: "id_2" } });
+// newGame.vote({ index: 1, player: { name: "user1", team: "Red", id: "id_1" } });
+// newGame.vote({ index: 2, player: { name: "user2", team: "Red", id: "id_2" } });
+// newGame.nextGameTurn();
+// console.log(
+//   "=============cards===========\n",
+//   newGame.getGameState().gameBoard.getCards()[0], "index 0\n",
+//   newGame.getGameState().gameBoard.getCards()[1], "index 1\n",
+//   newGame.getGameState().gameBoard.getCards()[2], "index 2\n"
+// );
+// console.log("============points============\n", "red points", newGame.getRedPoints(), "blue points", newGame.getBluePoints());
+// console.log("=============game Turn=========\n", newGame.getGameTurn());
+// newGame.giveHint(3);
+// newGame.nextGameTurn();
