@@ -38,8 +38,7 @@ function CreateGame(props) {
         pathname: "/game_lobby",
         state: { matchId: matchId },
       });
-    })
-    
+    });
   };
 
   const onChange = (evt) => {
