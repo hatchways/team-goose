@@ -54,12 +54,7 @@ class Board {
     return this.blueAgentNum;
   }
   getVotedCards() {
-    console.log("in get")
-    this.getCards().filter(card => {
-      console.log(card);
-       return !card.getStatus() && card.getNumVotes() > 0
-    });
-    // return this.getCards().filter(card => !card.getStatus() && card.getNumVotes() > 0);
+    return this.getCards().filter(card => !card.getStatus() && card.getNumVotes() > 0);
   }
 
   setCard(index) {
