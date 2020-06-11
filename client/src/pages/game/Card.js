@@ -20,9 +20,14 @@ const CARD_ROLE = {
   ASSASSIN: { name: "Assassin", css: "assassin" },
 };
 
+const CARD_GUESSED = {
+  RED_TEAM: "selected bg-red",
+  BLUE_TEAM: "selected bg-blue",
+};
+
 function Card({ index, value, onClick, player, isActive }) {
   const classes = useStyles();
-  const style = useCardType(player.role, value.role, isActive);
+  const style = useCardType(player.role, value, isActive);
 
   return (
     <CardVoteTooltip voters={value.voted}>
@@ -51,7 +56,7 @@ function Card({ index, value, onClick, player, isActive }) {
             </Typography>
           </Grid>
           <Grid item>
-            {value.voted.length > 0 ? (
+            {value.voted.length > 0 && !value.selected ? (
               <CheckCircleOutlineIcon
                 className={player.team === TEAM_CODE.RED ? "red" : "blue"}
               />
@@ -63,11 +68,13 @@ function Card({ index, value, onClick, player, isActive }) {
   );
 }
 
-function useCardType(type = TEAM_ROLE.FIELD_AGENT, role, isActive = false) {
+function useCardType(type = TEAM_ROLE.FIELD_AGENT, value, isActive = false) {
   const [style, setStyle] = useState("");
 
   useEffect(() => {
+    const role = value.role;
     let style = [];
+
     if (!isActive) {
       style.push("non-active");
     } else {
@@ -86,8 +93,16 @@ function useCardType(type = TEAM_ROLE.FIELD_AGENT, role, isActive = false) {
       }
     }
 
+    if (value.selected) {
+      if (role === CARD_ROLE.RED_AGENT.name) {
+        style.push(CARD_GUESSED.RED_TEAM);
+      } else if (role === CARD_ROLE.BLUE_AGENT.name) {
+        style.push(CARD_GUESSED.BLUE_TEAM);
+      }
+    }
+
     setStyle(style.join(" "));
-  }, [isActive, type, role]);
+  }, [isActive, type, value]);
 
   return style;
 }
