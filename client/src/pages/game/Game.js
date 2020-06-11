@@ -33,7 +33,7 @@ function Game(props) {
   }, []);
 
   const endTurn = () => {
-    gameIO.state.io.emit("end turn");
+    gameIO.state.io.emit("end turn", matchId);
     console.log("end turn");
   };
 
