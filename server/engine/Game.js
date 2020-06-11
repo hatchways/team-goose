@@ -131,7 +131,9 @@ class Game {
   decideCardSelect() {
     let votedCards = this.getBoard().getVotedCards();
     votedCards.sort((cardA, cardB) => cardB.voted.length - cardA.voted.length);
+
     const actualGuessNum = Math.min(votedCards.length, this.getMaxNumGuess());
+
     for (let num = 0; num < actualGuessNum; num++) {
       if (votedCards[num].role === WordRoles.BLACK) {
         if (this.getGameTurn() === GameTurns.RED_AGENT_TURN) {
@@ -150,7 +152,7 @@ class Game {
         } else if (this.getGameTurn() === GameTurns.BLUE_AGENT_TURN) {
           this.addRedPoint();
           votedCards[num].select();
-          this.setGameTurn(GameTurns.RED_SPY_TURN); //should be GameTurns.RED_SPY_TURN
+          this.setGameTurn(GameTurns.RED_SPY_TURN);
           this.delRestVotes(votedCards, num);
           break;
         }
@@ -162,7 +164,7 @@ class Game {
         } else if (this.getGameTurn() === GameTurns.RED_AGENT_TURN) {
           this.addBluePoint();
           votedCards[num].select();
-          this.setGameTurn(GameTurns.BLUE_SPY_TURN); // should be GameTurns.BLUE_SPY_TURN
+          this.setGameTurn(GameTurns.BLUE_SPY_TURN);
           this.delRestVotes(votedCards, num);
           break;
         }
@@ -184,13 +186,15 @@ class Game {
 
   delRestVotes(votedCards, index) {
     for (let num = index + 1; num < votedCards.length; num++) {
-      console.log(votedCards[num], "in delRestVotes");
       votedCards[num].voted = [];
     }
   }
 
   nextGameTurn() {
-    switch (this.gameTurn) {
+    if (this.checkIfWinning()) {
+      this.setGameTurn(GameTurns.End);
+    }
+     switch (this.gameTurn) {
       case GameTurns.RED_SPY_TURN:
         this.setGameTurn(GameTurns.RED_AGENT_TURN);
         break;
@@ -200,13 +204,13 @@ class Game {
       case GameTurns.RED_AGENT_TURN:
         this.decideCardSelect();
         if (this.getGameTurn() === GameTurns.RED_AGENT_TURN) {
-          this.setGameTurn(GameTurns.BLUE_SPY_TURN); //should be blue spy turn
+          this.setGameTurn(GameTurns.BLUE_SPY_TURN);
         }
         break;
       case GameTurns.BLUE_AGENT_TURN:
         this.decideCardSelect();
         if (this.getGameTurn() === GameTurns.BLUE_AGENT_TURN) {
-          this.setGameTurn(GameTurns.RED_SPY_TURN); //should be Red spy turn
+          this.setGameTurn(GameTurns.RED_SPY_TURN);
         }
         break;
       case GameTurns.End:
@@ -221,33 +225,14 @@ class Game {
     this.setNumGuessLeft(numGuess);
   }
 
-  checkIfWinning(info) {
-    if (
-      this.getGameTurn() === GameTurns.BLUE_AGENT_TURN ||
-      this.getGameTurn() === GameTurns.RED_AGENT_TURN
-    ) {
-      if (
-        info.role === WordRoles.BLACK &&
-        this.getGameTurn() === GameTurns.BLUE_AGENT_TURN
-      ) {
-        this.setWinner(this.getRedTeam());
-        return true;
-      }
-      if (
-        info.role === WordRoles.BLACK &&
-        this.getGameTurn() === GameTurns.RED_AGENT_TURN
-      ) {
-        this.setWinner(this.getBlueTeam());
-        return true;
-      }
-      if (this.getRedPoints() === this.gameBoard.getRedAgentNum()) {
-        this.setWinner(this.getRedTeam());
-        return true;
-      }
-      if (this.getBluePoints() === this.gameBoard.getBlueAgentNum()) {
-        this.setWinner(this.getBlueTeam());
-        return true;
-      }
+  checkIfWinning() {
+    if (this.getRedPoints() === this.gameBoard.getRedAgentNum()) {
+      this.setWinner(TeamColor.RED);
+      return true;
+    }
+    if (this.getBluePoints() === this.gameBoard.getBlueAgentNum()) {
+      this.setWinner(TeamColor.BLUE);
+      return true;
     }
     return false;
   }
