@@ -15,28 +15,11 @@ function CreateGame(props) {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const handleNewGame = () => {
-    // fetch("/api/match", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ hostId: "host_01" }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     props.history.push({
-    //       pathname: "/game_lobby",
-    //       state: { matchId: data.matchId },
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
     gameIO.state.io.emit("create game", "hostId");
     gameIO.state.io.on("resolve create game", ({ matchId }) => {
       props.history.push({
         pathname: "/game_lobby",
-        state: { matchId: matchId },
+        state: { matchId },
       });
     });
   };
@@ -47,27 +30,18 @@ function CreateGame(props) {
   };
 
   const handleJoinGame = () => {
-    fetch(`/api/match/${matchId}/join-match`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === 200) {
-          props.history.push({
-            pathname: "/game_lobby",
-            state: { matchId: matchId },
-          });
-        } else {
-          setErrorMessage(data.message);
-          setMatchId("");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    gameIO.state.io.emit("join game", matchId);
+    gameIO.state.io.on("resolve join game", (message) => {
+      if (message.status === 200) {
+        props.history.push({
+          pathname: "/game_lobby",
+          state: { matchId },
+        });
+      } else {
+        setErrorMessage(message.message);
+        setMatchId("");
+      }
+    });
   };
 
   return (

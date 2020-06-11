@@ -16,7 +16,6 @@ class GameIO {
       console.log(`New client connected from the game: ${socket.id}`);
 
       socket.on("join game", (matchId) => {
-        socket.join(matchId);
         const message = MatchManager.joinMatch(matchId);
         socket.emit("resolve join game", message);
       });
@@ -26,14 +25,20 @@ class GameIO {
       });
 
       socket.on("create game", (hostId) => {
-        const matchId = MatchManager.createMatch(hostId);
-        socket.join(matchId);
-        console.log(matchId);
-        socket.emit("resolve create game", matchId);
+        const match = MatchManager.createMatch(hostId);
+        socket.emit("resolve create game", match);
       });
 
-      socket.on("game start", (matchId, teams) => {
-        // handle assigning red and blue team players data
+      socket.on("game start", (matchId, user) => {
+        const match = MatchManager.getMatch(matchId);
+        const redTeam = match.getRedTeam();
+        const blueTeam = match.getBlueTeam();
+        const players = [...redTeam, ...blueTeam];
+        let player = players.find((player) => player.user.id === user.id);
+        if (!player) {
+          player = { team: "", role: "", user };
+        }
+        socket.emit("resolve start game", player);
       });
 
       socket.on("game state onload", (matchId) => {
@@ -64,6 +69,27 @@ class GameIO {
         match.giveHint(numOfGuesses);
         match.nextGameTurn();
         this.gameIO.to(matchId).emit("game state change", match.getGameState());
+      });
+
+      socket.on("lobby role change", (matchId, redTeam, blueTeam) => {
+        const match = MatchManager.getMatch(matchId);
+        match.setRedTeam(redTeam);
+        match.setBlueTeam(blueTeam);
+        socket
+          .to(matchId)
+          .emit(
+            "resolve lobby role change",
+            match.getRedTeam(),
+            match.getBlueTeam()
+          );
+      });
+
+      socket.on("game lobby onload", (matchId) => {
+        const match = MatchManager.getMatch(matchId);
+        socket.join(matchId);
+        const redTeam = match.getRedTeam();
+        const blueTeam = match.getBlueTeam();
+        socket.emit("resolve game lobby onload", redTeam, blueTeam);
       });
     });
   }
