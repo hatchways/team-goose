@@ -36,8 +36,16 @@ class Game {
       Math.round(Math.random())
     ];
 
-    this.redTeam = DEFAULT_RED_TEAM_STATE;
-    this.blueTeam = DEFAULT_BLUE_TEAM_STATE;
+    // this.redTeam = DEFAULT_RED_TEAM_STATE;
+    // this.blueTeam = DEFAULT_BLUE_TEAM_STATE;
+    this.redTeam = [
+      { team: TeamColor.RED, role: TEAM_ROLE.SPYMASTER, user: { id: "id_1", name: "name1" } },
+      { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: { id: "id_2", name: "name2" }  },
+    ];
+    this.blueTeam = [
+      { team: TeamColor.BLUE, role: TEAM_ROLE.SPYMASTER, user: { id: "id_3", name: "name3" } },
+      { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: { id: "id_4", name: "name4" }  },
+    ];
     this.redPoints = 0;
     this.bluePoints = 0;
     this.numGuessLeft = 0;

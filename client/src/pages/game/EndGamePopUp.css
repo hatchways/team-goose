@@ -1,3 +1,6 @@
+.end-game-model {
+}
+
 .end-game-pop-up {
   width: 420px;
   height: 300px;
@@ -7,8 +10,17 @@
   background-color: white;
   box-shadow: 0 0 15px 5px rgba(6, 6, 6, 0.4);
   position: relative;
-  top: 30px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 200ms ease-in-out;
   margin: auto;
+  z-index: 10;
+  position: fixed;
+}
+
+.end-game-pop-up.active {
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .end-game-pop-up #skull {
@@ -25,4 +37,14 @@
 .end-game-pop-up p {
   margin-bottom: 20px;
   font-weight: 500;
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5;
 }

@@ -10,17 +10,20 @@ export default function EndGamePopUp({ winner, bluePoints, redPoints }) {
   redPoints = 6;
 
   return (
-    <div className="end-game-pop-up">
-      <Skull id="skull" />
-      <h2>Game over!</h2>
-      <p className={winner === "Blue" ? "blue" : "red"}>{winner} wins</p>
-      <p>
-        <span className="blue">{bluePoints}</span> :{" "}
-        <span className="red">{redPoints}</span>
-      </p>
-      <Button variant="contained" color="primary" size="large">
-        New Game
-      </Button>
+    <div className="end-game-model active">
+      <div className="end-game-pop-up active">
+        <Skull id="skull" />
+        <h2>Game over!</h2>
+        <p className={winner === "Blue" ? "blue" : "red"}>{winner} wins</p>
+        <p>
+          <span className="blue">{bluePoints}</span> :{" "}
+          <span className="red">{redPoints}</span>
+        </p>
+        <Button variant="contained" color="primary" size="large">
+          New Game
+        </Button>
+      </div>
+      <div id="overlay"></div>
     </div>
   );
 }

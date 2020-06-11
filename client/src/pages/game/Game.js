@@ -8,6 +8,7 @@ import { useGameState } from "../../socket_io/GameIO";
 import { TEAM_ROLE } from "../game_lobby/team_select/TeamPresets";
 import GamePrompt from "./GamePrompt";
 import GameBoard from "./GameBoard";
+import EndGamePopUp from "./EndGamePopUp";
 import Chat from "../chat/Chat";
 import "./Game.css";
 
@@ -75,6 +76,7 @@ function Game(props) {
               </Grid>
             </Grid>
           </Grid>
+          <EndGamePopUp />
         </Container>
       ) : null}
     </>
