@@ -16,7 +16,7 @@ class Game {
     // this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
     //   Math.round(Math.random())
     // ];
-    this.gameTurn = GameTurns.BLUE_AGENT_TURN;
+    this.gameTurn = GameTurns.BLUE_SPY_TURN;
 
     this.redTeam = [
       { role: "Spymaster", player: { id: "id_1", name: "name1" } },
@@ -174,13 +174,19 @@ class Game {
         votedCards[num].select();
       }
     }
-    this.delRestVotes(votedCards, actualGuessNum-1);
+    this.delRestVotes(votedCards, actualGuessNum - 1);
     console.log("============voted cards=============\n", ...votedCards);
-    console.log("============points=============\n", "Blue points", this.getBluePoints(), "Red Points", this.getRedPoints());
+    console.log(
+      "============points=============\n",
+      "Blue points",
+      this.getBluePoints(),
+      "Red Points",
+      this.getRedPoints()
+    );
   }
 
   delRestVotes(votedCards, index) {
-    for (let num = index+1; num < votedCards.length; num++) {
+    for (let num = index + 1; num < votedCards.length; num++) {
       console.log(votedCards[num], "in delRestVotes");
       votedCards[num].voted = [];
     }

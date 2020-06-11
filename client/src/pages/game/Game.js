@@ -21,7 +21,7 @@ function Game(props) {
   const [player] = useState({
     user: props.location.state ? props.location.state.user : null,
     team: "Blue",
-    role: "Field Agent",
+    role: "Spymaster",
   });
 
   useEffect(() => {
