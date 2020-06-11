@@ -15,7 +15,6 @@ class GameIO {
     this.gameIO.on("connection", (socket) => {
       console.log(`New client connected from the game: ${socket.id}`);
 
-      // room should be a matchId (string)
       socket.on("join game", (matchId) => {
         socket.join(matchId);
         const message = MatchManager.joinMatch(matchId);
@@ -58,6 +57,13 @@ class GameIO {
       socket.on("card select", (matchId, data) => {
         const match = MatchManager.getMatch(matchId);
         match.vote(data);
+        this.gameIO.to(matchId).emit("game state change", match.getGameState());
+      });
+
+      socket.on("send max allowed guesses", (matchId, numOfGuesses) => {
+        const match = MatchManager.getMatch(matchId);
+        // do something with the number numOfGuesses on this line
+        // end current team spymaster's turn
         this.gameIO.to(matchId).emit("game state change", match.getGameState());
       });
     });

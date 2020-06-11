@@ -5,8 +5,9 @@ import { Box } from "@material-ui/core";
 import { AppContext } from "../../App";
 import ChatIO, { useRecievedMessage } from "../../socket_io/ChatIO";
 import Dialog from "./Dialog";
-import { FieldAgentDialogInput } from "./DialogInput";
+import { FieldAgentDialogInput, SpymasterDialogInput } from "./DialogInput";
 import { MESSAGE_TYPE } from "./DialogType";
+import { TEAM_ROLE } from "../game_lobby/team_select/TeamPresets";
 import "./Chat.css";
 
 const CHAT_LOG_ELEMENT_ID = "chat-log";
@@ -89,11 +90,21 @@ function Chat({ matchId, player }) {
       <Box component="div" id={`${CHAT_LOG_ELEMENT_ID}`}>
         {log.length > 0 ? generateChatLog() : null}
       </Box>
-      <FieldAgentDialogInput
-        onChange={onInputTextChange}
-        onSubmit={sendMessage}
-        value={inputText}
-      />
+      {player.role === TEAM_ROLE.SPYMASTER ? (
+        <SpymasterDialogInput
+          onChange={onInputTextChange}
+          onSubmit={sendMessage}
+          value={inputText}
+          matchId={matchId}
+          player={player}
+        />
+      ) : (
+        <FieldAgentDialogInput
+          onChange={onInputTextChange}
+          onSubmit={sendMessage}
+          value={inputText}
+        />
+      )}
     </div>
   );
 }
