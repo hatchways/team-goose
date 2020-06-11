@@ -23,7 +23,7 @@ export default function EndGamePopUp({ winner, bluePoints, redPoints }) {
           New Game
         </Button>
       </div>
-      <div id="overlay"></div>
+      <div class="active" id="overlay"></div>
     </div>
   );
 }

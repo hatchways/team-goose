@@ -36,6 +36,8 @@ class Game {
       Math.round(Math.random())
     ];
 
+    this.gameTurn = GameTurns.BLUE_AGENT_TURN;
+
     // this.redTeam = DEFAULT_RED_TEAM_STATE;
     // this.blueTeam = DEFAULT_BLUE_TEAM_STATE;
     this.redTeam = [
