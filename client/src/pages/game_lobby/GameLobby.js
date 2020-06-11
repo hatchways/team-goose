@@ -47,24 +47,24 @@ function GameLobby(props) {
     const spyMaster = team[SPYMASTER_INDEX];
     const fieldAgents = team.slice(FIELD_AGENT_INDEX);
 
-    return spyMaster.player && fieldAgents.some((agent) => agent.player);
+    return spyMaster.user && fieldAgents.some((agent) => agent.user);
   };
 
-  const onTeamSelect = (redTeam, blueTeam) => {
+  const onRoleChange = (redTeam, blueTeam) => {
     const isRedTeamReady = isTeamReady(redTeam);
     const isBlueTeamReady = isTeamReady(blueTeam);
-
     setCanStartGame(isRedTeamReady && isBlueTeamReady);
   };
 
   const startGame = () => {
     if (canStartGame) {
-      gameIO.state.io.emit("game start", matchId, []);
-      props.history.push({
-        pathname: "/game",
-        state: { matchId, user: user },
+      gameIO.state.io.emit("game start", matchId, user);
+      gameIO.state.io.on("resolve start game", (player) => {
+        props.history.push({
+          pathname: "/game",
+          state: { matchId, player },
+        });
       });
-      console.log("Game is starting...");
     }
   };
 
@@ -96,7 +96,7 @@ function GameLobby(props) {
                     redTeamData={redTeam}
                     blueTeamData={blueTeam}
                     currentUser={user}
-                    onChange={onTeamSelect}
+                    onRoleChange={onRoleChange}
                   />
                 </Grid>
                 <Grid item>

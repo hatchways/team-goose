@@ -19,7 +19,7 @@ function TeamSelect({
   matchId,
   redTeamData,
   blueTeamData,
-  onChange,
+  onRoleChange,
   currentUser,
 }) {
   const { gameIO } = useContext(AppContext);
@@ -30,10 +30,24 @@ function TeamSelect({
   const [isRoleAssigned, setIsRoleAssigned] = useState(false);
 
   useEffect(() => {
-    onChange(redTeam, blueTeam);
     gameIO.state.io.emit("lobby role change", matchId, redTeam, blueTeam);
     // eslint-disable-next-line
   }, [isRoleAssigned]);
+
+  useEffect(() => {
+    const players = [...redTeam, ...blueTeam];
+    const player = players.find((player) =>
+      player.user ? player.user.id === currentUser.id : false
+    );
+    if (player) {
+      setIsRoleAssigned(true);
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    onRoleChange(redTeam, blueTeam);
+  });
 
   const joinRole = (teamCode, index) => {
     const action = {

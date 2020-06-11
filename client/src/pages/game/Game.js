@@ -18,11 +18,9 @@ function Game(props) {
   );
   const gameState = useGameState(gameIO.state.io, matchId);
   // TODO: get player data from resolve game start event after roles are assigned
-  const [player] = useState({
-    user: props.location.state ? props.location.state.user : null,
-    team: "Blue",
-    role: "Spymaster",
-  });
+  const [player] = useState(
+    props.location.state ? props.location.state.player : null
+  );
 
   useEffect(() => {
     // set game data from game lobby data

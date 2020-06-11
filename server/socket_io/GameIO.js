@@ -29,8 +29,16 @@ class GameIO {
         socket.emit("resolve create game", match);
       });
 
-      socket.on("game start", (matchId, teams) => {
-        // handle assigning red and blue team players data
+      socket.on("game start", (matchId, user) => {
+        const match = MatchManager.getMatch(matchId);
+        const redTeam = match.getRedTeam();
+        const blueTeam = match.getBlueTeam();
+        const players = [...redTeam, ...blueTeam];
+        let player = players.find((player) => player.user.id === user.id);
+        if (!player) {
+          player = { team: "", role: "", user };
+        }
+        socket.emit("resolve start game", player);
       });
 
       socket.on("game state onload", (matchId) => {
