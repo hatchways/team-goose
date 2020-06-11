@@ -13,8 +13,8 @@ const TEAM_ROLE = {
 };
 
 const DEFAULT_RED_TEAM_STATE = [
-  { team: TeamColor.RED, role: TEAM_ROLE.SPYMASTER, user: null },
-  { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
+  { team: TeamColor.RED, role: TEAM_ROLE.SPYMASTER, user: {id:"id1", name:"player1"} },
+  { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: {id:"id2", name:"player2"} },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
 ];

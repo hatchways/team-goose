@@ -1,17 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
 import { AppContext } from "../../App";
 import { useGameState } from "../../socket_io/GameIO";
 
-import { useMatchId } from "../../socket_io/GameIO";
 import "./Game.css";
 
 function GameScore() {
-  const { gameIO } = useContext(AppContext);
-  const [matchId] = useMatchId();
-  const gameState = useGameState(gameIO.state.io, matchId);
+  const { gameIO, match } = useContext(AppContext);
+  const gameState = useGameState(gameIO.state.io, match.state.match.id);
 
   const generateScore = (score, teamName) => {
     return (
@@ -34,7 +32,7 @@ function GameScore() {
 
   return (
     <>
-      {gameState ? (
+      {gameState && match.state.match.hasStarted ? (
         <Grid container justify="center" alignItems="flex-start" spacing={4}>
           <Grid item className="red-team-color">
             {generateScore(gameState.redPoints, "Red Team")}
