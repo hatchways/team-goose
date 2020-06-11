@@ -63,6 +63,9 @@ class GameIO {
       socket.on("send max allowed guesses", (matchId, numOfGuesses) => {
         const match = MatchManager.getMatch(matchId);
         // do something with the number numOfGuesses on this line
+        match.giveHint(numOfGuesses);
+        match.nextGameTurn();
+        console.log(match.getGameState());
         // end current team spymaster's turn
         this.gameIO.to(matchId).emit("game state change", match.getGameState());
       });
