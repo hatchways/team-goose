@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -6,39 +6,40 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Typography from "@material-ui/core/Typography";
 
-import {
-  TEAM_CODE,
-  ACTION_TYPE,
-  DEFAULT_RED_TEAM_STATE,
-  DEFAULT_BLUE_TEAM_STATE,
-  reducer as teamReducer,
-} from "./TeamPresets";
+import { AppContext } from "../../../App";
+import { useGameTeams } from "../../../socket_io/GameIO";
+import { TEAM_CODE, ACTION_TYPE } from "./TeamPresets";
 import { JoinRoleAction, LeaveRoleAction } from "./TeamSelectActions";
 import "./TeamSelect.css";
 import "../../common/common.css";
 
 const UNOCCUPIED_SPOT_NAME = "--";
 
-function TeamSelect(props) {
-  const [redTeam, redTeamDispatch] = useReducer(
-    teamReducer,
-    DEFAULT_RED_TEAM_STATE
-  );
-  const [blueTeam, blueTeamDispatch] = useReducer(
-    teamReducer,
-    DEFAULT_BLUE_TEAM_STATE
-  );
+function TeamSelect({
+  matchId,
+  redTeamData,
+  blueTeamData,
+  onChange,
+  currentUser,
+}) {
+  const { gameIO } = useContext(AppContext);
+  const [
+    { redTeam, redTeamDispatch },
+    { blueTeam, blueTeamDispatch },
+  ] = useGameTeams(gameIO.state.io, redTeamData, blueTeamData);
   const [isRoleAssigned, setIsRoleAssigned] = useState(false);
 
   useEffect(() => {
-    props.onChange(redTeam, blueTeam);
-  });
+    onChange(redTeam, blueTeam);
+    gameIO.state.io.emit("lobby role change", matchId, redTeam, blueTeam);
+    // eslint-disable-next-line
+  }, [isRoleAssigned]);
 
   const joinRole = (teamCode, index) => {
     const action = {
       type: ACTION_TYPE.SET_PLAYER,
       payload: index,
-      player: props.currentUser,
+      user: currentUser,
     };
 
     teamCode === TEAM_CODE.RED
@@ -64,7 +65,7 @@ function TeamSelect(props) {
   const generateListItem = (teamCode) => {
     const team = teamCode === TEAM_CODE.RED ? redTeam : blueTeam;
     const generateActions = (spot, index) => {
-      return !spot.player ? (
+      return !spot.user ? (
         !isRoleAssigned ? (
           <JoinRoleAction
             joinRole={joinRole}
@@ -72,7 +73,7 @@ function TeamSelect(props) {
             index={index}
           />
         ) : null
-      ) : props.currentUser.id === spot.player.id && isRoleAssigned ? (
+      ) : currentUser.id === spot.user.id && isRoleAssigned ? (
         <LeaveRoleAction
           leaveRole={leaveRole}
           teamCode={teamCode}
@@ -86,7 +87,7 @@ function TeamSelect(props) {
       return (
         <ListItem key={uniquekey}>
           <ListItemText secondary={spot.role}>
-            {spot.player ? spot.player.name : UNOCCUPIED_SPOT_NAME}
+            {spot.user ? spot.user.name : UNOCCUPIED_SPOT_NAME}
           </ListItemText>
           <ListItemSecondaryAction>
             {generateActions(spot, index)}

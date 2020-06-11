@@ -18,10 +18,12 @@ const FIELD_AGENT_INDEX = 1;
 
 function GameLobby(props) {
   const { user } = useUser();
-  const [matchId, setMatchId] = useState(null);
-  const [canStartGame, setCanStartGame] = useState(false);
-
   const { gameIO } = useContext(AppContext);
+  const [matchId, setMatchId] = useState(props.location.state.matchId);
+  const [canStartGame, setCanStartGame] = useState(false);
+  const [redTeam, setRedTeam] = useState(null);
+  const [blueTeam, setBlueTeam] = useState(null);
+
   useEffect(() => {
     const matchId = props.location.state ? props.location.state.matchId : null;
     if (matchId) {
@@ -29,6 +31,15 @@ function GameLobby(props) {
     } else {
       props.history.push({ pathname: "/" });
     }
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    gameIO.state.io.emit("game lobby onload", matchId);
+    gameIO.state.io.on("resolve game lobby onload", (redTeam, blueTeam) => {
+      setRedTeam(redTeam);
+      setBlueTeam(blueTeam);
+    });
     // eslint-disable-next-line
   }, []);
 
@@ -48,7 +59,6 @@ function GameLobby(props) {
 
   const startGame = () => {
     if (canStartGame) {
-      // send list of players of each team to server and transition to game board
       gameIO.state.io.emit("game start", matchId, []);
       props.history.push({
         pathname: "/game",
@@ -59,18 +69,9 @@ function GameLobby(props) {
   };
 
   return (
-    <Container>
-      <Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="center"
-        spacing={2}
-      >
-        <Grid item className="header">
-          <Header title="New Game" />
-        </Grid>
-        <Grid item>
+    <>
+      {redTeam && blueTeam ? (
+        <Container>
           <Grid
             container
             direction="column"
@@ -78,43 +79,62 @@ function GameLobby(props) {
             alignItems="center"
             spacing={2}
           >
-            <Grid item>
-              <TeamSelect currentUser={user} onChange={onTeamSelect} />
+            <Grid item className="header">
+              <Header title="New Game" />
             </Grid>
             <Grid item>
-              <Button
-                onClick={() => startGame()}
-                disabled={!canStartGame}
-                variant="contained"
-                color="primary"
-                size="large"
+              <Grid
+                container
+                direction="column"
+                justify="center"
+                alignItems="center"
+                spacing={2}
               >
-                Start Game
-              </Button>
-            </Grid>
-            <Grid item>
-              <Grid container justify="center" alignItems="center">
-                <Grid className="label" item>
-                  <Typography>Share Match ID:</Typography>
+                <Grid item>
+                  <TeamSelect
+                    matchId={matchId}
+                    redTeamData={redTeam}
+                    blueTeamData={blueTeam}
+                    currentUser={user}
+                    onChange={onTeamSelect}
+                  />
                 </Grid>
                 <Grid item>
                   <Button
-                    onClick={() => {
-                      copyToClipboard(matchId);
-                    }}
-                    variant="outlined"
-                    color="default"
-                    size="small"
+                    onClick={() => startGame()}
+                    disabled={!canStartGame}
+                    variant="contained"
+                    color="primary"
+                    size="large"
                   >
-                    Copy
+                    Start Game
                   </Button>
+                </Grid>
+                <Grid item>
+                  <Grid container justify="center" alignItems="center">
+                    <Grid className="label" item>
+                      <Typography>Share Match ID:</Typography>
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        onClick={() => {
+                          copyToClipboard(matchId);
+                        }}
+                        variant="outlined"
+                        color="default"
+                        size="small"
+                      >
+                        Copy
+                      </Button>
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Grid>
-    </Container>
+        </Container>
+      ) : null}
+    </>
   );
 }
 

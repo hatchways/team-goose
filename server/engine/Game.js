@@ -7,6 +7,25 @@ const TeamColor = {
   BLUE: "Blue",
 };
 
+const TEAM_ROLE = {
+  SPYMASTER: "Spymaster",
+  FIELD_AGENT: "Field Agent",
+};
+
+const DEFAULT_RED_TEAM_STATE = [
+  { team: TeamColor.RED, role: TEAM_ROLE.SPYMASTER, user: null },
+  { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
+  { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
+  { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
+];
+
+const DEFAULT_BLUE_TEAM_STATE = [
+  { team: TeamColor.BLUE, role: TEAM_ROLE.SPYMASTER, user: null },
+  { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
+  { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
+  { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
+];
+
 const MAX_NUM_OF_GUESS = 25;
 
 class Game {
@@ -18,14 +37,8 @@ class Game {
     // ];
     this.gameTurn = GameTurns.BLUE_SPY_TURN;
 
-    this.redTeam = [
-      { role: "Spymaster", player: { id: "id_1", name: "name1" } },
-      { role: "Field Agent", player: { id: "id_2", name: "name2" } },
-    ];
-    this.blueTeam = [
-      { role: "Spymaster", player: { id: "id_3", name: "name3" } },
-      { role: "Field Agent", player: { id: "id_4", name: "name4" } },
-    ];
+    this.redTeam = DEFAULT_RED_TEAM_STATE;
+    this.blueTeam = DEFAULT_BLUE_TEAM_STATE;
     this.redPoints = 0;
     this.bluePoints = 0;
     this.numGuessLeft = 0;
