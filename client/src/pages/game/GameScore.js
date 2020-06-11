@@ -32,7 +32,7 @@ function GameScore() {
 
   return (
     <>
-      {match.state.match.hasStarted ? (
+      {gameState && match.state.match.hasStarted ? (
         <Grid container justify="center" alignItems="flex-start" spacing={4}>
           <Grid item className="red-team-color">
             {generateScore(gameState.redPoints, "Red Team")}
