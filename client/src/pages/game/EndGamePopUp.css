@@ -1,0 +1,28 @@
+.end-game-pop-up {
+  width: 420px;
+  height: 300px;
+  border-radius: 10px;
+  padding: 40px 0 0 0;
+  text-align: center;
+  background-color: white;
+  box-shadow: 0 0 15px 5px rgba(6, 6, 6, 0.4);
+  position: relative;
+  top: 30px;
+  margin: auto;
+}
+
+.end-game-pop-up #skull {
+  width: 80px;
+}
+
+.end-game-pop-up h2 {
+  font-size: 27px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.end-game-pop-up p {
+  margin-bottom: 20px;
+  font-weight: 500;
+}
