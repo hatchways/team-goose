@@ -10,7 +10,6 @@ import Header from "../common/Header";
 import TeamSelect from "./team_select/TeamSelect";
 
 import { AppContext } from "../../App";
-import { useMatchId } from "../../socket_io/GameIO";
 import "../common/common.css";
 import "./GameLobby.css";
 
@@ -19,9 +18,10 @@ const FIELD_AGENT_INDEX = 1;
 
 function GameLobby(props) {
   const { user } = useUser();
-  const { gameIO } = useContext(AppContext);
-  const [matchId, setMatchId] = useState(props.location.state.matchId);
-  //const [matchId, setMatchId] = useMatchId();
+  const { gameIO, match } = useContext(AppContext);
+  const [matchId, setMatchId] = useState(
+    props.location.state ? props.location.state.matchId : ""
+  );
   const [canStartGame, setCanStartGame] = useState(false);
   const [redTeam, setRedTeam] = useState(null);
   const [blueTeam, setBlueTeam] = useState(null);
@@ -31,7 +31,10 @@ function GameLobby(props) {
       ? props.location.state.matchId
       : null;
     if (matchIdStr) {
+      let updatedMatch = { id: matchIdStr };
+      updatedMatch = { ...match.state.match, ...updatedMatch };
       setMatchId(matchIdStr);
+      match.state.setMatch(updatedMatch);
     } else {
       props.history.push({ pathname: "/" });
     }
@@ -39,13 +42,15 @@ function GameLobby(props) {
   }, []);
 
   useEffect(() => {
-    gameIO.state.io.emit("game lobby onload", matchId);
-    gameIO.state.io.on("resolve game lobby onload", (redTeam, blueTeam) => {
-      setRedTeam(redTeam);
-      setBlueTeam(blueTeam);
-    });
+    if (matchId) {
+      gameIO.state.io.emit("game lobby onload", matchId);
+      gameIO.state.io.on("resolve game lobby onload", (redTeam, blueTeam) => {
+        setRedTeam(redTeam);
+        setBlueTeam(blueTeam);
+      });
+    }
     // eslint-disable-next-line
-  }, []);
+  }, [matchId]);
 
   const isTeamReady = (team) => {
     const spyMaster = team[SPYMASTER_INDEX];
@@ -64,10 +69,13 @@ function GameLobby(props) {
     if (canStartGame) {
       gameIO.state.io.emit("game start", matchId, user);
       gameIO.state.io.on("resolve start game", (player) => {
+        let updatedMatch = { hasStarted: true };
         props.history.push({
           pathname: "/game",
           state: { matchId, player },
         });
+        updatedMatch = { ...match.state.match, ...updatedMatch };
+        match.state.setMatch(updatedMatch);
       });
     }
   };
