@@ -8,49 +8,22 @@ export const TEAM_ROLE = {
   FIELD_AGENT: "Field Agent",
 };
 
-// TODO: Remove dummy data after role assignment is integrated
-export const DEFAULT_RED_TEAM_STATE = [
-  {
-    team: TEAM_CODE.RED,
-    role: TEAM_ROLE.SPYMASTER,
-    player: { id: "id_1", name: "Player 1" },
-  },
-  {
-    team: TEAM_CODE.RED,
-    role: TEAM_ROLE.FIELD_AGENT,
-    player: { id: "id_2", name: "Player 2" },
-  },
-  { team: TEAM_CODE.RED, role: TEAM_ROLE.FIELD_AGENT, player: null },
-  { team: TEAM_CODE.RED, role: TEAM_ROLE.FIELD_AGENT, player: null },
-];
-
-export const DEFAULT_BLUE_TEAM_STATE = [
-  {
-    team: TEAM_CODE.BLUE,
-    role: TEAM_ROLE.SPYMASTER,
-    player: { id: "id_3", name: "Player 3" },
-  },
-  {
-    team: TEAM_CODE.BLUE,
-    role: TEAM_ROLE.FIELD_AGENT,
-    player: { id: "id_4", name: "Player 4" },
-  },
-  { team: TEAM_CODE.BLUE, role: TEAM_ROLE.FIELD_AGENT, player: null },
-  { team: TEAM_CODE.BLUE, role: TEAM_ROLE.FIELD_AGENT, player: null },
-];
-
 export const ACTION_TYPE = {
   SET_PLAYER: "SET_PLAYER",
   REMOVE_PLAYER: "REMOVE_PLAYER",
+  SET_TEAM: "SET_TEAM",
 };
 
 export const reducer = (state, action) => {
   switch (action.type) {
     case ACTION_TYPE.SET_PLAYER:
-      state[action.payload].player = action.player;
+      state[action.payload].user = action.user;
       return state;
     case ACTION_TYPE.REMOVE_PLAYER:
-      state[action.payload].player = null;
+      state[action.payload].user = null;
+      return state;
+    case ACTION_TYPE.SET_TEAM:
+      state = action.payload;
       return state;
     default:
       return state;
