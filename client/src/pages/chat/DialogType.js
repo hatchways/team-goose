@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import { TEAM_CODE } from "../game_lobby/team_select/TeamPresets";
+
 const DIRECTION = {
   LEFT: "row",
   RIGHT: "row-reverse",
@@ -12,7 +14,7 @@ const JUSTIFY = {
 
 const SENDER_DIALOG_STYLE = {
   TEXT: "message-out",
-  BACKGROUND: "bg-red", // TODO: will need to assign background color depending on player's team color
+  BACKGROUND: "",
 };
 
 const SYSTEM_DIALOG_STYLE = {
@@ -26,12 +28,22 @@ export const MESSAGE_TYPE = {
   SYSTEM_ACTION: "action",
 };
 
-export function useDialogType(type, isSender = false) {
+export function useDialogType(type, player, isSender = false) {
   const [showFrom, setShowFrom] = useState(true);
   const [style, setStyle] = useState("");
   const [direction, setDirection] = useState(DIRECTION.LEFT);
   const [spacing, setSpacing] = useState(3);
   const [justify, setJustify] = useState(JUSTIFY.FLEX_START);
+
+  useEffect(() => {
+    let backgroundColor = "";
+
+    player.team === TEAM_CODE.RED
+      ? (backgroundColor = "bg-red")
+      : (backgroundColor = "bg-blue");
+
+    SENDER_DIALOG_STYLE.BACKGROUND = backgroundColor;
+  }, [player.team]);
 
   useEffect(() => {
     if (type === MESSAGE_TYPE.PLAYER) {

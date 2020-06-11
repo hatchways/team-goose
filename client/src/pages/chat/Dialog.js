@@ -1,15 +1,14 @@
 import React, { useRef } from "react";
 import { Box, Grid, Typography } from "@material-ui/core";
 
-import { useUser } from "../../contexts/user";
 import { useDialogType } from "./DialogType";
 import "../common/common.css";
 
-function Dialog({ from, text, type }) {
-  const { user } = useUser();
-  const isSender = useRef(from ? from.id === user.id : false);
+function Dialog({ from, text, type, player }) {
+  const isSender = useRef(from ? from.id === player.user.id : false);
   const { showFrom, style, direction, spacing, justify } = useDialogType(
     type,
+    player,
     isSender
   );
 
