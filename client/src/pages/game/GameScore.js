@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
+import { AppContext } from "../../App";
+import { useGameState } from "../../socket_io/GameIO";
+
+import { useMatchId } from "../../socket_io/GameIO";
 import "./Game.css";
 
 function GameScore() {
-  const [redScore, setRedScore] = useState(0);
-  const [blueScore, setBlueScore] = useState(0);
+  const { gameIO } = useContext(AppContext);
+  const [matchId] = useMatchId();
+  const gameState = useGameState(gameIO.state.io, matchId);
 
   const generateScore = (score, teamName) => {
     return (
@@ -28,17 +33,21 @@ function GameScore() {
   };
 
   return (
-    <Grid container justify="center" alignItems="flex-start" spacing={4}>
-      <Grid item className="red-team-color">
-        {generateScore(redScore, "Red Team")}
-      </Grid>
-      <Grid item>
-        <Typography variant="h3">-</Typography>
-      </Grid>
-      <Grid item className="blue-team-color">
-        {generateScore(blueScore, "Blue Team")}
-      </Grid>
-    </Grid>
+    <>
+      {gameState ? (
+        <Grid container justify="center" alignItems="flex-start" spacing={4}>
+          <Grid item className="red-team-color">
+            {generateScore(gameState.redPoints, "Red Team")}
+          </Grid>
+          <Grid item>
+            <Typography variant="h3">-</Typography>
+          </Grid>
+          <Grid item className="blue-team-color">
+            {generateScore(gameState.bluePoints, "Blue Team")}
+          </Grid>
+        </Grid>
+      ) : null}
+    </>
   );
 }
 
