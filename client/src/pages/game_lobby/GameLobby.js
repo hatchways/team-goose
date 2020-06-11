@@ -10,6 +10,7 @@ import Header from "../common/Header";
 import TeamSelect from "./team_select/TeamSelect";
 
 import { AppContext } from "../../App";
+import { useMatchId } from "../../socket_io/GameIO";
 import "../common/common.css";
 import "./GameLobby.css";
 
@@ -18,14 +19,16 @@ const FIELD_AGENT_INDEX = 1;
 
 function GameLobby(props) {
   const { user } = useUser();
-  const [matchId, setMatchId] = useState(null);
+  const [matchId, setMatchId] = useMatchId();
   const [canStartGame, setCanStartGame] = useState(false);
 
   const { gameIO } = useContext(AppContext);
   useEffect(() => {
-    const matchId = props.location.state ? props.location.state.matchId : null;
-    if (matchId) {
-      setMatchId(matchId);
+    const matchIdStr = props.location.state
+      ? props.location.state.matchId
+      : null;
+    if (matchIdStr) {
+      setMatchId(matchIdStr);
     } else {
       props.history.push({ pathname: "/" });
     }
