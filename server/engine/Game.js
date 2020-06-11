@@ -7,16 +7,13 @@ const TeamColor = {
   BLUE: "Blue",
 };
 
-const MAX_NUM_OF_GUESS = 25;
-
 class Game {
   constructor(hostId) {
     this.hostId = hostId;
 
-    // this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
-    //   Math.round(Math.random())
-    // ];
-    this.gameTurn = GameTurns.BLUE_SPY_TURN;
+    this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
+      Math.round(Math.random())
+    ];
 
     this.redTeam = [
       { role: "Spymaster", player: { id: "id_1", name: "name1" } },
@@ -29,7 +26,7 @@ class Game {
     this.redPoints = 0;
     this.bluePoints = 0;
     this.numGuessLeft = 0;
-    this.maxNumOfGuess = MAX_NUM_OF_GUESS;
+    this.maxNumOfGuess = 0;
     this.winner = null;
 
     this.gameBoard = new Board();
@@ -153,7 +150,7 @@ class Game {
         } else if (this.getGameTurn() === GameTurns.BLUE_AGENT_TURN) {
           this.addRedPoint();
           votedCards[num].select();
-          this.setGameTurn(GameTurns.RED_AGENT_TURN); //should be GameTurns.RED_SPY_TURN
+          this.setGameTurn(GameTurns.RED_SPY_TURN); //should be GameTurns.RED_SPY_TURN
           this.delRestVotes(votedCards, num);
           break;
         }
@@ -165,7 +162,7 @@ class Game {
         } else if (this.getGameTurn() === GameTurns.RED_AGENT_TURN) {
           this.addBluePoint();
           votedCards[num].select();
-          this.setGameTurn(GameTurns.BLUE_AGENT_TURN); // should be GameTurns.BLUE_SPY_TURN
+          this.setGameTurn(GameTurns.BLUE_SPY_TURN); // should be GameTurns.BLUE_SPY_TURN
           this.delRestVotes(votedCards, num);
           break;
         }
@@ -195,21 +192,21 @@ class Game {
   nextGameTurn() {
     switch (this.gameTurn) {
       case GameTurns.RED_SPY_TURN:
-        this.setGameTurn(GameTurns.BLUE_AGENT_TURN);
+        this.setGameTurn(GameTurns.RED_AGENT_TURN);
         break;
       case GameTurns.BLUE_SPY_TURN:
-        this.setGameTurn(GameTurns.RED_AGENT_TURN);
+        this.setGameTurn(GameTurns.BLUE_AGENT_TURN);
         break;
       case GameTurns.RED_AGENT_TURN:
         this.decideCardSelect();
         if (this.getGameTurn() === GameTurns.RED_AGENT_TURN) {
-          this.setGameTurn(GameTurns.BLUE_AGENT_TURN); //should be blue spy turn
+          this.setGameTurn(GameTurns.BLUE_SPY_TURN); //should be blue spy turn
         }
         break;
       case GameTurns.BLUE_AGENT_TURN:
         this.decideCardSelect();
         if (this.getGameTurn() === GameTurns.BLUE_AGENT_TURN) {
-          this.setGameTurn(GameTurns.RED_AGENT_TURN); //should be Red spy turn
+          this.setGameTurn(GameTurns.RED_SPY_TURN); //should be Red spy turn
         }
         break;
       case GameTurns.End:
@@ -219,10 +216,9 @@ class Game {
   }
 
   giveHint(numGuess) {
-    if (numGuess > 0) {
-      this.setMaxNumGuess(numGuess);
-      this.setNumGuessLeft(numGuess);
-    }
+    numGuess = parseInt(numGuess);
+    this.setMaxNumGuess(numGuess);
+    this.setNumGuessLeft(numGuess);
   }
 
   checkIfWinning(info) {
