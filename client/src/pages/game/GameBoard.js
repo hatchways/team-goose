@@ -1,24 +1,41 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { GridList, GridListTile, Container } from "@material-ui/core";
 
+import { AppContext } from "../../App";
 import Card from "./Card";
+import { TEAM_ROLE } from "../game_lobby/team_select/TeamPresets";
 
-const MAX_BOARD_CARDS = 25;
+function GameBoard({ gameState, player, matchId }) {
+  const { gameIO } = useContext(AppContext);
+  const canPerformActions = useBoardStatus(gameState, player);
 
-function GameBoard() {
+  const selectCard = (index) => {
+    if (canPerformActions) {
+      const data = {
+        player: player,
+        index: index,
+      };
+      gameIO.state.io.emit("card select", matchId, data);
+      console.log("card selected on board");
+    }
+  };
+
   const generateCards = () => {
-    let result = [];
+    const cards = gameState.gameBoard.cards;
 
-    for (let index = 0; index < MAX_BOARD_CARDS; index++) {
-      const element = (
+    return cards.map((card, index) => {
+      return (
         <GridListTile key={index}>
-          <Card />
+          <Card
+            index={index}
+            value={card}
+            onClick={selectCard}
+            player={player}
+            isActive={canPerformActions}
+          />
         </GridListTile>
       );
-      result.push(element);
-    }
-
-    return result;
+    });
   };
 
   return (
@@ -28,6 +45,23 @@ function GameBoard() {
       </GridList>
     </Container>
   );
+}
+
+function useBoardStatus(gameState, player) {
+  const [canPerformActions, setCanPerformActions] = useState(false);
+
+  useEffect(() => {
+    if (gameState) {
+      if (
+        player.team === gameState.gameTurn.team &&
+        player.role === TEAM_ROLE.FIELD_AGENT
+      ) {
+        setCanPerformActions(true);
+      }
+    }
+  }, [gameState, player.team, player.role]);
+
+  return canPerformActions;
 }
 
 export default GameBoard;

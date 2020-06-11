@@ -28,11 +28,16 @@
   color: white;
 }
 
-.gameboard .card.selected.red {
+.gameboard .card.non-active:hover {
+  background-color: white;
+  cursor: default;
+}
+
+.gameboard .card.selected.bg-red {
   background-color: #f86155;
 }
 
-.gameboard .card.selected.blue {
+.gameboard .card.selected.bg-blue {
   background-color: #4fadf3;
 }
 
@@ -42,4 +47,8 @@
 
 .game-prompt {
   width: 100%;
+}
+
+.vote-checker {
+  color: #49d26b;
 }

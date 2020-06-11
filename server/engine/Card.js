@@ -13,6 +13,18 @@ class Card {
   addVote(user) {
     this.voted.push(user);
   }
-}
+
+  getNumVotes() {
+    return this.voted.length;
+  }
+  
+  getStatus() {
+    return this.selected;
+  }
+
+  getVoted() {
+    return this.voted;
+  }
+ }
 
 module.exports = Card;

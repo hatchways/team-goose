@@ -17,19 +17,13 @@ class GameIO {
     this.gameIO.on("connection", (socket) => {
       console.log(`New client connected from the game: ${socket.id}`);
 
-      // room should be a matchId (string)
-      socket.on("join room", (matchId) => {
-        console.log(socket, matchId, "joined room");
-        socket.join(matchId);
-      });
-
       // invoked when user join blue team
       socket.on("join blue team", ({ index, player, matchId }) => {
         const game = MatchManager.getMatch(matchId);
         console.log(`player ${player.name} joined blue team`);
         game.addPlayerToBlueTeam(player, index);
         // socket.emit("update blue team", game.getBlueTeam());
-        socket.broadcast.to(matchId).emit("update blue team", game.getBlueTeam());
+        socket.broadcast.emit("update blue team", game.getBlueTeam());
       });
 
       // invoked when user join red team
@@ -38,7 +32,7 @@ class GameIO {
         console.log(`player ${player.name} joined red team`);
         game.addPlayerToRedTeam(player, index);
         // socket.emit("update red team", game.getRedTeam());
-        socket.broadcast.to(matchId).emit("update red team", game.getRedTeam());
+        socket.broadcast.emit("update red team", game.getRedTeam());
       });
 
       // invoked when user leave blue team
@@ -47,7 +41,7 @@ class GameIO {
         console.log(`player ${index} left blue team`);
         game.removePlayerFromBlueTeam(index);
         // socket.emit("update blue team", game.getBlueTeam());
-        socket.broadcast.to(matchId).emit("update blue team", game.getBlueTeam());
+        socket.broadcast.emit("update blue team", game.getBlueTeam());
       });
 
       // invoked when user leave red team
@@ -56,7 +50,20 @@ class GameIO {
         console.log(`player ${index} left red team`);
         game.removePlayerFromRedTeam(index);
         // socket.emit("update red team", game.getRedTeam());
-        socket.broadcast.to(matchId).emit("update red team", game.getRedTeam());
+        socket.broadcast.emit("update red team", game.getRedTeam());
+      });
+
+      socket.on("get teams", (matchId) => {
+        const game = MatchManager.getMatch(matchId);
+        const blueTeam = game.getBlueTeam();
+        const redTeam = game.getRedTeam();
+        socket.emit("update teams", { blueTeam: blueTeam, redTeam: redTeam});
+      });
+
+      socket.on("join game", (matchId) => {
+        socket.join(matchId);
+        const message = MatchManager.joinMatch(matchId);
+        socket.emit("resolve join game", message);
       });
 
       socket.on("disconnect", () => {
@@ -65,13 +72,19 @@ class GameIO {
 
       socket.on("create game", (hostId) => {
         const matchId = MatchManager.createMatch(hostId);
-        console.log(matchId);
+        socket.join(matchId);
+        console.log(`Created match ${matchId} by host ${hostId}`);
         socket.emit("resolve create game", matchId);
       });
 
-      socket.on("game start", (matchId) => {
+      socket.on("game start", (matchId, teams) => {
+        // handle assigning red and blue team players data
+      });
+
+      socket.on("game state onload", (matchId) => {
+        socket.join(matchId);
         const match = MatchManager.getMatch(matchId);
-        socket.emit("start turn", match.getGameState());
+        socket.emit("game state change", match.getGameState());
       });
 
       // setInterval(() => {
@@ -81,45 +94,24 @@ class GameIO {
 
       socket.on("end turn", (matchId) => {
         const match = MatchManager.getMatch(matchId);
-        match.setGameTurn();
-        // match.nextGameTurn();
-        this.gameIO.to(matchId).emit("game state change", match.getGameState());
-        countdown = 30;
+        match.nextGameTurn();
+        socket.emit("game state change", match.getGameState());
+        // countdown = 30;
       });
 
-      socket.on("word select", (matchId, data) => {
+      socket.on("card select", (matchId, data) => {
         const match = MatchManager.getMatch(matchId);
         match.vote(data);
-        this.gameIO
-          .to(matchId)
-          .emit("word select", match.getBoard().getCards());
+        this.gameIO.to(matchId).emit("game state change", match.getGameState());
+      });
+
+      socket.on("send max allowed guesses", (matchId, numOfGuesses) => {
+        const match = MatchManager.getMatch(matchId);
+        // do something with the number numOfGuesses on this line
+        // end current team spymaster's turn
+        this.gameIO.to(matchId).emit("game state change", match.getGameState());
       });
     });
-  }
-
-  // game engine listens in on when game gets started ("Game Start" button gets pressed)
-  registerGameStartEvent(callback) {
-    socket.on("game start", callback);
-  }
-
-  // game engine listens in on team role changes in the lobby
-  registerRoleChangeEvent(callback) {
-    socket.on("role change", callback);
-  }
-
-  // game engine can listen in on player’s word select moves
-  registerWordSelectEvent(callback) {
-    socket.on("word select", callback);
-  }
-
-  //game engine can listen in on a Field Agent’s end turn
-  registerEndTurnEvent(callback) {
-    socket.on("end turn", callback);
-  }
-
-  // game engine sends its game state back to the client in reaction to a user's recent action (word gets selected, end their turn, etc.)
-  sendGameState(gameState) {
-    this.gameIO.to(message.room).emit("game state change", gameState);
   }
 
   static init(io) {

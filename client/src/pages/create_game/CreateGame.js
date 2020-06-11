@@ -33,13 +33,12 @@ function CreateGame(props) {
     //     console.log(err);
     //   });
     gameIO.state.io.emit("create game", "hostId");
-    gameIO.state.io.on("resolve create game", (matchId) => {
+    gameIO.state.io.on("resolve create game", ({ matchId }) => {
       props.history.push({
         pathname: "/game_lobby",
         state: { matchId: matchId },
       });
-    })
-    
+    });
   };
 
   const onChange = (evt) => {

@@ -40,9 +40,15 @@ const reducer = (state, action) => {
   }
 };
 
-export function useGameState(gameIO) {
+export function useGameState(gameIO, matchId) {
   const EVENT = "game state change";
   const [gameState, setGameState] = useState(null);
+
+  useEffect(() => {
+    if (!gameState && matchId) {
+      gameIO.emit("game state onload", matchId);
+    }
+  }, [gameIO, gameState, matchId]);
 
   useEffect(() => {
     function handler(gameState) {
@@ -56,7 +62,7 @@ export function useGameState(gameIO) {
     return () => {
       gameIO.off(EVENT, handler);
     };
-  }, [gameIO]);
+  });
 
   return gameState;
 }
