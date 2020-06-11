@@ -42,6 +42,7 @@ export const DEFAULT_BLUE_TEAM_STATE = [
 export const ACTION_TYPE = {
   SET_PLAYER: "SET_PLAYER",
   REMOVE_PLAYER: "REMOVE_PLAYER",
+  UPDATE_PLAYERS: "UPDATE_PLAYERS",
 };
 
 export const reducer = (state, action) => {
@@ -51,6 +52,9 @@ export const reducer = (state, action) => {
       return state;
     case ACTION_TYPE.REMOVE_PLAYER:
       state[action.payload].player = null;
+      return state;
+    case ACTION_TYPE.UPDATE_PLAYERS:
+      state = [...action.players];
       return state;
     default:
       return state;

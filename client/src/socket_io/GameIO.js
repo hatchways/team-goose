@@ -15,9 +15,20 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case ACTION_TYPE.CONNECT:
+      // if (!state.io) {
+      //   state.io = socketIO(NAMESPACE);
+      // }
+      // incase we refresh
+      state.io.on("connect", () => {
+        state.io.emit("join room", action.payload.room);
+      });
+
       if (state.io.disconnected) {
         state.io.connect();
+      } else {
+        state.io.emit("join room", action.payload.room);
       }
+
       return state;
     case ACTION_TYPE.DISCONNECT:
       if (state.io.connected) {

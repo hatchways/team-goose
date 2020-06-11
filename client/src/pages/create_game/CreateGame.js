@@ -33,7 +33,7 @@ function CreateGame(props) {
     //     console.log(err);
     //   });
     gameIO.state.io.emit("create game", "hostId");
-    gameIO.state.io.on("resolve create game", ({ matchId }) => {
+    gameIO.state.io.on("resolve create game", ( matchId ) => {
       props.history.push({
         pathname: "/game_lobby",
         state: { matchId: matchId },
@@ -47,27 +47,39 @@ function CreateGame(props) {
   };
 
   const handleJoinGame = () => {
-    fetch(`/api/match/${matchId}/join-match`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === 200) {
-          props.history.push({
-            pathname: "/game_lobby",
-            state: { matchId: matchId },
-          });
-        } else {
-          setErrorMessage(data.message);
-          setMatchId("");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    gameIO.state.io.emit("join game", matchId);
+    gameIO.state.io.on("resolve join game", (data) => {
+      if (data.status === 200) {
+        props.history.push({
+          pathname: "/game_lobby",
+          state: { matchId: matchId },
+        });
+      } else {
+        setErrorMessage(data.message);
+        setMatchId("");
+      }
+    });
+    // fetch(`/api/match/${matchId}/join-match`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     if (data.status === 200) {
+    //       props.history.push({
+    //         pathname: "/game_lobby",
+    //         state: { matchId: matchId },
+    //       });
+    //     } else {
+    //       setErrorMessage(data.message);
+    //       setMatchId("");
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   return (

@@ -1,18 +1,21 @@
+
+const Team = require('./Team');
+
 const GameTurns = {
   RED_AGENT_TURN: {
-    team: "Red",
+    team: Team.TEAM_COLOR.RED,
     role: "Field Agent",
   },
   BLUE_AGENT_TURN: {
-    team: "Blue",
+    team: Team.TEAM_COLOR.BLUE,
     role: "Field Agent",
   },
   RED_SPY_TURN: {
-    team: "Red",
+    team: Team.TEAM_COLOR.RED,
     role: "Spymaster",
   },
   BLUE_SPY_TURN: {
-    team: "Blue",
+    team: Team.TEAM_COLOR.BLUE,
     role: "Spymaster",
   },
   //For now 

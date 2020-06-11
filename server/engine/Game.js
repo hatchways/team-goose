@@ -1,31 +1,28 @@
 const Board = require("./Board");
 const GameTurns = require("./GameTurns");
 const WordRoles = require("./WordRoles");
-
-const TeamColor = {
-  RED: "Red",
-  BLUE: "Blue",
-};
+const Team = require('./Team');
 
 const MAX_NUM_OF_GUESS = 25;
 
 class Game {
   constructor(hostId) {
     this.hostId = hostId;
-
     // this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
     //   Math.round(Math.random())
     // ];
     this.gameTurn = GameTurns.BLUE_SPY_TURN;
+    this.redTeam = JSON.parse(JSON.stringify(Team.DEFAULT_RED_TEAM_STATE));
+    this.blueTeam = JSON.parse(JSON.stringify(Team.DEFAULT_BLUE_TEAM_STATE));
 
-    this.redTeam = [
-      { role: "Spymaster", player: { id: "id_1", name: "name1" } },
-      { role: "Field Agent", player: { id: "id_2", name: "name2" } },
-    ];
-    this.blueTeam = [
-      { role: "Spymaster", player: { id: "id_3", name: "name3" } },
-      { role: "Field Agent", player: { id: "id_4", name: "name4" } },
-    ];
+    // this.redTeam = [
+    //   { role: "Spymaster", player: { id: "id_1", name: "name1" } },
+    //   { role: "Field Agent", player: { id: "id_2", name: "name2" } },
+    // ];
+    // this.blueTeam = [
+    //   { role: "Spymaster", player: { id: "id_3", name: "name3" } },
+    //   { role: "Field Agent", player: { id: "id_4", name: "name4" } },
+    // ];
     this.redPoints = 0;
     this.bluePoints = 0;
     this.numGuessLeft = 0;
@@ -42,10 +39,22 @@ class Game {
   addBluePoint() {
     this.bluePoints += 1;
   }
+  addPlayerToBlueTeam(player, index) {
+    this.blueTeam[index].player = player;
+  }
+  addPlayerToRedTeam(player, index) {
+    this.redTeam[index].player = player;
+  }
 
   //reducers
   reduceNumGuessLeft() {
     this.numGuessLeft -= 1;
+  }
+  removePlayerFromBlueTeam(index) {
+    this.blueTeam[index].player = null;
+  }
+  removePlayerFromRedTeam(index) {
+    this.redTeam[index].player = null;
   }
 
   //getters
@@ -116,14 +125,14 @@ class Game {
 
   vote(data) {
     switch (data.player.team) {
-      case TeamColor.RED:
+      case Team.TEAM_COLOR.RED:
         if (this.getGameTurn() == GameTurns.RED_AGENT_TURN) {
           if (!this.getBoard().checkIfVoted(data.index, data.player)) {
             this.getBoard().voteOnCard(data.index, data.player);
           }
         }
         break;
-      case TeamColor.BLUE:
+      case Team.TEAM_COLOR.BLUE:
         if (!this.getBoard().checkIfVoted(data.index, data.player)) {
           this.getBoard().voteOnCard(data.index, data.player);
         }
@@ -138,9 +147,9 @@ class Game {
     for (let num = 0; num < actualGuessNum; num++) {
       if (votedCards[num].role === WordRoles.BLACK) {
         if (this.getGameTurn() === GameTurns.RED_AGENT_TURN) {
-          this.setWinner(TeamColor.BLUE);
+          this.setWinner(Team.TEAM_COLOR.BLUE);
         } else if (this.getGameTurn() === GameTurns.BLUE_AGENT_TURN) {
-          this.setWinner(TeamColor.RED);
+          this.setWinner(Team.TEAM_COLOR.RED);
         }
         votedCards[num].select();
         this.setGameTurn(GameTurns.End);

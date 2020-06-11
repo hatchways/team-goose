@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -13,6 +13,8 @@ import {
   DEFAULT_BLUE_TEAM_STATE,
   reducer as teamReducer,
 } from "./TeamPresets";
+import { AppContext } from '../../../App';
+import { useUser } from "../../../contexts/user";
 import { JoinRoleAction, LeaveRoleAction } from "./TeamSelectActions";
 import "./TeamSelect.css";
 import "../../common/common.css";
@@ -20,6 +22,9 @@ import "../../common/common.css";
 const UNOCCUPIED_SPOT_NAME = "--";
 
 function TeamSelect(props) {
+  const { user } = useUser();
+  const { gameIO } = useContext(AppContext);
+  const { matchId } = props;
   const [redTeam, redTeamDispatch] = useReducer(
     teamReducer,
     DEFAULT_RED_TEAM_STATE
@@ -31,19 +36,93 @@ function TeamSelect(props) {
   const [isRoleAssigned, setIsRoleAssigned] = useState(false);
 
   useEffect(() => {
+    // get updated players from server
+    if (gameIO.state.io) {
+      gameIO.state.io.on('update red team', (players) => {
+        console.log('update red team', players)
+        const action = {
+          type: ACTION_TYPE.UPDATE_PLAYERS,
+          players: players
+        };
+        redTeamDispatch(action);
+      });
+      gameIO.state.io.on('update blue team', (players) => {
+        console.log('update blue team', players)
+        const action = {
+          type: ACTION_TYPE.UPDATE_PLAYERS,
+          players: players
+        }
+        blueTeamDispatch(action);
+      });
+    }
+  }, [gameIO.state.io]);
+
+  useEffect(() => {
     props.onChange(redTeam, blueTeam);
   });
 
+  useEffect(() => {
+    if (matchId) {
+      gameIO.state.io.emit("get teams", matchId);
+      gameIO.state.io.on("update teams", ({ redTeam, blueTeam }) => {
+        redTeamDispatch({
+          type: ACTION_TYPE.UPDATE_PLAYERS,
+          players: redTeam,
+        });
+        blueTeamDispatch({
+          type: ACTION_TYPE.UPDATE_PLAYERS,
+          players: blueTeam,
+        });
+        checkIsRoleAssigned([...redTeam, ...blueTeam]);
+      });
+    }
+    // fetch(`/api/match/${matchId}/teams`, {
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //       redTeamDispatch({
+    //         type: ACTION_TYPE.UPDATE_PLAYERS,
+    //         players: data.redTeam
+    //       });
+    //       blueTeamDispatch({
+    //         type: ACTION_TYPE.UPDATE_PLAYERS,
+    //         players: data.blueTeam
+    //       });
+    //       checkIsRoleAssigned([...data.redTeam, ...data.blueTeam]);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  }, [matchId]);
+
+  const checkIsRoleAssigned = (teams) => {
+    for (let idx = 0; idx < teams.length; idx++) {
+      if (teams[idx].player && teams[idx].player.id === user.id) {
+        setIsRoleAssigned(true);
+        return;
+      }
+    } 
+  }
+
   const joinRole = (teamCode, index) => {
+    const { id, name, email } = props.currentUser;
     const action = {
       type: ACTION_TYPE.SET_PLAYER,
       payload: index,
       player: props.currentUser,
     };
 
-    teamCode === TEAM_CODE.RED
-      ? redTeamDispatch(action)
-      : blueTeamDispatch(action);
+    if (teamCode === TEAM_CODE.RED) {
+      redTeamDispatch(action);
+      gameIO.state.io.emit("join red team", { index , player: { id, name, email }, matchId })
+    } else {
+      blueTeamDispatch(action);
+      gameIO.state.io.emit("join blue team", { index, player: { id, name, email }, matchId })
+    }
 
     setIsRoleAssigned(!isRoleAssigned);
   };
@@ -54,10 +133,13 @@ function TeamSelect(props) {
       payload: index,
     };
 
-    teamCode === TEAM_CODE.RED
-      ? redTeamDispatch(action)
-      : blueTeamDispatch(action);
-
+    if (teamCode === TEAM_CODE.RED) {
+      redTeamDispatch(action);
+      gameIO.state.io.emit("leave red team", { index, matchId })
+    } else {
+      blueTeamDispatch(action);
+      gameIO.state.io.emit("leave blue team", { index, matchId })
+    }
     setIsRoleAssigned(!isRoleAssigned);
   };
 
