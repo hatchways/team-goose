@@ -39,6 +39,7 @@ function TeamSelect(props) {
     // get updated players from server
     if (gameIO.state.io) {
       gameIO.state.io.on('update red team', (players) => {
+        console.log('update red team', players)
         const action = {
           type: ACTION_TYPE.UPDATE_PLAYERS,
           players: players
@@ -46,6 +47,7 @@ function TeamSelect(props) {
         redTeamDispatch(action);
       });
       gameIO.state.io.on('update blue team', (players) => {
+        console.log('update blue team', players)
         const action = {
           type: ACTION_TYPE.UPDATE_PLAYERS,
           players: players
@@ -60,28 +62,42 @@ function TeamSelect(props) {
   });
 
   useEffect(() => {
-    fetch(`/api/match/${matchId}/teams`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-          redTeamDispatch({
-            type: ACTION_TYPE.UPDATE_PLAYERS,
-            players: data.redTeam
-          });
-          blueTeamDispatch({
-            type: ACTION_TYPE.UPDATE_PLAYERS,
-            players: data.blueTeam
-          });
-          checkIsRoleAssigned([...data.redTeam, ...data.blueTeam]);
-      })
-      .catch((err) => {
-        console.log(err);
+    if (matchId) {
+      gameIO.state.io.emit("get teams", matchId);
+      gameIO.state.io.on("update teams", ({ redTeam, blueTeam }) => {
+        redTeamDispatch({
+          type: ACTION_TYPE.UPDATE_PLAYERS,
+          players: redTeam,
+        });
+        blueTeamDispatch({
+          type: ACTION_TYPE.UPDATE_PLAYERS,
+          players: blueTeam,
+        });
+        checkIsRoleAssigned([...redTeam, ...blueTeam]);
       });
-  }, []);
+    }
+    // fetch(`/api/match/${matchId}/teams`, {
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //       redTeamDispatch({
+    //         type: ACTION_TYPE.UPDATE_PLAYERS,
+    //         players: data.redTeam
+    //       });
+    //       blueTeamDispatch({
+    //         type: ACTION_TYPE.UPDATE_PLAYERS,
+    //         players: data.blueTeam
+    //       });
+    //       checkIsRoleAssigned([...data.redTeam, ...data.blueTeam]);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  }, [matchId]);
 
   const checkIsRoleAssigned = (teams) => {
     for (let idx = 0; idx < teams.length; idx++) {
