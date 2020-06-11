@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
