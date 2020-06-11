@@ -16,7 +16,7 @@ class Game {
     // this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
     //   Math.round(Math.random())
     // ];
-    this.gameTurn = GameTurns.BLUE_AGENT_TURN;
+    this.gameTurn = GameTurns.BLUE_SPY_TURN;
 
     this.redTeam = [
       { role: "Spymaster", player: { id: "id_1", name: "name1" } },

@@ -65,7 +65,6 @@ export function SpymasterDialogInput({
   const [isSpymasterTurn, setIsSpymasterTurn] = useState(false);
 
   useEffect(() => {
-    console.log(gameState);
     if (gameState) {
       const gameTurn = gameState.gameTurn;
       setIsSpymasterTurn(
@@ -86,6 +85,7 @@ export function SpymasterDialogInput({
     const message = { from: player.user, text };
     onSubmit(event, message);
     gameIO.state.io.emit("send max allowed guesses", matchId, numOfGuesses);
+    setNumOfGuesses(MIN_ALLOWED_GUESSES);
   };
 
   return (
@@ -115,7 +115,7 @@ export function SpymasterDialogInput({
             <Grid item xs>
               <Input
                 type="number"
-                defaultValue={numOfGuesses}
+                value={numOfGuesses}
                 onChange={onChangeNumOfClues}
                 inputProps={{
                   min: MIN_ALLOWED_GUESSES,
