@@ -7,7 +7,7 @@ const TeamColor = {
   BLUE: "Blue",
 };
 
-const MAX_NUM_OF_GUESSS = 25;
+const MAX_NUM_OF_GUESS = 25;
 
 class Game {
   constructor(hostId) {
@@ -29,7 +29,7 @@ class Game {
     this.redPoints = 0;
     this.bluePoints = 0;
     this.numGuessLeft = 0;
-    this.maxNumOfGuess = MAX_NUM_OF_GUESSS;
+    this.maxNumOfGuess = MAX_NUM_OF_GUESS;
     this.winner = null;
 
     this.gameBoard = new Board();
