@@ -7,6 +7,7 @@ let countdown = 30;
 class GameIO {
   constructor() {
     this.gameIO = null;
+    this.chatIO = null;
   }
 
   connect(io) {
@@ -56,7 +57,12 @@ class GameIO {
 
       socket.on("card select", (matchId, data) => {
         const match = MatchManager.getMatch(matchId);
+        const room = `${matchId}-${data.player.team}`;
+        const card = match.getBoard().getACard(data.index);
+        const text = `${data.player.user.name} has voted for ${card.word}`;
+
         match.vote(data);
+        this.chatIO.connection().sendMessage(room, undefined, text, undefined);
         this.gameIO.to(matchId).emit("game state change", match.getGameState());
       });
 
@@ -67,6 +73,16 @@ class GameIO {
         this.gameIO.to(matchId).emit("game state change", match.getGameState());
       });
     });
+  }
+
+  setChatIO(chatIO) {
+    this.chatIO = chatIO;
+  }
+
+  static use(io) {
+    if (connection) {
+      connection.setChatIO(io);
+    }
   }
 
   static init(io) {
@@ -88,4 +104,5 @@ class GameIO {
 module.exports = {
   connect: GameIO.init,
   connection: GameIO.getConnection,
+  use: GameIO.use,
 };

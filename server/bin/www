@@ -104,3 +104,5 @@ const chatIO = require("../socket_io/ChatIO"); // socket for chat
 
 gameIO.connect(io);
 chatIO.connect(io);
+
+gameIO.use(chatIO);

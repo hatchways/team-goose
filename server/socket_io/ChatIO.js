@@ -46,7 +46,12 @@ class ChatIO {
     });
   }
 
-  sendMessage(room, from = null, text = "", type = MESSAGE_TYPE.SYSTEM_INFO) {
+  sendMessage(
+    room,
+    from = { id: "", name: "" },
+    text = "",
+    type = MESSAGE_TYPE.SYSTEM_INFO
+  ) {
     const message = { room, from, text, type };
     if (room) {
       this.chatIO.to(message.room).emit("recieved message", message);
@@ -71,4 +76,5 @@ class ChatIO {
 module.exports = {
   connect: ChatIO.init,
   connection: ChatIO.getConnection,
+  sendMessage: ChatIO.sendMessage,
 };
