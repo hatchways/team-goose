@@ -52,6 +52,18 @@ function GameLobby(props) {
     // eslint-disable-next-line
   }, [matchId]);
 
+  useEffect(() => {
+    gameIO.state.io.on("resolve start game", (player) => {
+      let updatedMatch = { hasStarted: true };
+      props.history.push({
+        pathname: "/game",
+        state: { matchId, player },
+      });
+      updatedMatch = { ...match.state.match, ...updatedMatch };
+      match.state.setMatch(updatedMatch);
+    });
+  }, []);
+
   const isTeamReady = (team) => {
     const spyMaster = team[SPYMASTER_INDEX];
     const fieldAgents = team.slice(FIELD_AGENT_INDEX);
@@ -68,15 +80,6 @@ function GameLobby(props) {
   const startGame = () => {
     if (canStartGame) {
       gameIO.state.io.emit("game start", matchId, user);
-      gameIO.state.io.on("resolve start game", (player) => {
-        let updatedMatch = { hasStarted: true };
-        props.history.push({
-          pathname: "/game",
-          state: { matchId, player },
-        });
-        updatedMatch = { ...match.state.match, ...updatedMatch };
-        match.state.setMatch(updatedMatch);
-      });
     }
   };
 
