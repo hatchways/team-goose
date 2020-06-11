@@ -34,9 +34,12 @@ function App() {
     ChatIO.reducer,
     ChatIO.initialState
   );
+  const [match, setMatch] = useState({ id: "", hasStarted: false });
+
   const value = {
     gameIO: { state: gameIOState, dispatch: gameIODispatch },
     chatIO: { state: chatIOState, dispatch: chatIODispatch },
+    match: { state: { match, setMatch } },
   };
 
   const setTokens = (data) => {

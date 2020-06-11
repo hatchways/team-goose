@@ -34,11 +34,6 @@ const reducer = (state, action) => {
   }
 };
 
-export function useMatchId() {
-  const [matchId, setMatchId] = useState("");
-  return [matchId, setMatchId];
-}
-
 export function useGameState(gameIO, matchId) {
   const EVENT = "game state change";
   const [gameState, setGameState] = useState(null);

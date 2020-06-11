@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
+import { AppContext } from "../App";
 import { useAuth } from "../contexts/auth";
 import NavMenu from "./NavMenu";
 import GameScore from "../pages/game/GameScore";
@@ -13,6 +14,7 @@ import "./NavBar.css";
 function NavBar() {
   const title = "CLUEWORDS";
   const { authTokens } = useAuth();
+  const { match } = useContext(AppContext);
 
   return (
     <div id="navbar" className="MuiPaper-elevation4">
@@ -28,9 +30,11 @@ function NavBar() {
             <Grid item>
               <Grid container justify="center" alignItems="center" spacing={7}>
                 <Grid item>
-                  <Button variant="contained" color="primary" size="large">
-                    New Game
-                  </Button>
+                  {match.state.match.hasStarted ? (
+                    <Button variant="contained" color="primary" size="large">
+                      New Game
+                    </Button>
+                  ) : null}
                 </Grid>
                 <Grid item>
                   <Grid
