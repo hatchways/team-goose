@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "nodemon ./bin/www",
     "debug": "nodemon  --inspect ./bin/www",
-    "test": "NODE_ENV=test ./node_modules/.bin/mocha --exit --timeout 30000"
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha --exit --timeout 30000",
+    "heroku-postbuild": "cd ../client && npm install && npm install && npm run build"
   },
   "dependencies": {
     "bcrypt": "^4.0.1",
@@ -33,5 +34,8 @@
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "mocha": "^6.2.0"
+  },
+  "engines": {
+    "node": "13.13.0"
   }
 }
