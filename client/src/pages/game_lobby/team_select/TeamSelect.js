@@ -104,10 +104,10 @@ function TeamSelect(props) {
 
     if (teamCode === TEAM_CODE.RED) {
       redTeamDispatch(action);
-      gameIO.state.io.emit("join red team", { index , player: { id, name, email } })
+      gameIO.state.io.emit("join red team", { index , player: { id, name, email }, matchId })
     } else {
       blueTeamDispatch(action);
-      gameIO.state.io.emit("join blue team", { index, player: { id, name, email } })
+      gameIO.state.io.emit("join blue team", { index, player: { id, name, email }, matchId })
     }
 
     setIsRoleAssigned(!isRoleAssigned);
@@ -121,10 +121,10 @@ function TeamSelect(props) {
 
     if (teamCode === TEAM_CODE.RED) {
       redTeamDispatch(action);
-      gameIO.state.io.emit("leave red team", { index })
+      gameIO.state.io.emit("leave red team", { index, matchId })
     } else {
       blueTeamDispatch(action);
-      gameIO.state.io.emit("leave blue team", { index })
+      gameIO.state.io.emit("leave blue team", { index, matchId })
     }
     setIsRoleAssigned(!isRoleAssigned);
   };
