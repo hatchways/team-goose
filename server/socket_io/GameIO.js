@@ -30,16 +30,8 @@ class GameIO {
         socket.emit("resolve create game", match);
       });
 
-      socket.on("game start", (matchId, user) => {
-        const match = MatchManager.getMatch(matchId);
-        const redTeam = match.getRedTeam();
-        const blueTeam = match.getBlueTeam();
-        const players = [...redTeam, ...blueTeam];
-        let player = players.find((player) =>  player.user ? player.user.id === user.id : false);
-        if (!player) {
-          player = { team: "", role: "", user };
-        }
-        this.gameIO.to(matchId).emit("resolve start game", player);
+      socket.on("game start", (matchId) => {
+        this.gameIO.to(matchId).emit("resolve start game");
       });
 
       socket.on("game state onload", (matchId) => {
@@ -56,7 +48,7 @@ class GameIO {
       socket.on("end turn", (matchId) => {
         const match = MatchManager.getMatch(matchId);
         match.nextGameTurn();
-        socket.emit("game state change", match.getGameState());
+        this.gameIO.to(matchId).emit("game state change", match.getGameState());
       });
 
       socket.on("card select", (matchId, data) => {
@@ -97,6 +89,12 @@ class GameIO {
         const blueTeam = match.getBlueTeam();
         socket.emit("resolve game lobby onload", redTeam, blueTeam);
       });
+
+      socket.on("start new game", (matchId) => {
+        const match = MatchManager.getMatch(matchId);
+        match.resetGame();
+        this.gameIO.to(matchId).emit("game state change", match.getGameState());
+      })
     });
   }
 

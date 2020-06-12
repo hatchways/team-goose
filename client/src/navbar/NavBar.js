@@ -14,7 +14,11 @@ import "./NavBar.css";
 function NavBar() {
   const title = "CLUEWORDS";
   const { authTokens } = useAuth();
-  const { match } = useContext(AppContext);
+  const { match, gameIO } = useContext(AppContext);
+
+  const handleNewGame = () => {
+    gameIO.state.io.emit("start new game", match.state.match.id);
+  }
 
   return (
     <div id="navbar" className="MuiPaper-elevation4">
@@ -31,7 +35,7 @@ function NavBar() {
               <Grid container justify="center" alignItems="center" spacing={7}>
                 <Grid item>
                   {match.state.match.hasStarted ? (
-                    <Button variant="contained" color="primary" size="large">
+                    <Button variant="contained" color="primary" size="large" onClick={handleNewGame}>
                       New Game
                     </Button>
                   ) : null}

@@ -8,6 +8,7 @@ import { useGameState } from "../../socket_io/GameIO";
 import { TEAM_ROLE } from "../game_lobby/team_select/TeamPresets";
 import GamePrompt from "./GamePrompt";
 import GameBoard from "./GameBoard";
+import EndGamePopUp from "./EndGamePopUp";
 import Chat from "../chat/Chat";
 import "./Game.css";
 
@@ -62,7 +63,7 @@ function Game(props) {
                   />
                 </Grid>
                 <Grid item>
-                  {player.role === TEAM_ROLE.FIELD_AGENT ? (
+                  {player.role === TEAM_ROLE.FIELD_AGENT && player.team === gameState.gameTurn.team ? (
                     <Button
                       variant="contained"
                       color="secondary"
@@ -75,6 +76,7 @@ function Game(props) {
               </Grid>
             </Grid>
           </Grid>
+          {gameState.winner ? <EndGamePopUp gameState={gameState} gameIO={gameIO} matchId={matchId}/> : null}
         </Container>
       ) : null}
     </>

@@ -7,9 +7,27 @@
   background-color: white;
   box-shadow: 0 0 15px 5px rgba(6, 6, 6, 0.4);
   position: relative;
-  top: 30px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: 200ms ease-in-out;
   margin: auto;
+  z-index: 10;
+  position: fixed;
+  animation: appear 1s;
 }
+/* 
+@keyframes appear {
+  from {
+    width: 0;
+    height: 0;
+  }
+  to {
+    width: 420px;
+    height: 300px;
+  }
+} */
+
 
 .end-game-pop-up #skull {
   width: 80px;
@@ -25,4 +43,14 @@
 .end-game-pop-up p {
   margin-bottom: 20px;
   font-weight: 500;
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5;
 }
