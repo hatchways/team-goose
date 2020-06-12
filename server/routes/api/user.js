@@ -6,6 +6,8 @@ const config = require("config");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
 
+console.log("NODE_CONFIG_DIR: ", config.util.getEnv("NODE_CONFIG_DIR"));
+
 //api for user signup
 router.post(
   "/signup",
