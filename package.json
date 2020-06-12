@@ -1,0 +1,23 @@
+{
+  "name": "cluewords",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/bin/www",
+    "heroku-postbuild": "cd client && npm install && npm run build && cd ../server && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hatchways/team-goose.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hatchways/team-goose/issues"
+  },
+  "homepage": "https://github.com/hatchways/team-goose#readme",
+  "engines": {
+    "node": "13.13.0"
+  }
+}
