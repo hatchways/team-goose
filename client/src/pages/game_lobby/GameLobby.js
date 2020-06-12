@@ -53,16 +53,25 @@ function GameLobby(props) {
   }, [matchId]);
 
   useEffect(() => {
-    gameIO.state.io.on("resolve start game", (player) => {
-      let updatedMatch = { hasStarted: true };
-      props.history.push({
-        pathname: "/game",
-        state: { matchId, player },
-      });
-      updatedMatch = { ...match.state.match, ...updatedMatch };
-      match.state.setMatch(updatedMatch);
+    gameIO.state.io.on("resolve start game", () => {
+      if (redTeam && blueTeam) {
+        const players = [...redTeam, ...blueTeam];
+        let player = players.find((player) =>
+          player.user ? player.user.id === user.id : false
+        );
+        if (!player) {
+          player = { team: "", role: "", user };
+        }
+        let updatedMatch = { hasStarted: true };
+        props.history.push({
+          pathname: "/game",
+          state: { matchId, player },
+        });
+        updatedMatch = { ...match.state.match, ...updatedMatch };
+        match.state.setMatch(updatedMatch);
+      }
     });
-  }, []);
+  });
 
   const isTeamReady = (team) => {
     const spyMaster = team[SPYMASTER_INDEX];

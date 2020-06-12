@@ -63,7 +63,7 @@ function Game(props) {
                   />
                 </Grid>
                 <Grid item>
-                  {player.role === TEAM_ROLE.FIELD_AGENT ? (
+                  {player.role === TEAM_ROLE.FIELD_AGENT && player.team === gameState.gameTurn.team ? (
                     <Button
                       variant="contained"
                       color="secondary"

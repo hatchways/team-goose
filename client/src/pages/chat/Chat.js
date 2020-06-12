@@ -90,6 +90,7 @@ function Chat({ matchId, player }) {
       <Box component="div" id={`${CHAT_LOG_ELEMENT_ID}`}>
         {log.length > 0 ? generateChatLog() : null}
       </Box>
+      {/* {console.log(player)} */}
       {player.role === TEAM_ROLE.SPYMASTER ? (
         <SpymasterDialogInput
           onChange={onInputTextChange}
