@@ -24,7 +24,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "proxy": "http://localhost:3001",
+  "proxy": "https://cluewords.herokuapp.com/",
   "browserslist": {
     "production": [
       ">0.2%",

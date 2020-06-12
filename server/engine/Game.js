@@ -16,12 +16,12 @@ const DEFAULT_RED_TEAM_STATE = [
   {
     team: TeamColor.RED,
     role: TEAM_ROLE.SPYMASTER,
-    user: { id: "id1", name: "player1" },
+    user: { id: "id1", name: "Player 1" },
   },
   {
     team: TeamColor.RED,
     role: TEAM_ROLE.FIELD_AGENT,
-    user: { id: "id2", name: "player2" },
+    user: { id: "id2", name: "Player 2" },
   },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
@@ -106,11 +106,12 @@ class Game {
     return this.gameBoard;
   }
   getGameState() {
+    const { blueAgentNum, cards, redAgentNum } = this.gameBoard;
     return {
       gameTurn: this.gameTurn,
       redPoints: this.redPoints,
       bluePoints: this.bluePoints,
-      gameBoard: this.gameBoard,
+      gameBoard: { blueAgentNum, cards, redAgentNum },
       numGuessLeft: this.numGuessLeft,
       winner: this.winner,
     };
