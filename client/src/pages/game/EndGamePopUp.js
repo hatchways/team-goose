@@ -3,15 +3,13 @@ import { ReactComponent as Skull } from "../../img/skull.svg";
 import Button from "@material-ui/core/Button";
 import "./EndGamePopUp.css";
 
-export default function EndGamePopUp({ winner, bluePoints, redPoints}) {
-  //dummy data
-  winner = "Blue";
-  bluePoints = 6;
-  redPoints = 6;
+export default function EndGamePopUp(props) {
 
   useEffect(() => {
     
   })
+
+  const { winner, redPoints, bluePoints } = props.gameState;
   
   return (
     <div className="end-game-model">

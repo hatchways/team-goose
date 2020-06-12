@@ -104,6 +104,7 @@ class Game {
       bluePoints: this.bluePoints,
       gameBoard: this.gameBoard,
       numGuessLeft: this.numGuessLeft,
+      winner: this.winner
     };
   }
 
@@ -160,7 +161,6 @@ class Game {
           this.setWinner(TeamColor.RED);
         }
         votedCards[num].select();
-        this.setGameTurn(GameTurns.END);
         break;
       }
       if (votedCards[num].role === WordRoles.RED) {
@@ -209,32 +209,32 @@ class Game {
   }
 
   nextGameTurn() {
-    if (this.checkIfWinning()) {
-      this.setGameTurn(GameTurns.END);
+    if (!this.checkIfWinning()) {
+      switch (this.gameTurn) {
+        case GameTurns.RED_SPY_TURN:
+          this.setGameTurn(GameTurns.RED_AGENT_TURN);
+          break;
+        case GameTurns.BLUE_SPY_TURN:
+          this.setGameTurn(GameTurns.BLUE_AGENT_TURN);
+          break;
+        case GameTurns.RED_AGENT_TURN:
+          this.decideCardSelect();
+          if (this.getGameTurn() === GameTurns.RED_AGENT_TURN) {
+            this.setGameTurn(GameTurns.BLUE_AGENT_TURN); //GameTurns.BLUE_SPY_TURN
+          }
+          break;
+        case GameTurns.BLUE_AGENT_TURN:
+          this.decideCardSelect();
+          if (this.getGameTurn() === GameTurns.BLUE_AGENT_TURN) {
+            this.setGameTurn(GameTurns.RED_AGENT_TURN); //GameTurns.RED_SPY_TURN
+          }
+          break;
+        case GameTurns.END:
+          console.log("I'm in the end");
+          break;
+      }
     }
-     switch (this.gameTurn) {
-      case GameTurns.RED_SPY_TURN:
-        this.setGameTurn(GameTurns.RED_AGENT_TURN);
-        break;
-      case GameTurns.BLUE_SPY_TURN:
-        this.setGameTurn(GameTurns.BLUE_AGENT_TURN);
-        break;
-      case GameTurns.RED_AGENT_TURN:
-        this.decideCardSelect();
-        if (this.getGameTurn() === GameTurns.RED_AGENT_TURN) {
-          this.setGameTurn(GameTurns.BLUE_AGENT_TURN); //GameTurns.BLUE_SPY_TURN
-        }
-        break;
-      case GameTurns.BLUE_AGENT_TURN:
-        this.decideCardSelect();
-        if (this.getGameTurn() === GameTurns.BLUE_AGENT_TURN) {
-          this.setGameTurn(GameTurns.RED_AGENT_TURN); //GameTurns.RED_SPY_TURN
-        }
-        break;
-      case GameTurns.END:
-        console.log("I'm in the end");
-        break;
-    }
+
   }
 
   giveHint(numGuess) {
