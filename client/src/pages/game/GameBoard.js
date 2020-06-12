@@ -5,13 +5,7 @@ import { AppContext } from "../../App";
 import Card from "./Card";
 import { TEAM_ROLE } from "../game_lobby/team_select/TeamPresets";
 
-function GameBoard({
-  gameState,
-  player,
-  matchId,
-  guessesMade,
-  setGuessesMade,
-}) {
+function GameBoard({ gameState, player, matchId }) {
   const { gameIO } = useContext(AppContext);
   const canPerformActions = useBoardStatus(gameState, player);
 
@@ -21,9 +15,12 @@ function GameBoard({
         player: player,
         index: index,
       };
-      if (guessesMade < gameState.numGuessLeft) {
+      if (
+        player.role === TEAM_ROLE.FIELD_AGENT &&
+        player.team === gameState.gameTurn.team &&
+        gameState.gameTurn.role !== TEAM_ROLE.SPYMASTER
+      ) {
         gameIO.state.io.emit("card select", matchId, data);
-        setGuessesMade(guessesMade + 1);
       }
       console.log("card selected on board");
     }

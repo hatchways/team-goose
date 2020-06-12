@@ -21,7 +21,6 @@ function Game(props) {
   const [player] = useState(
     props.location.state ? props.location.state.player : null
   );
-  const [guessesMade, setGuessesMade] = useState(0);
 
   useEffect(() => {
     if (!matchId || !player) {
@@ -35,7 +34,6 @@ function Game(props) {
 
   const endTurn = () => {
     gameIO.state.io.emit("end turn", matchId);
-    setGuessesMade(0);
     console.log("end turn");
   };
 
@@ -56,19 +54,13 @@ function Game(props) {
                 spacing={4}
               >
                 <Grid item className="game-prompt">
-                  <GamePrompt
-                    gameState={gameState}
-                    guessesMade={guessesMade}
-                    player={player}
-                  />
+                  <GamePrompt gameState={gameState} player={player} />
                 </Grid>
                 <Grid item>
                   <GameBoard
                     gameState={gameState}
                     player={player}
                     matchId={matchId}
-                    guessesMade={guessesMade}
-                    setGuessesMade={setGuessesMade}
                   />
                 </Grid>
                 <Grid item>
