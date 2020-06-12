@@ -15,8 +15,8 @@ const useStyles = makeStyles({
 
 const CARD_ROLE = {
   BYSTANDER: { name: "Innocent Bystander", css: "bystander" },
-  RED_AGENT: { name: "Red Agent", css: "red" },
-  BLUE_AGENT: { name: "Blue Agent", css: "blue" },
+  RED_AGENT: { name: "Red Agent", css: "red-c" },
+  BLUE_AGENT: { name: "Blue Agent", css: "blue-c" },
   ASSASSIN: { name: "Assassin", css: "assassin" },
 };
 
@@ -82,6 +82,7 @@ function useCardType(type = TEAM_ROLE.FIELD_AGENT, value, isActive = false) {
     }
 
     if (type === TEAM_ROLE.SPYMASTER) {
+      style.push("spy");
       if (role === CARD_ROLE.BYSTANDER.name) {
         style.push(CARD_ROLE.BYSTANDER.css);
       } else if (role === CARD_ROLE.RED_AGENT.name) {

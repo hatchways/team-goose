@@ -13,26 +13,29 @@ import Chat from "../chat/Chat";
 import "./Game.css";
 
 function Game(props) {
-  const { gameIO } = useContext(AppContext);
+  const { match, gameIO } = useContext(AppContext);
   const [matchId] = useState(
     props.location.state ? props.location.state.matchId : ""
   );
   const gameState = useGameState(gameIO.state.io, matchId);
-  // TODO: get player data from resolve game start event after roles are assigned
   const [player] = useState(
     props.location.state ? props.location.state.player : null
   );
+  const [guessesMade, setGuessesMade] = useState(0);
 
   useEffect(() => {
-    // set game data from game lobby data
     if (!matchId || !player) {
       props.history.push({ pathname: "/" });
     }
+    let updatedMatch = { hasStarted: true };
+    updatedMatch = { ...match.state.match, ...updatedMatch };
+    match.state.setMatch(updatedMatch);
     // eslint-disable-next-line
   }, []);
 
   const endTurn = () => {
     gameIO.state.io.emit("end turn", matchId);
+    setGuessesMade(0);
     console.log("end turn");
   };
 
@@ -53,17 +56,25 @@ function Game(props) {
                 spacing={4}
               >
                 <Grid item className="game-prompt">
-                  <GamePrompt gameState={gameState} />
+                  <GamePrompt
+                    gameState={gameState}
+                    guessesMade={guessesMade}
+                    player={player}
+                  />
                 </Grid>
                 <Grid item>
                   <GameBoard
                     gameState={gameState}
                     player={player}
                     matchId={matchId}
+                    guessesMade={guessesMade}
+                    setGuessesMade={setGuessesMade}
                   />
                 </Grid>
                 <Grid item>
-                  {player.role === TEAM_ROLE.FIELD_AGENT && player.team === gameState.gameTurn.team ? (
+                  {player.role === TEAM_ROLE.FIELD_AGENT &&
+                  player.team === gameState.gameTurn.team &&
+                  gameState.gameTurn.role !== TEAM_ROLE.SPYMASTER ? (
                     <Button
                       variant="contained"
                       color="secondary"
@@ -76,7 +87,13 @@ function Game(props) {
               </Grid>
             </Grid>
           </Grid>
-          {gameState.winner ? <EndGamePopUp gameState={gameState} gameIO={gameIO} matchId={matchId}/> : null}
+          {gameState.winner ? (
+            <EndGamePopUp
+              gameState={gameState}
+              gameIO={gameIO}
+              matchId={matchId}
+            />
+          ) : null}
         </Container>
       ) : null}
     </>

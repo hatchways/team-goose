@@ -2,21 +2,23 @@ import React from "react";
 import { Box, Container, Grid, Typography } from "@material-ui/core";
 import TimerIcon from "@material-ui/icons/Timer";
 
-function GamePrompt({ gameState }) {
+import { TEAM_ROLE } from "../game_lobby/team_select/TeamPresets";
+
+function GamePrompt({ gameState, guessesMade, player }) {
   return (
     <Container>
-      <Grid container justify="space-between" alignItems="center">
+      <Grid container justify="space-between" alignItems="center" spacing={10}>
         <Grid item xs>
           <Grid container alignItems="center" spacing={1}>
             <Grid item>
               <TimerIcon fontSize="large" />
             </Grid>
             <Grid item>
-              <Typography variant="h5">30s left</Typography>
+              <Typography variant="h6">45s left</Typography>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs>
           <Typography variant="h5">
             It's
             <Box
@@ -27,6 +29,19 @@ function GamePrompt({ gameState }) {
             </Box>
             's turn!
           </Typography>
+        </Grid>
+        <Grid item xs>
+          <Grid container justify="flex-end" alignItems="center">
+            <Grid item>
+              {player.role === TEAM_ROLE.FIELD_AGENT &&
+              player.team === gameState.gameTurn.team &&
+              gameState.gameTurn.role !== TEAM_ROLE.SPYMASTER ? (
+                <Typography variant="h6">{`Guesses Left: ${
+                  gameState.numGuessLeft - guessesMade
+                }`}</Typography>
+              ) : null}
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </Container>

@@ -33,12 +33,21 @@
   cursor: default;
 }
 
-.gameboard .card.selected.bg-red {
+.gameboard .card.selected.spy.bg-red {
   background-color: #f86155;
+  color: white;
 }
 
-.gameboard .card.selected.bg-blue {
+.gameboard .card.selected.spy.bg-blue {
   background-color: #4fadf3;
+  color: white;
+}
+
+.gameboard .card.red-c {
+  color: #f86155;
+}
+.gameboard .card.blue-c {
+  color: #4fadf3;
 }
 
 .game-panel {
