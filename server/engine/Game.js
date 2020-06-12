@@ -21,14 +21,14 @@ const DEFAULT_RED_TEAM_STATE = [
   {
     team: TeamColor.RED,
     role: TEAM_ROLE.FIELD_AGENT,
-    user: { id: "id2", name: "player2" },
+    user: null,
   },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
 ];
 
 const DEFAULT_BLUE_TEAM_STATE = [
-  { team: TeamColor.BLUE, role: TEAM_ROLE.SPYMASTER, user: null },
+  { team: TeamColor.BLUE, role: TEAM_ROLE.SPYMASTER, user: { id: "id2", name: "player2" } },
   { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
@@ -44,7 +44,7 @@ class Game {
     //   Math.round(Math.random())
     // ];
 
-    this.gameTurn = GameTurns.BLUE_SPY_TURN;
+    this.gameTurn = GameTurns.BLUE_AGENT_TURN;
 
     this.redTeam = DEFAULT_RED_TEAM_STATE;
     this.blueTeam = DEFAULT_BLUE_TEAM_STATE;
@@ -178,7 +178,7 @@ class Game {
         } else if (this.getGameTurn() === GameTurns.BLUE_AGENT_TURN) {
           this.addRedPoint();
           votedCards[num].select();
-          this.setGameTurn(GameTurns.RED_SPY_TURN); //GameTurns.RED_SPY_TURN
+          this.setGameTurn(GameTurns.RED_AGENT_TURN); //GameTurns.RED_SPY_TURN
           this.delRestVotes(votedCards, num);
           break;
         }
@@ -190,7 +190,7 @@ class Game {
         } else if (this.getGameTurn() === GameTurns.RED_AGENT_TURN) {
           this.addBluePoint();
           votedCards[num].select();
-          this.setGameTurn(GameTurns.BLUE_SPY_TURN); //GameTurns.BLUE_SPY_TURN
+          this.setGameTurn(GameTurns.BLUE_AGENT_TURN); //GameTurns.BLUE_SPY_TURN
           this.delRestVotes(votedCards, num);
           break;
         }
@@ -228,13 +228,13 @@ class Game {
         case GameTurns.RED_AGENT_TURN:
           this.decideCardSelect();
           if (this.getGameTurn() === GameTurns.RED_AGENT_TURN) {
-            this.setGameTurn(GameTurns.BLUE_SPY_TURN); //GameTurns.BLUE_SPY_TURN
+            this.setGameTurn(GameTurns.BLUE_AGENT_TURN); //GameTurns.BLUE_SPY_TURN
           }
           break;
         case GameTurns.BLUE_AGENT_TURN:
           this.decideCardSelect();
           if (this.getGameTurn() === GameTurns.BLUE_AGENT_TURN) {
-            this.setGameTurn(GameTurns.RED_SPY_TURN); //GameTurns.RED_SPY_TURN
+            this.setGameTurn(GameTurns.RED_AGENT_TURN); //GameTurns.RED_SPY_TURN
           }
           break;
         case GameTurns.END:
