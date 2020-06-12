@@ -14,44 +14,37 @@ const TEAM_ROLE = {
 
 const DEFAULT_RED_TEAM_STATE = [
   { team: TeamColor.RED, role: TEAM_ROLE.SPYMASTER, user: {id:"id1", name:"player1"} },
-  { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: {id:"id2", name:"player2"} },
+  { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
 ];
 
 const DEFAULT_BLUE_TEAM_STATE = [
-  { team: TeamColor.BLUE, role: TEAM_ROLE.SPYMASTER, user: null },
+  { team: TeamColor.BLUE, role: TEAM_ROLE.SPYMASTER, user: {id:"id2", name:"player2"} },
   { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
 ];
 
-const MAX_NUM_OF_GUESS = 25;
+const MAX_NUM_OF_GUESSES = 25;
 
 class Game {
   constructor(hostId) {
     this.hostId = hostId;
 
-    this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
-      Math.round(Math.random())
-    ];
+    // this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
+    //   Math.round(Math.random())
+    // ];
 
     this.gameTurn = GameTurns.BLUE_AGENT_TURN;
 
-    // this.redTeam = DEFAULT_RED_TEAM_STATE;
-    // this.blueTeam = DEFAULT_BLUE_TEAM_STATE;
-    this.redTeam = [
-      { team: TeamColor.RED, role: TEAM_ROLE.SPYMASTER, user: { id: "id_1", name: "name1" } },
-      { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: { id: "id_2", name: "name2" }  },
-    ];
-    this.blueTeam = [
-      { team: TeamColor.BLUE, role: TEAM_ROLE.SPYMASTER, user: { id: "id_3", name: "name3" } },
-      { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: { id: "id_4", name: "name4" }  },
-    ];
+    this.redTeam = DEFAULT_RED_TEAM_STATE;
+    this.blueTeam = DEFAULT_BLUE_TEAM_STATE;
+
     this.redPoints = 0;
     this.bluePoints = 0;
     this.numGuessLeft = 0;
-    this.maxNumOfGuess = 0;
+    this.maxNumOfGuess = MAX_NUM_OF_GUESSES;
     this.winner = null;
 
     this.gameBoard = new Board();
@@ -167,7 +160,7 @@ class Game {
           this.setWinner(TeamColor.RED);
         }
         votedCards[num].select();
-        this.setGameTurn(GameTurns.End);
+        this.setGameTurn(GameTurns.END);
         break;
       }
       if (votedCards[num].role === WordRoles.RED) {
@@ -177,7 +170,7 @@ class Game {
         } else if (this.getGameTurn() === GameTurns.BLUE_AGENT_TURN) {
           this.addRedPoint();
           votedCards[num].select();
-          this.setGameTurn(GameTurns.RED_SPY_TURN);
+          this.setGameTurn(GameTurns.RED_AGENT_TURN); //GameTurns.RED_SPY_TURN
           this.delRestVotes(votedCards, num);
           break;
         }
@@ -189,7 +182,7 @@ class Game {
         } else if (this.getGameTurn() === GameTurns.RED_AGENT_TURN) {
           this.addBluePoint();
           votedCards[num].select();
-          this.setGameTurn(GameTurns.BLUE_SPY_TURN);
+          this.setGameTurn(GameTurns.BLUE_AGENT_TURN); //GameTurns.BLUE_SPY_TURN
           this.delRestVotes(votedCards, num);
           break;
         }
@@ -217,7 +210,7 @@ class Game {
 
   nextGameTurn() {
     if (this.checkIfWinning()) {
-      this.setGameTurn(GameTurns.End);
+      this.setGameTurn(GameTurns.END);
     }
      switch (this.gameTurn) {
       case GameTurns.RED_SPY_TURN:
@@ -229,16 +222,16 @@ class Game {
       case GameTurns.RED_AGENT_TURN:
         this.decideCardSelect();
         if (this.getGameTurn() === GameTurns.RED_AGENT_TURN) {
-          this.setGameTurn(GameTurns.BLUE_SPY_TURN);
+          this.setGameTurn(GameTurns.BLUE_AGENT_TURN); //GameTurns.BLUE_SPY_TURN
         }
         break;
       case GameTurns.BLUE_AGENT_TURN:
         this.decideCardSelect();
         if (this.getGameTurn() === GameTurns.BLUE_AGENT_TURN) {
-          this.setGameTurn(GameTurns.RED_SPY_TURN);
+          this.setGameTurn(GameTurns.RED_AGENT_TURN); //GameTurns.RED_SPY_TURN
         }
         break;
-      case GameTurns.End:
+      case GameTurns.END:
         console.log("I'm in the end");
         break;
     }

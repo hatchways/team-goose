@@ -53,7 +53,7 @@ function Game(props) {
                 spacing={4}
               >
                 <Grid item className="game-prompt">
-                  <GamePrompt gameState={gameState} />
+                  {!gameState.gameTurn === "End" ? <GamePrompt gameState={gameState} /> : null}
                 </Grid>
                 <Grid item>
                   <GameBoard
@@ -76,7 +76,7 @@ function Game(props) {
               </Grid>
             </Grid>
           </Grid>
-          <EndGamePopUp />
+          {gameState.gameTurn === "END" ? <EndGamePopUp gameState={gameState}/> : null}
         </Container>
       ) : null}
     </>

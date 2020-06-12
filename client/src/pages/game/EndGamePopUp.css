@@ -1,6 +1,3 @@
-.end-game-model {
-}
-
 .end-game-pop-up {
   width: 420px;
   height: 300px;
@@ -12,16 +9,25 @@
   position: relative;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0);
+  transform: translate(-50%, -50%);
   transition: 200ms ease-in-out;
   margin: auto;
   z-index: 10;
   position: fixed;
+  animation: appear 1s;
 }
+/* 
+@keyframes appear {
+  from {
+    width: 0;
+    height: 0;
+  }
+  to {
+    width: 420px;
+    height: 300px;
+  }
+} */
 
-.end-game-pop-up.active {
-  transform: translate(-50%, -50%) scale(1);
-}
 
 .end-game-pop-up #skull {
   width: 80px;
@@ -41,15 +47,10 @@
 
 #overlay {
   position: fixed;
-  opacity: 0;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 5;
-}
-
-#overlay.active {
-  opacity: 1;
 }

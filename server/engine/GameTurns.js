@@ -16,7 +16,7 @@ const GameTurns = {
     role: "Spymaster",
   },
   //For now 
-  END: "End",
+  END: "End"
 };
 
 module.exports = GameTurns;
