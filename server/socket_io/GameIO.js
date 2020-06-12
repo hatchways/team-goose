@@ -35,11 +35,11 @@ class GameIO {
         const redTeam = match.getRedTeam();
         const blueTeam = match.getBlueTeam();
         const players = [...redTeam, ...blueTeam];
-        let player = players.find((player) => player.user.id === user.id);
+        let player = players.find((player) =>  player.user ? player.user.id === user.id : false);
         if (!player) {
           player = { team: "", role: "", user };
         }
-        socket.emit("resolve start game", player);
+        this.gameIO.to(matchId).emit("resolve start game", player);
       });
 
       socket.on("game state onload", (matchId) => {
