@@ -21,9 +21,9 @@ app.use("/api/user", user);
 //app.use("/api/match", match);
 
 // catch 404 and forward to error handler
-//app.use(function (req, res, next) {
-//  next(createError(404));
-//});
+app.use(function (req, res, next) {
+  next(createError(404));
+});
 
 // error handler
 app.use(function (err, req, res, next) {
