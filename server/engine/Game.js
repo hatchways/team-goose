@@ -149,8 +149,10 @@ class Game {
         }
         break;
       case TeamColor.BLUE:
-        if (!this.getBoard().checkIfVoted(data.index, data.player)) {
-          this.getBoard().voteOnCard(data.index, data.player);
+        if (this.getGameTurn() == GameTurns.BLUE_AGENT_TURN) {
+          if (!this.getBoard().checkIfVoted(data.index, data.player)) {
+            this.getBoard().voteOnCard(data.index, data.player);
+          }
         }
         break;
     }
