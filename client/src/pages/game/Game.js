@@ -76,7 +76,7 @@ function Game(props) {
               </Grid>
             </Grid>
           </Grid>
-          {gameState.winner ? <EndGamePopUp gameState={gameState}/> : null}
+          {gameState.winner ? <EndGamePopUp gameState={gameState} gameIO={gameIO} matchId={matchId}/> : null}
         </Container>
       ) : null}
     </>

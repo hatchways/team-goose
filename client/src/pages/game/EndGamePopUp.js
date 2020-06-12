@@ -7,6 +7,10 @@ export default function EndGamePopUp(props) {
 
   const { winner, redPoints, bluePoints } = props.gameState;
 
+  const handleNewGame = () => {
+    props.gameIO.state.io.emit("start new game", props.matchId);
+  }
+
   return (
     <div className="end-game-model">
       <div className="end-game-pop-up" animate={{ scale: 2 }} transition={{ ease: "easeOut", duration: 2 }}>
@@ -17,7 +21,7 @@ export default function EndGamePopUp(props) {
           <span className="blue">{bluePoints}</span> :{" "}
           <span className="red">{redPoints}</span>
         </p>
-        <Button variant="contained" color="primary" size="large">
+        <Button variant="contained" color="primary" size="large" onClick={handleNewGame}>
           New Game
         </Button>
       </div>

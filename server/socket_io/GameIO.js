@@ -91,6 +91,12 @@ class GameIO {
         const blueTeam = match.getBlueTeam();
         socket.emit("resolve game lobby onload", redTeam, blueTeam);
       });
+
+      socket.on("start new game", (matchId) => {
+        const match = MatchManager.getMatch(matchId);
+        match.resetGame();
+        this.gameIO.to(matchId).emit("game state change", match.getGameState());
+      })
     });
   }
 
