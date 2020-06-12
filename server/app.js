@@ -7,7 +7,7 @@ const logger = require("morgan");
 const user = require("./routes/api/user");
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
-const match = require("./routes/api/match")
+const match = require("./routes/api/match");
 
 const { json, urlencoded } = express;
 
@@ -18,7 +18,6 @@ app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
@@ -39,6 +38,11 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.json({ error: err });
+});
+
+app.use(express.static(path.join(__dirname, "client", "build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
 module.exports = app;
