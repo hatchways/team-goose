@@ -1,16 +1,12 @@
-import React, { useEffect} from "react";
+import React from "react";
 import { ReactComponent as Skull } from "../../img/skull.svg";
 import Button from "@material-ui/core/Button";
 import "./EndGamePopUp.css";
 
 export default function EndGamePopUp(props) {
 
-  useEffect(() => {
-    
-  })
-
   const { winner, redPoints, bluePoints } = props.gameState;
-  
+
   return (
     <div className="end-game-model">
       <div className="end-game-pop-up" animate={{ scale: 2 }} transition={{ ease: "easeOut", duration: 2 }}>
