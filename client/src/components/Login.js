@@ -65,10 +65,12 @@ export default function Login(props) {
               .then((response) => {
                 if (response.status === 200) {
                   const user = response.data.data;
-                  const token = response.data.data.token;
-                  setAuthTokens(token);
-                  setUserData(user);
-                  setLoggedIn(true);
+                  if (user) {
+                    const token = response.data.data.token;
+                    setAuthTokens(token);
+                    setUserData(user);
+                    setLoggedIn(true);
+                  }
                 }
               })
               .catch((err) => {
