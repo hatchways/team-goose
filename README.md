@@ -3,6 +3,8 @@ A web app that allows users to play a game of "Codenames" together online.
 
 [Codenames](https://en.wikipedia.org/wiki/Codenames_(board_game)) is "a 2015 card game for 4–8 players... (where) two teams compete by each having a "spymaster" give one-word clues that can point to multiple words on the board. The other players on the team attempt to guess their team's words while avoiding the words of the other team".
 
+**Live demo:** https://cluewords.herokuapp.com/
+
 **Features**
 * Sign up/Login authentication
 * Private game lobbies
