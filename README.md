@@ -14,13 +14,13 @@ A web app that allows users to play a game of "Codenames" together online.
 
 ## Contributors
 * [Tony Chen](https://github.com/tonyc856)
-* [Renyi Cao](https://github.com/h0vscat)
+* [Renyi Cao](https://github.com/reny1cao)
 * [Manpreet Bhuller](https://github.com/ManpreetBhuller)
 
 ## Tech Stack
 **Front-End**
 * React.js
-* React Hooks 
+* React Hooks for state management
 * Material UI
 
 **Back-End**
@@ -30,8 +30,8 @@ A web app that allows users to play a game of "Codenames" together online.
 * MongoDB
 
 ## User Stories
-* **Logging in to the user's account**
+* **Logging in to the game**
 * **Creating a game**
 * **Joining a game**
 * **Choosing a team to join**
-* **Play together!**
+* **Playing together!**
