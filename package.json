@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/bin/www",
+    "server": "nodemon server/bin/www",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "cd client && npm install && npm run build && cd ../server && npm install"
   },
   "repository": {
@@ -19,5 +22,11 @@
   "homepage": "https://github.com/hatchways/team-goose#readme",
   "engines": {
     "node": "13.13.0"
+  },
+  "dependencies": {
+    "concurrently": "^5.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }

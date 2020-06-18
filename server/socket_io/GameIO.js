@@ -27,7 +27,9 @@ class GameIO {
 
       socket.on("create game", (hostId) => {
         const match = MatchManager.createMatch(hostId);
-        socket.emit("resolve create game", match);
+        if (match) {
+          socket.emit("resolve create game", match);
+        }
       });
 
       socket.on("game start", (matchId) => {
@@ -35,9 +37,11 @@ class GameIO {
       });
 
       socket.on("game state onload", (matchId) => {
-        socket.join(matchId);
         const match = MatchManager.getMatch(matchId);
-        socket.emit("game state change", match.getGameState());
+        if (match) {
+          socket.join(matchId);
+          socket.emit("game state change", match.getGameState());
+        }
       });
 
       // setInterval(() => {
@@ -53,48 +57,70 @@ class GameIO {
 
       socket.on("card select", (matchId, data) => {
         const match = MatchManager.getMatch(matchId);
-        const room = `${matchId}-${data.player.team}`;
-        const card = match.getBoard().getACard(data.index);
-        const text = `${data.player.user.name} has voted for ${card.word}`;
 
-        match.vote(data);
-        this.chatIO.connection().sendMessage(room, undefined, text, undefined);
-        this.gameIO.to(matchId).emit("game state change", match.getGameState());
+        if (match) {
+          const room = `${matchId}-${data.player.team}`;
+          const card = match.getBoard().getACard(data.index);
+          const text = `${data.player.user.name} has voted for ${card.word}`;
+
+          match.vote(data);
+          this.chatIO
+            .connection()
+            .sendMessage(room, undefined, text, undefined);
+          this.gameIO
+            .to(matchId)
+            .emit("game state change", match.getGameState());
+        }
       });
 
       socket.on("send max allowed guesses", (matchId, numOfGuesses) => {
         const match = MatchManager.getMatch(matchId);
-        match.giveHint(numOfGuesses);
-        match.nextGameTurn();
-        this.gameIO.to(matchId).emit("game state change", match.getGameState());
+        if (match) {
+          match.giveHint(numOfGuesses);
+          match.nextGameTurn();
+          this.gameIO
+            .to(matchId)
+            .emit("game state change", match.getGameState());
+        }
       });
 
       socket.on("lobby role change", (matchId, redTeam, blueTeam) => {
         const match = MatchManager.getMatch(matchId);
-        match.setRedTeam(redTeam);
-        match.setBlueTeam(blueTeam);
-        socket
-          .to(matchId)
-          .emit(
-            "resolve lobby role change",
-            match.getRedTeam(),
-            match.getBlueTeam()
-          );
+
+        if (match) {
+          match.setRedTeam(redTeam);
+          match.setBlueTeam(blueTeam);
+          socket
+            .to(matchId)
+            .emit(
+              "resolve lobby role change",
+              match.getRedTeam(),
+              match.getBlueTeam()
+            );
+        }
       });
 
       socket.on("game lobby onload", (matchId) => {
         const match = MatchManager.getMatch(matchId);
-        socket.join(matchId);
-        const redTeam = match.getRedTeam();
-        const blueTeam = match.getBlueTeam();
-        socket.emit("resolve game lobby onload", redTeam, blueTeam);
+
+        if (match) {
+          socket.join(matchId);
+          const redTeam = match.getRedTeam();
+          const blueTeam = match.getBlueTeam();
+          socket.emit("resolve game lobby onload", redTeam, blueTeam);
+        }
       });
 
       socket.on("start new game", (matchId) => {
         const match = MatchManager.getMatch(matchId);
-        match.resetGame();
-        this.gameIO.to(matchId).emit("game state change", match.getGameState());
-      })
+
+        if (match) {
+          match.resetGame();
+          this.gameIO
+            .to(matchId)
+            .emit("game state change", match.getGameState());
+        }
+      });
     });
   }
 

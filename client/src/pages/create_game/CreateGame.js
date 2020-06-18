@@ -46,78 +46,82 @@ function CreateGame(props) {
 
   return (
     <Container>
-      <Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="center"
-        spacing={3}
-      >
-        <Grid item className="header">
-          <Header title="Welcome" />
-        </Grid>
-        <Grid item>
-          <Grid container justify="center" alignItems="center" spacing={10}>
-            <Grid item xs={7}>
-              <Grid container direction="column">
-                <Grid item>
-                  <Grid container direction="column">
-                    <Grid item>
-                      <Typography variant="h6" gutterBottom>
-                        Join a Game:
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Grid container direction="column">
-                        <Grid item>
-                          <Grid container alignItems="center" spacing={1}>
-                            <Grid item xs={8}>
-                              <Input
-                                onChange={(event) => {
-                                  onChange(event);
-                                }}
-                                value={matchId}
-                                placeholder="Enter Match ID"
-                              />
-                            </Grid>
-                            <Grid item xs={4}>
-                              <Button
-                                onClick={handleJoinGame}
-                                disabled={matchId.length <= 0}
-                                variant="contained"
-                                color="primary"
-                              >
-                                Join
-                              </Button>
+      <Grid container className="content">
+        <Grid
+          item
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+          alignContent="center"
+          spacing={3}
+        >
+          <Grid item className="header">
+            <Header title="Welcome" />
+          </Grid>
+          <Grid item>
+            <Grid container justify="center" alignItems="center" spacing={10}>
+              <Grid item xs={7}>
+                <Grid container direction="column">
+                  <Grid item>
+                    <Grid container direction="column">
+                      <Grid item>
+                        <Typography variant="h6" gutterBottom>
+                          Join a Game:
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Grid container direction="column">
+                          <Grid item>
+                            <Grid container alignItems="center" spacing={1}>
+                              <Grid item xs={8}>
+                                <Input
+                                  onChange={(event) => {
+                                    onChange(event);
+                                  }}
+                                  value={matchId}
+                                  placeholder="Enter Match ID"
+                                />
+                              </Grid>
+                              <Grid item xs={4}>
+                                <Button
+                                  onClick={handleJoinGame}
+                                  disabled={matchId.length <= 0}
+                                  variant="contained"
+                                  color="primary"
+                                >
+                                  Join
+                                </Button>
+                              </Grid>
                             </Grid>
                           </Grid>
-                        </Grid>
-                        <Grid item>
-                          {errorMessage ? (
-                            <Typography variant="subtitle2" color="error">
-                              {errorMessage}
-                            </Typography>
-                          ) : null}
+                          <Grid item>
+                            {errorMessage ? (
+                              <Typography variant="subtitle2" color="error">
+                                {errorMessage}
+                              </Typography>
+                            ) : null}
+                          </Grid>
                         </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-            <Grid item xs={5}>
-              <Grid container direction="column">
-                <Grid item>
-                  <Grid container direction="column">
-                    <Grid item>
-                      <Typography variant="h6" gutterBottom>
-                        New Game:
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Button variant="contained" onClick={handleNewGame}>
-                        Create
-                      </Button>
+              <Grid item xs={5}>
+                <Grid container direction="column">
+                  <Grid item>
+                    <Grid container direction="column">
+                      <Grid item>
+                        <Typography variant="h6" gutterBottom>
+                          New Game:
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Button variant="contained" onClick={handleNewGame}>
+                          Create
+                        </Button>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Grid>

@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, Typography } from "@material-ui/core";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 
-import { TEAM_ROLE, TEAM_CODE } from "../game_lobby/team_select/TeamPresets";
+import { TEAM_ROLE } from "../game_lobby/team_select/TeamPresets";
 import CardVoteTooltip from "./CardVoteTooltip";
 import "./Game.css";
 
@@ -15,8 +15,8 @@ const useStyles = makeStyles({
 
 const CARD_ROLE = {
   BYSTANDER: { name: "Innocent Bystander", css: "bystander" },
-  RED_AGENT: { name: "Red Agent", css: "red" },
-  BLUE_AGENT: { name: "Blue Agent", css: "blue" },
+  RED_AGENT: { name: "Red Agent", css: "red-c" },
+  BLUE_AGENT: { name: "Blue Agent", css: "blue-c" },
   ASSASSIN: { name: "Assassin", css: "assassin" },
 };
 
@@ -25,7 +25,7 @@ const CARD_GUESSED = {
   BLUE_TEAM: "selected bg-blue",
 };
 
-function Card({ index, value, onClick, player, isActive }) {
+function Card({ index, value, onClick, player, isActive, gameState }) {
   const classes = useStyles();
   const style = useCardType(player.role, value, isActive);
 
@@ -58,7 +58,7 @@ function Card({ index, value, onClick, player, isActive }) {
           <Grid item>
             {value.voted.length > 0 && !value.selected ? (
               <CheckCircleOutlineIcon
-                className={player.team === TEAM_CODE.RED ? "red" : "blue"}
+                className={gameState.gameTurn.team.toLowerCase()}
               />
             ) : null}
           </Grid>
@@ -82,6 +82,7 @@ function useCardType(type = TEAM_ROLE.FIELD_AGENT, value, isActive = false) {
     }
 
     if (type === TEAM_ROLE.SPYMASTER) {
+      style.push("spy");
       if (role === CARD_ROLE.BYSTANDER.name) {
         style.push(CARD_ROLE.BYSTANDER.css);
       } else if (role === CARD_ROLE.RED_AGENT.name) {

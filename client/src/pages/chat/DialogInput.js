@@ -35,7 +35,7 @@ export function FieldAgentDialogInput({ onChange, onSubmit, value }) {
         <Grid item xs={4}>
           <Button
             type="submit"
-            variant="text"
+            variant="outlined"
             disabled={value.length <= 0}
             disableRipple
             disableFocusRipple
@@ -130,7 +130,8 @@ export function SpymasterDialogInput({
         <Grid item xs={4}>
           <Button
             type="submit"
-            variant="text"
+            variant="contained"
+            color="primary"
             disabled={value.length <= 0 || !isSpymasterTurn}
             disableRipple
             disableFocusRipple

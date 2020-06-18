@@ -15,8 +15,13 @@ function GameBoard({ gameState, player, matchId }) {
         player: player,
         index: index,
       };
-      gameIO.state.io.emit("card select", matchId, data);
-      console.log("card selected on board");
+      if (
+        player.role === TEAM_ROLE.FIELD_AGENT &&
+        player.team === gameState.gameTurn.team &&
+        gameState.gameTurn.role !== TEAM_ROLE.SPYMASTER
+      ) {
+        gameIO.state.io.emit("card select", matchId, data);
+      }
     }
   };
 
@@ -32,6 +37,7 @@ function GameBoard({ gameState, player, matchId }) {
             onClick={selectCard}
             player={player}
             isActive={canPerformActions}
+            gameState={gameState}
           />
         </GridListTile>
       );
