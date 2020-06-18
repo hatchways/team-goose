@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, Typography } from "@material-ui/core";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 
-import { TEAM_ROLE, TEAM_CODE } from "../game_lobby/team_select/TeamPresets";
+import { TEAM_ROLE } from "../game_lobby/team_select/TeamPresets";
 import CardVoteTooltip from "./CardVoteTooltip";
 import "./Game.css";
 
@@ -25,7 +25,7 @@ const CARD_GUESSED = {
   BLUE_TEAM: "selected bg-blue",
 };
 
-function Card({ index, value, onClick, player, isActive }) {
+function Card({ index, value, onClick, player, isActive, gameState }) {
   const classes = useStyles();
   const style = useCardType(player.role, value, isActive);
 
@@ -58,7 +58,7 @@ function Card({ index, value, onClick, player, isActive }) {
           <Grid item>
             {value.voted.length > 0 && !value.selected ? (
               <CheckCircleOutlineIcon
-                className={player.team === TEAM_CODE.RED ? "red" : "blue"}
+                className={gameState.gameTurn.team.toLowerCase()}
               />
             ) : null}
           </Grid>

@@ -7,7 +7,7 @@ import { TEAM_ROLE } from "../game_lobby/team_select/TeamPresets";
 function GamePrompt({ gameState, player }) {
   return (
     <Container>
-      <Grid container justify="space-between" alignItems="center" spacing={10}>
+      <Grid container justify="space-between" alignItems="center">
         <Grid item xs>
           <Grid container alignItems="center" spacing={1}>
             <Grid item>

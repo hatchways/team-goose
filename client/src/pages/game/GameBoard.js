@@ -22,7 +22,6 @@ function GameBoard({ gameState, player, matchId }) {
       ) {
         gameIO.state.io.emit("card select", matchId, data);
       }
-      console.log("card selected on board");
     }
   };
 
@@ -38,6 +37,7 @@ function GameBoard({ gameState, player, matchId }) {
             onClick={selectCard}
             player={player}
             isActive={canPerformActions}
+            gameState={gameState}
           />
         </GridListTile>
       );

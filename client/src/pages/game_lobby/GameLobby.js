@@ -96,60 +96,63 @@ function GameLobby(props) {
     <>
       {redTeam && blueTeam ? (
         <Container>
-          <Grid
-            container
-            direction="column"
-            justify="center"
-            alignItems="center"
-            spacing={2}
-          >
-            <Grid item className="header">
-              <Header title="New Game" />
-            </Grid>
-            <Grid item>
-              <Grid
-                container
-                direction="column"
-                justify="center"
-                alignItems="center"
-                spacing={2}
-              >
-                <Grid item>
-                  <TeamSelect
-                    matchId={matchId}
-                    redTeamData={redTeam}
-                    blueTeamData={blueTeam}
-                    currentUser={user}
-                    onRoleChange={onRoleChange}
-                  />
-                </Grid>
-                <Grid item>
-                  <Button
-                    onClick={() => startGame()}
-                    disabled={!canStartGame}
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                  >
-                    Start Game
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Grid container justify="center" alignItems="center">
-                    <Grid className="label" item>
-                      <Typography>Share Match ID:</Typography>
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        onClick={() => {
-                          copyToClipboard(matchId);
-                        }}
-                        variant="outlined"
-                        color="default"
-                        size="small"
-                      >
-                        Copy
-                      </Button>
+          <Grid container className="content">
+            <Grid
+              item
+              container
+              direction="column"
+              justify="center"
+              alignItems="center"
+              spacing={2}
+            >
+              <Grid item className="header">
+                <Header title="New Game" />
+              </Grid>
+              <Grid item>
+                <Grid
+                  container
+                  direction="column"
+                  justify="center"
+                  alignItems="center"
+                  spacing={2}
+                >
+                  <Grid item>
+                    <TeamSelect
+                      matchId={matchId}
+                      redTeamData={redTeam}
+                      blueTeamData={blueTeam}
+                      currentUser={user}
+                      onRoleChange={onRoleChange}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      onClick={() => startGame()}
+                      disabled={!canStartGame}
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                    >
+                      Start Game
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Grid container justify="center" alignItems="center">
+                      <Grid className="label" item>
+                        <Typography>Share Match ID:</Typography>
+                      </Grid>
+                      <Grid item>
+                        <Button
+                          onClick={() => {
+                            copyToClipboard(matchId);
+                          }}
+                          variant="outlined"
+                          color="default"
+                          size="small"
+                        >
+                          Copy
+                        </Button>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Grid>
