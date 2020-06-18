@@ -44,10 +44,11 @@ class GameIO {
         }
       });
 
-      // setInterval(() => {
-      //   countdown--;
-      //   this.gameIO.to(matchId).emit("timer", { countdown: countdown });
-      // }, 1000);
+      setInterval(() => {
+        console.log("Timer started");
+        // countdown--;
+        // this.gameIO.to(matchId).emit("timer", { countdown: countdown });
+      }, 1000);
 
       socket.on("end turn", (matchId) => {
         const match = MatchManager.getMatch(matchId);
