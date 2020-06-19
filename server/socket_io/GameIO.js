@@ -114,6 +114,7 @@ class GameIO {
       });
 
       socket.on("start new game", (matchId) => {
+        clearInterval(this.timer);
         const match = MatchManager.getMatch(matchId);
 
         if (match) {
@@ -123,6 +124,7 @@ class GameIO {
             .emit("game state change", match.getGameState());
         }
         this.gameIO.to(matchId).emit("start timer");
+        this.timer = this.startTimerInterval(matchId);
       });
     });
   }

@@ -270,7 +270,7 @@ class Game {
   resetGame() {
     this.bluePoints = 0;
     this.redPoints = 0;
-    this.numGuessLeft = 0;
+    this.numGuessLeft = MAX_NUM_OF_GUESSES;
     this.gameBoard.generateNewRound();
     this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
       Math.round(Math.random())

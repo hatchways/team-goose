@@ -9,9 +9,17 @@ function GamePrompt({ gameState, player }) {
 
   const [timer, setTimer] = useState(45);
 
+  let countDown = null;
+
+  gameIO.state.io.on("start timer", () => {
+    clearTimeout(countDown);
+    setTimer(45)
+  });
+
   useEffect(() => {
-    timer > 0 && setTimeout(() => setTimer(timer - 1), 1000);
-    gameIO.state.io.on("start timer", () => setTimer(45));
+    if (timer > 0) {
+      countDown = setTimeout(() => setTimer(timer - 1), 1000);
+    }
   });
 
 
