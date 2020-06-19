@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box, Container, Grid, Typography } from "@material-ui/core";
 import TimerIcon from "@material-ui/icons/Timer";
-
+import { AppContext } from "../../App";
 import { TEAM_ROLE } from "../game_lobby/team_select/TeamPresets";
 
 function GamePrompt({ gameState, player }) {
+  const { gameIO } = useContext(AppContext);
+
+  const [timer, setTimer] = useState(45);
+
+  useEffect(() => {
+    timer > 0 && setTimeout(() => setTimer(timer - 1), 1000);
+    gameIO.state.io.on("start timer", () => setTimer(45));
+  });
+
+
   return (
     <Container>
       <Grid container justify="space-between" alignItems="center">
@@ -14,7 +24,7 @@ function GamePrompt({ gameState, player }) {
               <TimerIcon fontSize="large" />
             </Grid>
             <Grid item>
-              <Typography variant="h6">45s left</Typography>
+              <Typography variant="h6">{timer}s left</Typography>
             </Grid>
           </Grid>
         </Grid>

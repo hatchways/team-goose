@@ -13,14 +13,14 @@ const TEAM_ROLE = {
 };
 
 const DEFAULT_RED_TEAM_STATE = [
-  { team: TeamColor.RED, role: TEAM_ROLE.SPYMASTER, user: null },
-  { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
+  { team: TeamColor.RED, role: TEAM_ROLE.SPYMASTER, user: {id:"id2", name:"player2" }},
+  { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: {id:"id1", name:"player1" }},
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
 ];
 
 const DEFAULT_BLUE_TEAM_STATE = [
-  { team: TeamColor.BLUE, role: TEAM_ROLE.SPYMASTER, user: null },
+  { team: TeamColor.BLUE, role: TEAM_ROLE.SPYMASTER, user: null},
   { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
@@ -41,7 +41,7 @@ class Game {
 
     this.redPoints = 0;
     this.bluePoints = 0;
-    this.numGuessLeft = 0;
+    this.numGuessLeft = MAX_NUM_OF_GUESSES;
     this.maxNumOfGuess = MAX_NUM_OF_GUESSES;
     this.winner = null;
 
