@@ -36,7 +36,6 @@ class GameIO {
 
       socket.on("game start", (matchId) => {
         this.gameIO.to(matchId).emit("resolve start game");
-        this.gameIO.to(matchId).emit("start timer");
         this.timer = this.startTimerInterval(matchId);
       });
 
@@ -49,11 +48,10 @@ class GameIO {
       });
 
       socket.on("end turn", (matchId) => {
-        clearInterval(this.timer);
         const match = MatchManager.getMatch(matchId);
         match.nextGameTurn();
         this.gameIO.to(matchId).emit("game state change", match.getGameState());
-        this.gameIO.to(matchId).emit("start timer");
+
         this.timer = this.startTimerInterval(matchId);
       });
 
@@ -114,7 +112,6 @@ class GameIO {
       });
 
       socket.on("start new game", (matchId) => {
-        clearInterval(this.timer);
         const match = MatchManager.getMatch(matchId);
 
         if (match) {
@@ -123,24 +120,23 @@ class GameIO {
             .to(matchId)
             .emit("game state change", match.getGameState());
         }
-        this.gameIO.to(matchId).emit("start timer");
         this.timer = this.startTimerInterval(matchId);
       });
     });
   }
 
   startTimerInterval(matchId) {
-    setInterval(() => {
+    clearInterval(this.timer);
+    this.gameIO.to(matchId).emit("start timer");
+    return setInterval(() => {
       console.log("timer started");
       const match = MatchManager.getMatch(matchId);
       console.log(match.getGameState());
       if (match) {
         match.nextGameTurn();
-        this.gameIO
-          .to(matchId)
-          .emit("game state change", match.getGameState());
+        this.gameIO.to(matchId).emit("game state change", match.getGameState());
+        this.gameIO.to(matchId).emit("start timer");
       }
-      this.gameIO.to(matchId).emit("start timer");
     }, 46000);
   }
 
