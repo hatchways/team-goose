@@ -281,22 +281,3 @@ class Game {
 
 module.exports = Game;
 
-// const newGame = new Game("user1");
-// newGame.giveHint(1);
-// newGame.nextGameTurn();
-// console.log("============game Turn============\n", newGame.getGameState().gameTurn);
-// newGame.vote({ index: 0, player: { name: "user1", team: "Red", id: "id_1" } });
-// newGame.vote({ index: 1, player: { name: "user2", team: "Red", id: "id_2" } });
-// newGame.vote({ index: 1, player: { name: "user1", team: "Red", id: "id_1" } });
-// newGame.vote({ index: 2, player: { name: "user2", team: "Red", id: "id_2" } });
-// newGame.nextGameTurn();
-// console.log(
-//   "=============cards===========\n",
-//   newGame.getGameState().gameBoard.getCards()[0], "index 0\n",
-//   newGame.getGameState().gameBoard.getCards()[1], "index 1\n",
-//   newGame.getGameState().gameBoard.getCards()[2], "index 2\n"
-// );
-// console.log("============points============\n", "red points", newGame.getRedPoints(), "blue points", newGame.getBluePoints());
-// console.log("=============game Turn=========\n", newGame.getGameTurn());
-// newGame.giveHint(3);
-// newGame.nextGameTurn();
