@@ -6,22 +6,22 @@ import { TEAM_ROLE } from "../game_lobby/team_select/TeamPresets";
 
 function GamePrompt({ gameState, player }) {
   const { gameIO } = useContext(AppContext);
-
-  const [timer, setTimer] = useState(45);
+  const [timer, setTimer] = useState(gameState.timeLeft);
   const [countDown, setCountDown] = useState(null);
   
   useEffect(() => {
     gameIO.state.io.on("start timer", () => {
       clearTimeout(countDown);
-      setTimer(45)
+      setTimer(gameState.timeLeft);
     });
   }, []);
 
   useEffect(() => {
+    if (countDown) clearTimeout(countDown);
     if (timer > 0) {
       setCountDown(setTimeout(() => setTimer(timer - 1), 1000));
     }
-  });
+  },[timer]);
 
 
   return (

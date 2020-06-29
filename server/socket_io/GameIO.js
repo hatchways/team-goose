@@ -2,14 +2,11 @@ const NAMESPACE = "/game";
 const MatchManager = require("../manager/MatchManager");
 
 let connection = null;
-let countdown = 30;
 
 class GameIO {
   constructor() {
     this.gameIO = null;
     this.chatIO = null;
-
-    this.timer = null;
   }
 
   connect(io) {
@@ -36,7 +33,8 @@ class GameIO {
 
       socket.on("game start", (matchId) => {
         this.gameIO.to(matchId).emit("resolve start game");
-        this.timer = this.startTimerInterval(matchId);
+        const match = MatchManager.getMatch(matchId);
+        match.startTimerInterval(this.gameIO, matchId);
       });
 
       socket.on("game state onload", (matchId) => {
@@ -50,9 +48,9 @@ class GameIO {
       socket.on("end turn", (matchId) => {
         const match = MatchManager.getMatch(matchId);
         match.nextGameTurn();
+        match.startTimerInterval(this.gameIO, matchId);
         this.gameIO.to(matchId).emit("game state change", match.getGameState());
-
-        this.timer = this.startTimerInterval(matchId);
+        this.gameIO.to(matchId).emit("start timer");
       });
 
       socket.on("card select", (matchId, data) => {
@@ -116,28 +114,14 @@ class GameIO {
 
         if (match) {
           match.resetGame();
+          match.startTimerInterval(this.gameIO, matchId);
           this.gameIO
             .to(matchId)
             .emit("game state change", match.getGameState());
+          this.gameIO.to(matchId).emit("start timer");
         }
-        this.timer = this.startTimerInterval(matchId);
       });
     });
-  }
-
-  startTimerInterval(matchId) {
-    clearInterval(this.timer);
-    this.gameIO.to(matchId).emit("start timer");
-    return setInterval(() => {
-      console.log("timer started");
-      const match = MatchManager.getMatch(matchId);
-      console.log(match.getGameState());
-      if (match) {
-        match.nextGameTurn();
-        this.gameIO.to(matchId).emit("game state change", match.getGameState());
-        this.gameIO.to(matchId).emit("start timer");
-      }
-    }, 46000);
   }
 
   setChatIO(chatIO) {

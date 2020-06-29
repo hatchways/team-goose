@@ -27,6 +27,7 @@ const DEFAULT_BLUE_TEAM_STATE = [
 ];
 
 const MAX_NUM_OF_GUESSES = 25;
+const TIME_INTERVAL = 45;
 
 class Game {
   constructor(hostId) {
@@ -44,7 +45,8 @@ class Game {
     this.numGuessLeft = MAX_NUM_OF_GUESSES;
     this.maxNumOfGuess = MAX_NUM_OF_GUESSES;
     this.winner = null;
-
+    this.timer = null;
+    this.timeLeft = TIME_INTERVAL;
     this.gameBoard = new Board();
   }
 
@@ -59,6 +61,9 @@ class Game {
   //reducers
   reduceNumGuessLeft() {
     this.numGuessLeft -= 1;
+  }
+  reduceTimeLeft() {
+    this.timeLeft -= 1;
   }
 
   //getters
@@ -92,6 +97,9 @@ class Game {
   getVotedCards() {
     return this.votedCards;
   }
+  getTimeLeft() {
+    return this.timeLeft;
+  }
   getBoard() {
     return this.gameBoard;
   }
@@ -104,6 +112,7 @@ class Game {
       gameBoard: { blueAgentNum, cards, redAgentNum },
       numGuessLeft: this.numGuessLeft,
       winner: this.winner,
+      timeLeft: this.timeLeft
     };
   }
 
@@ -120,14 +129,19 @@ class Game {
   setWinner(team) {
     this.winner = team;
   }
-
   setRedTeam(team) {
     this.redTeam = team;
   }
-
   setBlueTeam(team) {
     this.blueTeam = team;
   }
+  setTimer(timer) {
+    this.timer = timer;
+  }
+  setTimeLeft() {
+    this.timeLeft = TIME_INTERVAL;
+  }
+
 
   vote(data) {
     switch (data.player.team) {
@@ -255,18 +269,6 @@ class Game {
     return false;
   }
 
-  stopGuess() {
-    switch (this.gameTurn) {
-      case GameTurns.BLUE_AGENT_TURN:
-        this.setNumGuessLeft = 0;
-        this.setGameTurn(GameTurns.RED_SPY_TURN);
-        break;
-      case GameTurns.RED_AGENT_TURN:
-        this.setNumGuessLeft = 0;
-        this.setGameTurn(GameTurns.BLUE_SPY_TURN);
-        break;
-    }
-  }
   resetGame() {
     this.bluePoints = 0;
     this.redPoints = 0;
@@ -276,6 +278,20 @@ class Game {
       Math.round(Math.random())
     ];
     this.winner = null;
+  }
+
+  startTimerInterval(gameIO, matchId) {
+    clearInterval(this.timer);
+    this.setTimeLeft();
+    this.setTimer(setInterval(() => {
+      if (this.getTimeLeft() === -1) {
+        this.nextGameTurn();
+        gameIO.to(matchId).emit("game state change", this.getGameState());
+        gameIO.to(matchId).emit("start timer");
+        this.startTimerInterval(gameIO, matchId);
+      }
+      this.reduceTimeLeft();
+    }, 1000));
   }
 }
 
