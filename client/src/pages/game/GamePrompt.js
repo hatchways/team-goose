@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box, Container, Grid, Typography } from "@material-ui/core";
 import TimerIcon from "@material-ui/icons/Timer";
-
+import { AppContext } from "../../App";
 import { TEAM_ROLE } from "../game_lobby/team_select/TeamPresets";
 
 function GamePrompt({ gameState, player }) {
+  const [timer, setTimer] = useState(null);
+  const [countDown, setCountDown] = useState(null);
+  
+  useEffect(() => {
+    setCountDown(Math.floor((gameState.timeEnd - Date.now()) / 1000));
+  }, [gameState.timeEnd]);
+
+  useEffect(() => {
+    clearTimeout(timer);
+    if (countDown > 0) {
+      setTimer(setTimeout(() => setCountDown(countDown - 1), 1000));
+    }
+  },[countDown]);
+
+
   return (
     <Container>
       <Grid container justify="space-between" alignItems="center">
@@ -14,7 +29,7 @@ function GamePrompt({ gameState, player }) {
               <TimerIcon fontSize="large" />
             </Grid>
             <Grid item>
-              <Typography variant="h6">45s left</Typography>
+              <Typography variant="h6">{gameState.winner ? 0 : countDown}s left</Typography>
             </Grid>
           </Grid>
         </Grid>

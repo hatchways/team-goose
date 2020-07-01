@@ -13,7 +13,7 @@ const TEAM_ROLE = {
 };
 
 const DEFAULT_RED_TEAM_STATE = [
-  { team: TeamColor.RED, role: TEAM_ROLE.SPYMASTER, user: null },
+  { team: TeamColor.RED, role: TEAM_ROLE.SPYMASTER, user: null},
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
@@ -27,6 +27,7 @@ const DEFAULT_BLUE_TEAM_STATE = [
 ];
 
 const MAX_NUM_OF_GUESSES = 25;
+const TIME_INTERVAL = 46;
 
 class Game {
   constructor(hostId) {
@@ -41,10 +42,11 @@ class Game {
 
     this.redPoints = 0;
     this.bluePoints = 0;
-    this.numGuessLeft = 0;
+    this.numGuessLeft = MAX_NUM_OF_GUESSES;
     this.maxNumOfGuess = MAX_NUM_OF_GUESSES;
     this.winner = null;
-
+    this.timer = null;
+    this.timeEnd = null;
     this.gameBoard = new Board();
   }
 
@@ -104,6 +106,7 @@ class Game {
       gameBoard: { blueAgentNum, cards, redAgentNum },
       numGuessLeft: this.numGuessLeft,
       winner: this.winner,
+      timeEnd: this.timeEnd
     };
   }
 
@@ -120,14 +123,19 @@ class Game {
   setWinner(team) {
     this.winner = team;
   }
-
   setRedTeam(team) {
     this.redTeam = team;
   }
-
   setBlueTeam(team) {
     this.blueTeam = team;
   }
+  setTimer(timer) {
+    this.timer = timer;
+  }
+  setTimeEnd() {
+    this.timeEnd = Date.now() + TIME_INTERVAL * 1000;
+  }
+
 
   vote(data) {
     switch (data.player.team) {
@@ -255,48 +263,29 @@ class Game {
     return false;
   }
 
-  stopGuess() {
-    switch (this.gameTurn) {
-      case GameTurns.BLUE_AGENT_TURN:
-        this.setNumGuessLeft = 0;
-        this.setGameTurn(GameTurns.RED_SPY_TURN);
-        break;
-      case GameTurns.RED_AGENT_TURN:
-        this.setNumGuessLeft = 0;
-        this.setGameTurn(GameTurns.BLUE_SPY_TURN);
-        break;
-    }
-  }
   resetGame() {
     this.bluePoints = 0;
     this.redPoints = 0;
-    this.numGuessLeft = 0;
+    this.numGuessLeft = MAX_NUM_OF_GUESSES;
     this.gameBoard.generateNewRound();
     this.gameTurn = [GameTurns.BLUE_SPY_TURN, GameTurns.RED_SPY_TURN][
       Math.round(Math.random())
     ];
     this.winner = null;
+    this.timeEnd = null;
+    clearInterval(this.timer);
+  }
+
+  startTimerInterval(gameIO, matchId) {
+    clearInterval(this.timer);
+    this.setTimeEnd();
+    this.setTimer(setInterval(() => {      
+        this.setTimeEnd();
+        this.nextGameTurn();
+        gameIO.to(matchId).emit("game state change", this.getGameState());
+    }, TIME_INTERVAL * 1000));
   }
 }
 
 module.exports = Game;
 
-// const newGame = new Game("user1");
-// newGame.giveHint(1);
-// newGame.nextGameTurn();
-// console.log("============game Turn============\n", newGame.getGameState().gameTurn);
-// newGame.vote({ index: 0, player: { name: "user1", team: "Red", id: "id_1" } });
-// newGame.vote({ index: 1, player: { name: "user2", team: "Red", id: "id_2" } });
-// newGame.vote({ index: 1, player: { name: "user1", team: "Red", id: "id_1" } });
-// newGame.vote({ index: 2, player: { name: "user2", team: "Red", id: "id_2" } });
-// newGame.nextGameTurn();
-// console.log(
-//   "=============cards===========\n",
-//   newGame.getGameState().gameBoard.getCards()[0], "index 0\n",
-//   newGame.getGameState().gameBoard.getCards()[1], "index 1\n",
-//   newGame.getGameState().gameBoard.getCards()[2], "index 2\n"
-// );
-// console.log("============points============\n", "red points", newGame.getRedPoints(), "blue points", newGame.getBluePoints());
-// console.log("=============game Turn=========\n", newGame.getGameTurn());
-// newGame.giveHint(3);
-// newGame.nextGameTurn();

@@ -2,7 +2,6 @@ const NAMESPACE = "/game";
 const MatchManager = require("../manager/MatchManager");
 
 let connection = null;
-let countdown = 30;
 
 class GameIO {
   constructor() {
@@ -33,7 +32,10 @@ class GameIO {
       });
 
       socket.on("game start", (matchId) => {
+        const match = MatchManager.getMatch(matchId);
+        match.startTimerInterval(this.gameIO, matchId);
         this.gameIO.to(matchId).emit("resolve start game");
+        socket.emit("game state change", match.getGameState());
       });
 
       socket.on("game state onload", (matchId) => {
@@ -44,14 +46,10 @@ class GameIO {
         }
       });
 
-      // setInterval(() => {
-      //   countdown--;
-      //   this.gameIO.to(matchId).emit("timer", { countdown: countdown });
-      // }, 1000);
-
       socket.on("end turn", (matchId) => {
         const match = MatchManager.getMatch(matchId);
         match.nextGameTurn();
+        match.startTimerInterval(this.gameIO, matchId);
         this.gameIO.to(matchId).emit("game state change", match.getGameState());
       });
 
@@ -116,6 +114,7 @@ class GameIO {
 
         if (match) {
           match.resetGame();
+          match.startTimerInterval(this.gameIO, matchId);
           this.gameIO
             .to(matchId)
             .emit("game state change", match.getGameState());
