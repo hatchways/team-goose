@@ -118,7 +118,6 @@ class GameIO {
           this.gameIO
             .to(matchId)
             .emit("game state change", match.getGameState());
-          this.gameIO.to(matchId).emit("start timer");
         }
       });
     });
