@@ -13,14 +13,14 @@ const TEAM_ROLE = {
 };
 
 const DEFAULT_RED_TEAM_STATE = [
-  { team: TeamColor.RED, role: TEAM_ROLE.SPYMASTER, user: {id: "id1", name: "name1"} },
+  { team: TeamColor.RED, role: TEAM_ROLE.SPYMASTER, user: null},
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
 ];
 
 const DEFAULT_BLUE_TEAM_STATE = [
-  { team: TeamColor.BLUE, role: TEAM_ROLE.SPYMASTER, user: {id: "id3", name: "name3"} },
+  { team: TeamColor.BLUE, role: TEAM_ROLE.SPYMASTER, user: null },
   { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
