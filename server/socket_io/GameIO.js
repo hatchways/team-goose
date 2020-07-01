@@ -32,9 +32,10 @@ class GameIO {
       });
 
       socket.on("game start", (matchId) => {
-        this.gameIO.to(matchId).emit("resolve start game");
         const match = MatchManager.getMatch(matchId);
         match.startTimerInterval(this.gameIO, matchId);
+        this.gameIO.to(matchId).emit("resolve start game");
+        socket.emit("game state change", match.getGameState());
       });
 
       socket.on("game state onload", (matchId) => {
@@ -50,7 +51,6 @@ class GameIO {
         match.nextGameTurn();
         match.startTimerInterval(this.gameIO, matchId);
         this.gameIO.to(matchId).emit("game state change", match.getGameState());
-        this.gameIO.to(matchId).emit("start timer");
       });
 
       socket.on("card select", (matchId, data) => {

@@ -5,23 +5,19 @@ import { AppContext } from "../../App";
 import { TEAM_ROLE } from "../game_lobby/team_select/TeamPresets";
 
 function GamePrompt({ gameState, player }) {
-  const { gameIO } = useContext(AppContext);
-  const [timer, setTimer] = useState(gameState.timeLeft);
+  const [timer, setTimer] = useState(null);
   const [countDown, setCountDown] = useState(null);
   
   useEffect(() => {
-    gameIO.state.io.on("start timer", () => {
-      clearTimeout(countDown);
-      setTimer(gameState.timeLeft);
-    });
-  }, []);
+    setCountDown(Math.floor((gameState.timeEnd - Date.now()) / 1000));
+  }, [gameState.timeEnd]);
 
   useEffect(() => {
-    if (countDown) clearTimeout(countDown);
-    if (timer > 0) {
-      setCountDown(setTimeout(() => setTimer(timer - 1), 1000));
+    clearTimeout(timer);
+    if (countDown > 0) {
+      setTimer(setTimeout(() => setCountDown(countDown - 1), 1000));
     }
-  },[timer]);
+  },[countDown]);
 
 
   return (
@@ -33,7 +29,7 @@ function GamePrompt({ gameState, player }) {
               <TimerIcon fontSize="large" />
             </Grid>
             <Grid item>
-              <Typography variant="h6">{timer}s left</Typography>
+              <Typography variant="h6">{gameState.winner ? 0 : countDown}s left</Typography>
             </Grid>
           </Grid>
         </Grid>

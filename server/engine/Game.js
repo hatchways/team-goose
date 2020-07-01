@@ -13,21 +13,21 @@ const TEAM_ROLE = {
 };
 
 const DEFAULT_RED_TEAM_STATE = [
-  { team: TeamColor.RED, role: TEAM_ROLE.SPYMASTER, user: null },
+  { team: TeamColor.RED, role: TEAM_ROLE.SPYMASTER, user: {id: "id1", name: "name1"} },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.RED, role: TEAM_ROLE.FIELD_AGENT, user: null },
 ];
 
 const DEFAULT_BLUE_TEAM_STATE = [
-  { team: TeamColor.BLUE, role: TEAM_ROLE.SPYMASTER, user: null },
+  { team: TeamColor.BLUE, role: TEAM_ROLE.SPYMASTER, user: {id: "id3", name: "name3"} },
   { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
   { team: TeamColor.BLUE, role: TEAM_ROLE.FIELD_AGENT, user: null },
 ];
 
 const MAX_NUM_OF_GUESSES = 25;
-const TIME_INTERVAL = 45;
+const TIME_INTERVAL = 46;
 
 class Game {
   constructor(hostId) {
@@ -46,7 +46,7 @@ class Game {
     this.maxNumOfGuess = MAX_NUM_OF_GUESSES;
     this.winner = null;
     this.timer = null;
-    this.timeLeft = TIME_INTERVAL;
+    this.timeEnd = null;
     this.gameBoard = new Board();
   }
 
@@ -61,9 +61,6 @@ class Game {
   //reducers
   reduceNumGuessLeft() {
     this.numGuessLeft -= 1;
-  }
-  reduceTimeLeft() {
-    this.timeLeft -= 1;
   }
 
   //getters
@@ -97,9 +94,6 @@ class Game {
   getVotedCards() {
     return this.votedCards;
   }
-  getTimeLeft() {
-    return this.timeLeft;
-  }
   getBoard() {
     return this.gameBoard;
   }
@@ -112,7 +106,7 @@ class Game {
       gameBoard: { blueAgentNum, cards, redAgentNum },
       numGuessLeft: this.numGuessLeft,
       winner: this.winner,
-      timeLeft: this.timeLeft
+      timeEnd: this.timeEnd
     };
   }
 
@@ -138,8 +132,8 @@ class Game {
   setTimer(timer) {
     this.timer = timer;
   }
-  setTimeLeft() {
-    this.timeLeft = TIME_INTERVAL;
+  setTimeEnd() {
+    this.timeEnd = Date.now() + TIME_INTERVAL * 1000;
   }
 
 
@@ -278,20 +272,18 @@ class Game {
       Math.round(Math.random())
     ];
     this.winner = null;
+    this.timeEnd = null;
+    clearInterval(this.timer);
   }
 
   startTimerInterval(gameIO, matchId) {
     clearInterval(this.timer);
-    this.setTimeLeft();
-    this.setTimer(setInterval(() => {
-      if (this.getTimeLeft() === -1) {
+    this.setTimeEnd();
+    this.setTimer(setInterval(() => {      
+        this.setTimeEnd();
         this.nextGameTurn();
         gameIO.to(matchId).emit("game state change", this.getGameState());
-        gameIO.to(matchId).emit("start timer");
-        this.startTimerInterval(gameIO, matchId);
-      }
-      this.reduceTimeLeft();
-    }, 1000));
+    }, TIME_INTERVAL * 1000));
   }
 }
 
